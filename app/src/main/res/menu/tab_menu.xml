@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/partyFragment"
+        android:icon="@drawable/party"
+        android:title="@string/textParty" />
+    <item
+        android:id="@+id/chatFragment"
+        android:icon="@drawable/chat"
+        android:title="@string/textChat" />
+    <item
+        android:id="@+id/pieceFragment"
+        android:icon="@drawable/photo"
+        android:title="@string/textPiece" />
+    <item
+        android:id="@+id/informFragment"
+        android:icon="@drawable/inform"
+        android:title="@string/textInform" />
+    <item
+        android:id="@+id/userFragment"
+        android:icon="@drawable/user"
+        android:title="@string/textUser" />
+
+</menu>

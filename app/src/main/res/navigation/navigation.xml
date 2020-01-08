@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/partyFragment">
+    <fragment
+        android:id="@+id/partyFragment"
+        android:name="tw.dp103g4.partylist_android.PartyListFragment"
+        android:label="fragment_party"
+        tools:layout="@layout/fragment_party" >
+        <action
+            android:id="@+id/action_partyFragment_to_newsFragment"
+            app:destination="@id/newsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsFragment"
+        android:name="tw.dp103g4.news.NewsFragment"
+        android:label="fragment_news" />
+    <fragment
+        android:id="@+id/pieceFragment"
+        android:name="tw.dp103g4.partylist_android.PieceListFragment"
+        android:label="fragment_piece"
+        tools:layout="@layout/fragment_piece" />
+    <fragment
+        android:id="@+id/myPartyFragment"
+        android:name="com.bozin.ecoparty_android.MyPartyFragment"
+        android:label="fragment_my_party"
+        tools:layout="@layout/fragment_my_party" />
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.bozin.ecoparty_android.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_userFragment2_to_myPartyFragment"
+            app:destination="@id/myPartyFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/informFragment"
+        android:name="tw.dp103g4.inform.InformFragment"
+        android:label="fragment_inform"
+        tools:layout="@layout/fragment_inform" />
+</navigation>
