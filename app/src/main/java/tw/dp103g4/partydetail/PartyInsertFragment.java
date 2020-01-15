@@ -322,7 +322,7 @@ public class PartyInsertFragment extends Fragment {
                                 Common.showToast(getActivity(), R.string.textInsertFail);
                             } else {
                                 Common.showToast(getActivity(), R.string.textInsertSuccess);
-                                Navigation.findNavController(view).popBackStack();
+                                navController.popBackStack();
                             }
                         } else {
                             Common.showToast(getActivity(), R.string.textNoNetwork);
@@ -413,4 +413,9 @@ public class PartyInsertFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        activity.getBottomNavigationView().setVisibility(View.VISIBLE);
+    }
 }

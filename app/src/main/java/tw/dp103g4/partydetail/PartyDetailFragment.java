@@ -323,5 +323,6 @@ public class PartyDetailFragment extends Fragment {
             getMsgListTask.cancel(true);
             getMsgListTask = null;
         }
+        activity.getBottomNavigationView().setVisibility(View.VISIBLE);
     }
 }
