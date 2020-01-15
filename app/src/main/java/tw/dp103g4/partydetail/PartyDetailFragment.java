@@ -1,7 +1,6 @@
 package tw.dp103g4.partydetail;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -36,13 +36,14 @@ import java.util.Date;
 import java.util.List;
 
 import tw.dp103g4.main_android.Common;
+import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.CoverImageTask;
 
 
 public class PartyDetailFragment extends Fragment {
-    private Activity activity;
+    private MainActivity activity;
     private TextView tvName, tvTime, tvPostEndTime, tvOwner, tvParticipant, tvLocation, tvAddress, tvContent;
     private RecyclerView rvMessage;
     private ImageView ivCover, ivOwner, ivParticipant, ivLocation;
@@ -70,7 +71,7 @@ public class PartyDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = getActivity();
+        activity = (MainActivity) getActivity();
     }
 
     @Override
@@ -83,7 +84,15 @@ public class PartyDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        activity.getBottomNavigationView().setVisibility(View.GONE);
+        final NavController navController = Navigation.findNavController(view);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.popBackStack();
+            }
+        });
         scrollView = view.findViewById(R.id.scrollView);
         tvName = view.findViewById(R.id.tvName);
         tvTime = view.findViewById(R.id.tvTime);
@@ -105,7 +114,6 @@ public class PartyDetailFragment extends Fragment {
         etInput = view.findViewById(R.id.etInput);
         rvMessage = view.findViewById(R.id.rvMessage);
 
-        final NavController navController = Navigation.findNavController(view);
         Bundle bundle = getArguments();
         if (bundle == null || bundle.getInt("partyId") == 0) {
             Common.showToast(activity, R.string.textNoPartiesFound);
