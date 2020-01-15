@@ -1,7 +1,6 @@
 package tw.dp103g4.partydetail;
 
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -27,8 +26,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.bozin.partylist_android.R;
@@ -43,6 +44,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import tw.dp103g4.main_android.Common;
+import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.CommonTask;
 
@@ -50,7 +52,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class PartyInsertFragment extends Fragment {
-    private Activity activity;
+    private MainActivity activity;
     private ConstraintLayout layoutCover;
     private ImageView ivCover;
     private EditText etName, etLoction, etAddress,etContent;
@@ -78,7 +80,7 @@ public class PartyInsertFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = getActivity();
+        activity = (MainActivity) getActivity();
     }
 
     @Override
@@ -91,6 +93,15 @@ public class PartyInsertFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        activity.getBottomNavigationView().setVisibility(View.GONE);
+        final NavController navController = Navigation.findNavController(view);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.popBackStack();
+            }
+        });
         ivCover = view.findViewById(R.id.ivCover);
         layoutCover = view.findViewById(R.id.layoutCover);
         etName = view.findViewById(R.id.etName);

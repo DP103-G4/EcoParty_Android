@@ -17,6 +17,7 @@
     <string name="textChat">Chat</string>
     <string name="tabTitle">我的活動</string>
     <string name="partyTitle">活動詳情</string>
+    <string name="insertPartyTitle">新增活動</string>
     <string name="tab_text_1">我的活動</string>
     <string name="tab_text_2">我的花絮</string>
     <string name="toolNews">最新消息</string>
