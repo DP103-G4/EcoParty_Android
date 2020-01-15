@@ -90,8 +90,9 @@ public class MyPieceDetailFragment extends Fragment {
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "PartyServlet";
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("action", "getAllParty");
+            jsonObject.addProperty("action", "getCurrentParty");
             jsonObject.addProperty("state", 4);
+            jsonObject.addProperty("participantId", 2);
             String jsonOut = jsonObject.toString();
             pieceGetAllTask = new CommonTask(url, jsonOut);
             try {

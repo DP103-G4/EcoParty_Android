@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            app:tabSelectedTextColor="@color/colorA"
+            app:tabSelectedTextColor="@color/colorIsCheck"
             app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
             app:tabTextColor="@color/colorB" />
     </com.google.android.material.appbar.AppBarLayout>

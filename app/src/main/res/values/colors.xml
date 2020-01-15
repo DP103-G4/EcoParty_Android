@@ -6,4 +6,8 @@
     <color name="colorB">#969696</color>
     <color name="colorIsCheck">#578FC3</color>
     <color name="colorNoCheck">#737373</color>
+
+    <color name="blue1">#7DBEFF</color>
+    <color name="blue2">#578FC3</color>
+    <color name="gray1">#E4E4E4</color>
 </resources>

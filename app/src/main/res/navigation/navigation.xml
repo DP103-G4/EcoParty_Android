@@ -16,6 +16,12 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_partyFragment_to_partyDetailFragment"
+            app:destination="@id/partyDetailFragment" />
+        <action
+            android:id="@+id/action_partyFragment_to_partyInsertFragment"
+            app:destination="@id/partyInsertFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsFragment"
@@ -49,4 +55,14 @@
         android:name="tw.dp103g4.inform.InformFragment"
         android:label="fragment_inform"
         tools:layout="@layout/fragment_inform" />
+    <fragment
+        android:id="@+id/partyDetailFragment"
+        android:name="tw.dp103g4.partydetail.PartyDetailFragment"
+        android:label="fragment_party_detail"
+        tools:layout="@layout/fragment_party_detail" />
+    <fragment
+        android:id="@+id/partyInsertFragment"
+        android:name="tw.dp103g4.partydetail.PartyInsertFragment"
+        android:label="fragment_party_insert"
+        tools:layout="@layout/fragment_party_insert" />
 </navigation>

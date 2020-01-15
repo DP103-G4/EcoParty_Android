@@ -5,4 +5,19 @@
     <dimen name="appbar_padding">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>
+
+    <dimen name="userSize">40dp</dimen>
+    <dimen name="userSizeRadius">20dp</dimen>
+    <dimen name="pictureHeight">200dp</dimen>
+    <dimen name="textSize1">28sp</dimen>
+    <dimen name="textSize2">24sp</dimen>
+    <dimen name="textSize3">18sp</dimen>
+    <dimen name="textSize4">14sp</dimen>
+    <dimen name="textSize5">12sp</dimen>
+    <dimen name="buttonHeight">48dp</dimen>
+    <dimen name="marginSize">5dp</dimen>
+    <dimen name="paddingSize">10dp</dimen>
+    <dimen name="iconSize">20dp</dimen>
+    <dimen name="cornerRadius">10dp</dimen>
+    <dimen name="seekbarSize">300dp</dimen>
 </resources>

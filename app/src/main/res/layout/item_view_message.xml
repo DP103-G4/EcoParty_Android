@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/marginSize">
+
+    <ImageView
+        android:id="@+id/ivMsg"
+        android:layout_width="@dimen/userSize"
+        android:layout_height="@dimen/userSize"
+        android:layout_margin="@dimen/marginSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mary"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvMsgName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/marginSize"
+        android:textSize="@dimen/textSize3"
+        app:layout_constraintStart_toEndOf="@+id/ivMsg"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="小明" />
+
+    <TextView
+        android:id="@+id/tvMsgTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/marginSize"
+        android:textSize="@dimen/textSize5"
+        app:layout_constraintBottom_toBottomOf="@+id/userImg"
+        app:layout_constraintStart_toEndOf="@id/userImg"
+        tools:text="2019/1/1" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/userImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/marginSize"
+        android:elevation="4dp"
+        app:cardBackgroundColor="@color/gray1"
+        app:cardCornerRadius="@dimen/cornerRadius"
+        app:layout_constraintBottom_toBottomOf="@+id/ivMsg"
+        app:layout_constraintStart_toStartOf="@+id/tvMsgName"
+        app:layout_constraintTop_toBottomOf="@+id/tvMsgName"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="TextView"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textSize4" />
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

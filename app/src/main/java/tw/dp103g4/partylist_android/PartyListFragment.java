@@ -24,11 +24,14 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bozin.partylist_android.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +52,7 @@ public class PartyListFragment extends Fragment {
     private CoverImageTask partyImageTask;
     private int imageSize;
     private NewsImageTask newsImageTask;
+    private FloatingActionButton floatingActionButton;
 
 
     @Override
@@ -66,6 +70,7 @@ public class PartyListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        floatingActionButton = view.findViewById(R.id.btAdd);
         SearchView searchView = view.findViewById(R.id.searchView);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         rvPartyStart = view.findViewById(R.id.rvPartyStart);
@@ -86,9 +91,18 @@ public class PartyListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 parties = getParties();
+                partyStart = getPartyStart();
                 swipeRefreshLayout.setRefreshing(true);
                 showParties(parties);
+                showPartyStart(partyStart);
                 swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_partyInsertFragment);
             }
         });
 
@@ -96,6 +110,7 @@ public class PartyListFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
                 if (newText.isEmpty()) {
                     showParties(parties);
                 } else {
@@ -136,8 +151,9 @@ public class PartyListFragment extends Fragment {
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "PartyServlet";
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("action", "getAllParty");
+            jsonObject.addProperty("action", "getCurrentParty");
             jsonObject.addProperty("state", 3);
+            jsonObject.addProperty("participantId", 2);
             String jsonOut = jsonObject.toString();
             partyGetAllTask = new CommonTask(url, jsonOut);
             try {
@@ -152,7 +168,7 @@ public class PartyListFragment extends Fragment {
             Common.showToast(activity, R.string.textNoNetwork);
         }
         return partyStart;
-    }
+}
 
     private List<News> getNews() {
         List<News> news = null;
@@ -202,7 +218,8 @@ public class PartyListFragment extends Fragment {
                 String jsonIn = partyGetAllTask.execute().get();
                 Type listType = new TypeToken<List<Party>>() {
                 }.getType();
-                parties = new Gson().fromJson(jsonIn, listType);
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                parties = gson.fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -269,14 +286,24 @@ public class PartyListFragment extends Fragment {
         public void onBindViewHolder(@NonNull PartyViewHolder holder, int position) {
             Party party = parties.get(position);
             String url = Common.URL_SERVER + "PartyServlet";
-            int id = party.getId();
+            final int id = party.getId();
             partyImageTask = new CoverImageTask(url, id, imageSize, holder.ivParty);
             partyImageTask.execute();
             holder.ivUser.setImageResource(R.drawable.ivy);
             holder.tvTitle.setText(party.getName());
             holder.tvAddress.setText(party.getAddress());
-            holder.tvTime.setText(party.getStartTime().toString());
+            holder.tvTime.setText(new SimpleDateFormat("E MM月dd日").format(party.getStartTime()));
             //bundle活動詳情
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("partyId", id);
+                    Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_partyDetailFragment, bundle);
+                }
+            });
+
         }
     }
 

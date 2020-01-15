@@ -20,4 +20,8 @@
     <string name="tab_text_2">我的花絮</string>
     <string name="toolNews">最新消息</string>
     <string name="textNoInform">no informs found</string>
+
+    <string name="textInsertFail">Insert Fail</string>
+    <string name="textInsertSuccess">Insert Success</string>
+    <string name="textNoImageCropAppFound">no image crop app found</string>
 </resources>

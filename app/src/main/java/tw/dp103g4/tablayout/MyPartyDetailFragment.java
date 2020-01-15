@@ -90,8 +90,9 @@ public class MyPartyDetailFragment extends Fragment {
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "PartyServlet";
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("action", "getAllParty");
+            jsonObject.addProperty("action", "getCurrentParty");
             jsonObject.addProperty("state", 1);
+            jsonObject.addProperty("participantId", 2);
             String jsonOut = jsonObject.toString();
             partyGetAllTask = new CommonTask(url, jsonOut);
             try {

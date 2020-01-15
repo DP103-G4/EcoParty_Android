@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="tw.dp103g4.partydetail.PartyDetailFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/inputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="-16dp"
+            tools:layout_editor_absoluteY="-16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivCover"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/pictureHeight"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/cover" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize"
+                    android:padding="@dimen/paddingSize"
+                    android:textSize="@dimen/textSize1"
+                    android:textStyle="bold"
+                    tools:text="活動標題" />
+
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize"
+                    android:paddingLeft="@dimen/paddingSize"
+                    android:textSize="@dimen/textSize4"
+                    tools:text="週六, 12月20日 10:00 ~ 14:00 " />
+
+                <TextView
+                    android:id="@+id/tvPostEndTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize"
+                    android:paddingLeft="@dimen/paddingSize"
+                    android:textSize="@dimen/textSize4"
+                    tools:text="報名截止 週六, 12月19日 14:00" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize">
+
+                    <Button
+                        android:id="@+id/btLike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/buttonHeight"
+                        android:layout_margin="@dimen/marginSize"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/like"
+                        android:drawablePadding="-10dp"
+                        android:paddingLeft="20dp"
+                        android:text="收藏" />
+
+                    <Button
+                        android:id="@+id/btIn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/buttonHeight"
+                        android:layout_margin="@dimen/marginSize"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/in"
+                        android:drawablePadding="-10dp"
+                        android:includeFontPadding="false"
+                        android:paddingLeft="20dp"
+                        android:text="參加" />
+
+                    <Button
+                        android:id="@+id/btShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/buttonHeight"
+                        android:layout_margin="@dimen/marginSize"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/share"
+                        android:drawablePadding="-10dp"
+                        android:paddingLeft="20dp"
+                        android:text="分享" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize"
+                    android:paddingLeft="@dimen/paddingSize">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/userImg"
+                        android:layout_width="@dimen/userSize"
+                        android:layout_height="@dimen/userSize"
+                        android:paddingLeft="@dimen/paddingSize"
+                        app:cardCornerRadius="@dimen/userSizeRadius"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/ivOwner"
+                            android:layout_width="@dimen/userSize"
+                            android:layout_height="@dimen/userSize"
+                            app:srcCompat="@drawable/mary"
+                            tools:srcCompat="@tools:sample/avatars" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/tvOwner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/marginSize"
+                        android:textSize="@dimen/textSize4"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/userImg"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="王小明主辦的活動" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize"
+                    android:paddingLeft="@dimen/paddingSize">
+
+                    <ImageView
+                        android:id="@+id/ivParticipant"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"
+                        android:src="@drawable/participant"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvParticipant"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/marginSize"
+                        android:textSize="@dimen/textSize4"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ivParticipant"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="12人會參加" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize"
+                    android:paddingLeft="@dimen/paddingSize">
+
+                    <ImageView
+                        android:id="@+id/ivLocation"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"
+                        android:src="@drawable/location"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/marginSize"
+                        android:textSize="@dimen/textSize4"
+                        app:layout_constraintStart_toEndOf="@+id/ivLocation"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="中央海灘" />
+
+                    <TextView
+                        android:id="@+id/tvAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/marginSize"
+                        android:textSize="@dimen/textSize5"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ivLocation"
+                        app:layout_constraintTop_toBottomOf="@+id/tvLocation"
+                        app:layout_constraintVertical_bias="1.0"
+                        tools:text="中央路123號" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/tvContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize"
+                    android:text="TextView" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/marginSize"
+                    android:paddingLeft="@dimen/paddingSize">
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/marginSize"
+                        android:text="留言討論"
+                        android:textSize="@dimen/textSize3"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"
+                        android:src="@drawable/message"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/marginSize">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/inputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/buttonHeight"
+        android:background="@android:color/background_light"
+        android:padding="@dimen/marginSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="@color/gray1"
+            app:cardCornerRadius="@dimen/cornerRadius"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ibSend"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/etInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autoText="false"
+                android:background="@null"
+                android:ems="10"
+                android:hint="留言"
+                android:inputType="textPersonName"
+                android:padding="@dimen/paddingSize"
+                android:textSize="@dimen/textSize4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.cardview.widget.CardView>
+
+        <ImageButton
+            android:id="@+id/ibSend"
+            android:layout_width="@dimen/buttonHeight"
+            android:layout_height="@dimen/buttonHeight"
+            android:background="@android:color/transparent"
+            android:src="@drawable/send"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

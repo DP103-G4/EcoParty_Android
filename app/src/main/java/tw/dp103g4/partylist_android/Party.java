@@ -1,7 +1,7 @@
 package tw.dp103g4.partylist_android;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 public class Party implements Serializable {
     private int id;
@@ -10,7 +10,7 @@ public class Party implements Serializable {
     private Date startTime;
     private Date endTime;
     private Date postTime;
-    private Date endPostTime;
+    private Date postEndTime;
     private String location;
     private String address;
     private double longitude;
@@ -20,9 +20,53 @@ public class Party implements Serializable {
     private int countLowerLimit;
     private int countCurrent;
     private int state;
-    private double distance;
+    private int distance;
 
 
+    public Party(int ownerId, String name, Date startTime, Date endTime, Date postTime, Date postEndTime,
+                 String location, String address, double longitude, double latitude, String content, int countUpperLimit,
+                 int countLowerLimit, int countCurrent, int state, int distance) {
+        super();
+        this.ownerId = ownerId;
+        this.name = name;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.postTime = postTime;
+        this.postEndTime = postEndTime;
+        this.location = location;
+        this.address = address;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.content = content;
+        this.countUpperLimit = countUpperLimit;
+        this.countLowerLimit = countLowerLimit;
+        this.countCurrent = countCurrent;
+        this.state = state;
+        this.distance = distance;
+    }
+
+    public Party(int id, int ownerId, String name, Date startTime, Date endTime, Date postTime, Date postEndTime,
+                 String location, String address, double longitude, double latitude, String content, int countUpperLimit,
+                 int countLowerLimit, int countCurrent, int state, int distance) {
+        super();
+        this.id = id;
+        this.ownerId = ownerId;
+        this.name = name;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.postTime = postTime;
+        this.postEndTime = postEndTime;
+        this.location = location;
+        this.address = address;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.content = content;
+        this.countUpperLimit = countUpperLimit;
+        this.countLowerLimit = countLowerLimit;
+        this.countCurrent = countCurrent;
+        this.state = state;
+        this.distance = distance;
+    }
 
     public int getId() {
         return id;
@@ -72,12 +116,12 @@ public class Party implements Serializable {
         this.postTime = postTime;
     }
 
-    public Date getEndPostTime() {
-        return endPostTime;
+    public Date getPostEndTime() {
+        return postEndTime;
     }
 
-    public void setEndPostTime(Date endPostTime) {
-        this.endPostTime = endPostTime;
+    public void setPostEndTime(Date postEndTime) {
+        this.postEndTime = postEndTime;
     }
 
     public String getLocation() {
@@ -152,13 +196,15 @@ public class Party implements Serializable {
         this.state = state;
     }
 
-    public double getDistance() {
+    public int getDistance() {
         return distance;
     }
 
-    public void setDistance(double distance) {
+    public void setDistance(int distance) {
         this.distance = distance;
     }
+
+
 
     @Override
     public boolean equals(Object obj) {
