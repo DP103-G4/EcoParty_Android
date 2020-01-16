@@ -60,21 +60,11 @@
                 android:layout_height="@dimen/pictureHeight"
                 android:alpha="0.5"
                 android:scaleType="center"
-                android:src="@drawable/cover"
+                android:src="@drawable/no_image"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/ivSetCover"
-                android:layout_width="@dimen/userSize"
-                android:layout_height="@dimen/userSize"
-                android:src="@drawable/set_image"
-                app:layout_constraintBottom_toBottomOf="@+id/ivCover"
-                app:layout_constraintEnd_toEndOf="@+id/ivCover"
-                app:layout_constraintStart_toStartOf="@+id/ivCover"
-                app:layout_constraintTop_toTopOf="@+id/ivCover" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

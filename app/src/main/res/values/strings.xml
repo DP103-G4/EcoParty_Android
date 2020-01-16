@@ -14,7 +14,7 @@
     <string name="textNewsContent">NewsContent</string>
     <string name="textNoNewsFound">News is not found</string>
     <string name="noNewsDetail">NewsDetail not found</string>
-    <string name="textChat">Chat</string>
+    <string name="textChat">聊天</string>
     <string name="tabTitle">我的活動</string>
     <string name="partyTitle">活動詳情</string>
     <string name="insertPartyTitle">新增活動</string>
@@ -26,4 +26,26 @@
     <string name="textInsertFail">Insert Fail</string>
     <string name="textInsertSuccess">Insert Success</string>
     <string name="textNoImageCropAppFound">no image crop app found</string>
+
+    <string name="txtAgree">同意</string>
+    <string name="txtDelete">刪除</string>
+    <string name="txtFriendName">FriendName</string>
+    <string name="txtMsg">Msg</string>
+    <string name="txtSendMsg">SendMsg</string>
+    <string name="txtFriendMsg">聊天</string>
+    <string name="txtFriendInsert">好友＋</string>
+    <string name="txtNoNetwork">no network</string>
+    <string name="txtNoFriendShipFound">no friendship found</string>
+    <string name="txtDeleteFail">delete fail</string>
+    <string name="txtDeleteSuccess">delete success</string>
+    <string name="txtNoTalkFound">no talk found</string>
+    <string name="txtQRcord">QRcord</string>
+    <string name="textNoTalksFound">no talks found</string>
+    <string name="txtIsRead">已讀</string>
+    <string name="textNoFriendBundle">no friend bundle</string>
+    <string name="txtIsReadFail">is read faill</string>
+    <string name="txtIsReadSuccess">is reas success</string>
+
+
+
 </resources>

@@ -20,4 +20,10 @@
     <dimen name="iconSize">20dp</dimen>
     <dimen name="cornerRadius">10dp</dimen>
     <dimen name="seekbarSize">250dp</dimen>
+
+    <dimen name="textS">12sp</dimen>
+    <dimen name="textM">14sp</dimen>
+    <dimen name="textL">18sp</dimen>
+    <dimen name="textXL">24sp</dimen>
+    <dimen name="textXXL">28sp</dimen>
 </resources>

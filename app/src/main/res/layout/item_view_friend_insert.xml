@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    app:cardCornerRadius="10dp"
+    android:orientation="vertical"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="12dp"
+            app:cardBackgroundColor="@color/design_default_color_primary"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivFriend"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:srcCompat="@tools:sample/avatars[0]" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:textSize="@dimen/textL"
+            app:layout_constraintBottom_toBottomOf="@+id/cardView"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintTop_toTopOf="@+id/cardView"
+            tools:text="UserName" />
+
+        <Button
+            android:id="@+id/btAgree"
+            android:layout_width="64dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="12dp"
+            android:text="@string/txtAgree"
+            android:textSize="@dimen/textL"
+            app:layout_constraintBottom_toBottomOf="@+id/btDelete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btDelete" />
+
+        <Button
+            android:id="@+id/btDelete"
+            android:layout_width="64dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/txtDelete"
+            android:textSize="@dimen/textL"
+            app:layout_constraintBottom_toBottomOf="@+id/tvFriend"
+            app:layout_constraintEnd_toStartOf="@+id/btAgree"
+            app:layout_constraintTop_toTopOf="@+id/tvFriend" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

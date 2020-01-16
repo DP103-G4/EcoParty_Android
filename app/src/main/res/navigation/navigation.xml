@@ -30,6 +30,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_partyFragment_to_friendFragment"
+            app:destination="@id/friendFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsFragment"
@@ -73,4 +76,18 @@
         android:name="tw.dp103g4.partydetail.PartyInsertFragment"
         android:label="fragment_party_insert"
         tools:layout="@layout/fragment_party_insert" />
+    <fragment
+        android:id="@+id/friendFragment"
+        android:name="tw.dp103g4.friend.FriendFragment"
+        android:label="fragment_friend"
+        tools:layout="@layout/fragment_friend" >
+        <action
+            android:id="@+id/action_friendFragment_to_friendMsgFragment"
+            app:destination="@id/friendMsgFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/friendMsgFragment"
+        android:name="tw.dp103g4.friend.FriendMsgFragment"
+        android:label="fragment_friend_msg"
+        tools:layout="@layout/fragment_friend_msg" />
 </navigation>

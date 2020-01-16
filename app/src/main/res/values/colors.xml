@@ -10,4 +10,11 @@
     <color name="blue1">#7DBEFF</color>
     <color name="blue2">#578FC3</color>
     <color name="gray1">#E4E4E4</color>
+
+    <color name="colorEcoBlue">#578FC3</color>
+    <color name="colorEcoBlue2">#7DBEFF</color>
+    <color name="colorEcoRed">#FC7474</color>
+    <color name="colorEcoGray">#707070</color>
+    <color name="colorEcoGray2">#B7B7B7</color>
+    <color name="colorEcoGray3">#F4F4F4</color>
 </resources>
