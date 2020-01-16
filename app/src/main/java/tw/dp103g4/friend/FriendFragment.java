@@ -150,7 +150,7 @@ public class FriendFragment extends Fragment {
             if (count == 0) {
 //                Common.showToast(activity, R.string.txtIsReadFail);
             } else {
-                Common.showToast(activity, R.string.txtIsReadSuccess);
+//                Common.showToast(activity, R.string.txtIsReadSuccess);
             }
         } else {
             Common.showToast(activity, R.string.txtNoNetwork);
