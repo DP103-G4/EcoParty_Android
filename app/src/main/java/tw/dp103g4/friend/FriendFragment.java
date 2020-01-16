@@ -54,7 +54,7 @@ public class FriendFragment extends Fragment {
     private List<FriendShip> friendShips;
     private List<NewestTalk> newestTalks;
     private Button btInsert;
-    private int userId = 3;
+    private int userId = 2;
 
 
     @Override
