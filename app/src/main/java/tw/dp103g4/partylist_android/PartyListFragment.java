@@ -292,7 +292,7 @@ public class PartyListFragment extends Fragment {
             holder.ivUser.setImageResource(R.drawable.ivy);
             holder.tvTitle.setText(party.getName());
             holder.tvAddress.setText(party.getAddress());
-            holder.tvTime.setText(new SimpleDateFormat("E MM月dd日").format(party.getStartTime()));
+            holder.tvTime.setText(new SimpleDateFormat("E M月d日").format(party.getStartTime()));
             //bundle活動詳情
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {

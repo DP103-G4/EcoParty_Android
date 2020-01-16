@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/marginSize"
-        android:textSize="@dimen/textSize3"
+        android:textSize="@dimen/textSize4"
         app:layout_constraintStart_toEndOf="@+id/ivMsg"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="小明" />
@@ -45,16 +45,15 @@
         android:elevation="4dp"
         app:cardBackgroundColor="@color/gray1"
         app:cardCornerRadius="@dimen/cornerRadius"
-        app:layout_constraintBottom_toBottomOf="@+id/ivMsg"
         app:layout_constraintStart_toStartOf="@+id/tvMsgName"
-        app:layout_constraintTop_toBottomOf="@+id/tvMsgName"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/tvMsgName">
 
         <TextView
             android:id="@+id/tvMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:maxEms="10"
             android:text="TextView"
             android:textColor="@android:color/black"
             android:textSize="@dimen/textSize4" />

@@ -91,14 +91,32 @@
                     android:textSize="@dimen/textSize4"
                     tools:text="週六, 12月20日 10:00 ~ 14:00 " />
 
-                <TextView
-                    android:id="@+id/tvPostEndTime"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/marginSize"
-                    android:paddingLeft="@dimen/paddingSize"
-                    android:textSize="@dimen/textSize4"
-                    tools:text="報名截止 週六, 12月19日 14:00" />
+                    android:layout_margin="@dimen/marginSize">
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/paddingSize"
+                        android:text="報名截止"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvPostEndTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/marginSize"
+                        android:textSize="@dimen/textSize4"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textView12"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="週六, 12月19日 14:00" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -169,12 +187,22 @@
                         android:id="@+id/tvOwner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/marginSize"
+                        android:layout_marginLeft="@dimen/paddingSize"
                         android:textSize="@dimen/textSize4"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/userImg"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="王小明主辦的活動" />
+                        tools:text="王小明" />
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/marginSize"
+                        android:text="主辦的活動"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvOwner"
+                        app:layout_constraintStart_toEndOf="@+id/tvOwner"
+                        app:layout_constraintTop_toTopOf="@+id/tvOwner" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -197,12 +225,22 @@
                         android:id="@+id/tvParticipant"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/marginSize"
+                        android:layout_marginLeft="@dimen/paddingSize"
                         android:textSize="@dimen/textSize4"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/ivParticipant"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="12人會參加" />
+                        tools:text="12" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/marginSize"
+                        android:text="人會參加"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvParticipant"
+                        app:layout_constraintStart_toEndOf="@+id/tvParticipant"
+                        app:layout_constraintTop_toTopOf="@+id/tvParticipant" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -224,7 +262,7 @@
                         android:id="@+id/tvLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/marginSize"
+                        android:layout_marginLeft="@dimen/paddingSize"
                         android:textSize="@dimen/textSize4"
                         app:layout_constraintStart_toEndOf="@+id/ivLocation"
                         app:layout_constraintTop_toTopOf="parent"
@@ -234,10 +272,9 @@
                         android:id="@+id/tvAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/marginSize"
                         android:textSize="@dimen/textSize5"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/ivLocation"
+                        app:layout_constraintStart_toStartOf="@+id/tvLocation"
                         app:layout_constraintTop_toBottomOf="@+id/tvLocation"
                         app:layout_constraintVertical_bias="1.0"
                         tools:text="中央路123號" />
@@ -248,6 +285,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/marginSize"
+                    android:padding="@dimen/paddingSize"
                     android:text="TextView" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -260,8 +298,8 @@
                         android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/marginSize"
-                        android:text="留言討論"
+                        android:layout_marginLeft="@dimen/paddingSize"
+                        android:text="留言"
                         android:textSize="@dimen/textSize3"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageView2"

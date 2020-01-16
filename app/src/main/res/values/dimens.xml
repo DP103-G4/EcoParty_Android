@@ -19,5 +19,5 @@
     <dimen name="paddingSize">10dp</dimen>
     <dimen name="iconSize">20dp</dimen>
     <dimen name="cornerRadius">10dp</dimen>
-    <dimen name="seekbarSize">300dp</dimen>
+    <dimen name="seekbarSize">250dp</dimen>
 </resources>

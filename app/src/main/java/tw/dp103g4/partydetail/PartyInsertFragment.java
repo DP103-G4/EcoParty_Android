@@ -40,6 +40,7 @@ import com.google.gson.JsonObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -299,30 +300,43 @@ public class PartyInsertFragment extends Fragment {
                     else {
                         if (Common.networkConnected(activity)) {
                             String url = Common.URL_SERVER + "PartyServlet";
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d H:m");
+                            String dateString;
 
-                            Party party = new Party(userId, etName.getText().toString(), new Date(), new Date(), new Date(), new Date(),
-                                    etLoction.getText().toString(), etAddress.getText().toString(), -181, -181, etContent.getText().toString(),
-                                    sbUpper.getProgress(), sbLower.getProgress(), 0, 1, sbDistance.getProgress());
-
-                            JsonObject jsonObject = new JsonObject();
-                            jsonObject.addProperty("action", "partyInsert");
-                            jsonObject.addProperty("party", gson.toJson(party));
-                            // 有圖才上傳
-                            if (image != null) {
-                                jsonObject.addProperty("imageBase64", Base64.encodeToString(image, Base64.DEFAULT));
-                            }
-                            int count = 0;
                             try {
-                                String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                                count = Integer.valueOf(result.trim());
+                                dateString = tvStartDate.getText().toString() + " " + tvStartTime.getText().toString();
+                                Date startTime = sdf.parse(dateString);
+                                dateString = tvEndDate.getText().toString() + " " + tvEndTime.getText().toString();
+                                Date endTime = sdf.parse(dateString);
+                                dateString = tvPostEndDate.getText().toString() + " " + tvPostEndTime.getText().toString();
+                                Date postEndTime = sdf.parse(dateString);
+
+                                Party party = new Party(userId, etName.getText().toString(), startTime, endTime, new Date(), postEndTime,
+                                        etLoction.getText().toString(), etAddress.getText().toString(), -181, -181, etContent.getText().toString(),
+                                        sbUpper.getProgress(), sbLower.getProgress(), 0, 1, sbDistance.getProgress());
+
+                                JsonObject jsonObject = new JsonObject();
+                                jsonObject.addProperty("action", "partyInsert");
+                                jsonObject.addProperty("party", gson.toJson(party));
+                                // 有圖才上傳
+                                if (image != null) {
+                                    jsonObject.addProperty("imageBase64", Base64.encodeToString(image, Base64.DEFAULT));
+                                }
+                                int count = 0;
+                                try {
+                                    String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                                    count = Integer.valueOf(result.trim());
+                                } catch (Exception e) {
+                                    Log.e(TAG, e.toString());
+                                }
+                                if (count == 0) {
+                                    Common.showToast(getActivity(), R.string.textInsertFail);
+                                } else {
+                                    Common.showToast(getActivity(), R.string.textInsertSuccess);
+                                    navController.popBackStack();
+                                }
                             } catch (Exception e) {
-                                Log.e(TAG, e.toString());
-                            }
-                            if (count == 0) {
-                                Common.showToast(getActivity(), R.string.textInsertFail);
-                            } else {
-                                Common.showToast(getActivity(), R.string.textInsertSuccess);
-                                navController.popBackStack();
+                                e.printStackTrace();
                             }
                         } else {
                             Common.showToast(getActivity(), R.string.textNoNetwork);

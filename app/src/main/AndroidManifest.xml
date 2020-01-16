@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <!--Android 9 (API 28) specify requirement for Apache HTTP Legacy library in Maps API-->
         <uses-library
             android:name="org.apache.http.legacy"

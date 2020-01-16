@@ -32,6 +32,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -131,15 +132,19 @@ public class PartyDetailFragment extends Fragment {
             coverImageTask.execute();
 
             tvName.setText(party.getName());
-            String text = new SimpleDateFormat("E M月d日 HH:mm").format(party.getStartTime());
-            text += new SimpleDateFormat(" ~ HH.mm").format(party.getEndTime());
+            String text = new SimpleDateFormat("E M月d日 H:m").format(party.getStartTime());
+            String startDateString = new SimpleDateFormat("YYYYMMdd").format(party.getStartTime());
+            String endDateString = new SimpleDateFormat("YYYYMMdd").format(party.getEndTime());
+            if (startDateString.compareTo(endDateString) == 0)
+                text += new SimpleDateFormat(" ~ H:m").format(party.getEndTime());
+            else
+                text += new SimpleDateFormat(" ~ E M月d日 H:m").format(party.getEndTime());
             tvTime.setText(text);
-            tvPostEndTime.setText(new SimpleDateFormat("報名截止 E M/d HH:mm").format(party.getPostEndTime()));
+            tvPostEndTime.setText(new SimpleDateFormat("E M月d日 H:m").format(party.getPostEndTime()));
             // join user table to get name
             tvOwner.setText(String.valueOf(party.getOwnerId()));
             // 點擊事件
-            text = party.getCountCurrent() + "人會參加";
-            tvParticipant.setText(text);
+            tvParticipant.setText(String.valueOf(party.getCountCurrent()));
             tvLocation.setText(party.getLocation());
             tvAddress.setText(party.getAddress());
             tvContent.setText(party.getContent());

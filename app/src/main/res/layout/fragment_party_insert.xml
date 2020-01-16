@@ -38,9 +38,7 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -309,7 +307,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/marginSize"
                     android:text="人"
-                    android:textSize="@dimen/textSize3"
+                    android:textSize="@dimen/textSize4"
                     app:layout_constraintBottom_toBottomOf="@+id/tvUpper"
                     app:layout_constraintStart_toEndOf="@+id/tvUpper"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -363,9 +361,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/marginSize"
                     android:text="人"
-                    android:textSize="@dimen/textSize3"
+                    android:textSize="@dimen/textSize4"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tvLower"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/tvLower" />
 
                 <SeekBar
                     android:id="@+id/sbLower"
@@ -418,9 +417,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/marginSize"
                     android:text="公尺"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvDistance"
                     app:layout_constraintStart_toEndOf="@+id/tvDistance"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@+id/tvDistance" />
 
                 <SeekBar
                     android:id="@+id/sbDistance"
