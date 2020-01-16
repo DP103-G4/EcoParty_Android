@@ -50,7 +50,7 @@ public class FriendMsgFragment extends Fragment {
     private Talk talk;
     private int friendId;
     private String account;
-    private int userId = 2;
+    private int userId = 3;
 
 
     @Override

@@ -54,7 +54,7 @@ public class FriendFragment extends Fragment {
     private List<FriendShip> friendShips;
     private List<NewestTalk> newestTalks;
     private Button btInsert;
-    private int userId = 2;
+    private int userId = 3;
 
 
     @Override
@@ -150,7 +150,7 @@ public class FriendFragment extends Fragment {
             if (count == 0) {
 //                Common.showToast(activity, R.string.txtIsReadFail);
             } else {
-                Common.showToast(activity, R.string.txtIsReadSuccess);
+//                Common.showToast(activity, R.string.txtIsReadSuccess);
             }
         } else {
             Common.showToast(activity, R.string.txtNoNetwork);
