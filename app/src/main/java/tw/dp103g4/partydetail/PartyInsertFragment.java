@@ -62,6 +62,7 @@ public class PartyInsertFragment extends Fragment {
     private SeekBar sbUpper, sbLower, sbDistance;
     private Button btOk, btCancel;
     private byte[] image;
+    private Party party;
     private static final int REQ_PICK_PICTURE = 1;
     private static final int REQ_CROP_PICTURE = 2;
     private Calendar calendar = Calendar.getInstance();
@@ -302,59 +303,72 @@ public class PartyInsertFragment extends Fragment {
                         || etAddress.getText().toString().isEmpty()
                         || etContent.getText().toString().isEmpty()) {
                     Common.showToast(activity, "輸入不可為空!");
+                    return;
                 }
-                else {
-                    if (sbUpper.getProgress() < sbLower.getProgress())
-                        Common.showToast(activity, "人數上限不可低於下限!");
-                    else {
-                        if (Common.networkConnected(activity)) {
-                            String url = Common.URL_SERVER + "PartyServlet";
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d H:mm");
-                            String dateString;
 
-                            try {
-                                dateString = tvStartDate.getText().toString() + " " + tvStartTime.getText().toString();
-                                Date startTime = sdf.parse(dateString);
-                                dateString = tvEndDate.getText().toString() + " " + tvEndTime.getText().toString();
-                                Date endTime = sdf.parse(dateString);
-                                dateString = tvPostEndDate.getText().toString() + " " + tvPostEndTime.getText().toString();
-                                Date postEndTime = sdf.parse(dateString);
+                if (sbUpper.getProgress() < sbLower.getProgress()) {
+                    Common.showToast(activity, "人數上限不可低於下限!");
+                    return;
+                }
 
-                                Party party = new Party(userId, etName.getText().toString(), startTime, endTime, new Date(), postEndTime,
-                                        etLoction.getText().toString(), etAddress.getText().toString(), -181, -181, etContent.getText().toString(),
-                                        sbUpper.getProgress(), sbLower.getProgress(), 0, 1, sbDistance.getProgress());
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d H:mm");
+                    String dateString;
+                    dateString = tvStartDate.getText().toString() + " " + tvStartTime.getText().toString();
+                    Date startTime = sdf.parse(dateString);
+                    dateString = tvEndDate.getText().toString() + " " + tvEndTime.getText().toString();
+                    Date endTime = sdf.parse(dateString);
+                    dateString = tvPostEndDate.getText().toString() + " " + tvPostEndTime.getText().toString();
+                    Date postEndTime = sdf.parse(dateString);
 
-                                JsonObject jsonObject = new JsonObject();
-                                jsonObject.addProperty("action", "partyInsert");
-                                jsonObject.addProperty("party", gson.toJson(party));
-                                // 有圖才上傳
-                                if (image != null) {
-                                    jsonObject.addProperty("imageBase64", Base64.encodeToString(image, Base64.DEFAULT));
-                                }
-                                int count = 0;
-                                try {
-                                    String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                                    count = Integer.valueOf(result.trim());
-                                } catch (Exception e) {
-                                    Log.e(TAG, e.toString());
-                                }
-                                if (count == 0) {
-                                    Common.showToast(getActivity(), R.string.textInsertFail);
-                                } else {
-                                    Common.showToast(getActivity(), R.string.textInsertSuccess);
-                                    navController.popBackStack();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            Common.showToast(getActivity(), R.string.textNoNetwork);
-                        }
-
+                    if (endTime.before(startTime)) {
+                        Common.showToast(activity, "結束時間不可晚於開始時間!");
+                        return;
                     }
+
+                    party = new Party(userId, etName.getText().toString(), startTime, endTime, new Date(), postEndTime,
+                            etLoction.getText().toString(), etAddress.getText().toString(), -181, -181, etContent.getText().toString(),
+                            sbUpper.getProgress(), sbLower.getProgress(), 0, 1, sbDistance.getProgress());
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (Common.networkConnected(activity)) {
+                    String url = Common.URL_SERVER + "PartyServlet";
+
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("action", "partyInsert");
+                    jsonObject.addProperty("party", gson.toJson(party));
+                    // 有圖才上傳
+                    if (image != null) {
+                        jsonObject.addProperty("imageBase64", Base64.encodeToString(image, Base64.DEFAULT));
+                    }
+
+                    int count = 0;
+                    try {
+                        String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                        count = Integer.valueOf(result.trim());
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                    }
+
+                    if (count == 0) {
+                        Common.showToast(getActivity(), R.string.textInsertFail);
+                    } else {
+                        Common.showToast(getActivity(), R.string.textInsertSuccess);
+                        navController.popBackStack();
+                    }
+
+                } else {
+                    Common.showToast(getActivity(), R.string.textNoNetwork);
                 }
             }
         });
+
+
+
 
         btCancel.setOnClickListener(new View.OnClickListener() {
             @Override
