@@ -124,6 +124,18 @@ public class PartyInsertFragment extends Fragment {
         sbLower = view.findViewById(R.id.sbLower);
         sbDistance = view.findViewById(R.id.sbDistance);
 
+        final SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY/MM/dd");
+        final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
+        String nowDateString = sdfDate.format(new Date());
+        String nowTimeString = sdfTime.format(new Date());
+
+        tvStartDate.setText(nowDateString);
+        tvStartTime.setText(nowTimeString);
+        tvEndDate.setText(nowDateString);
+        tvEndTime.setText(nowTimeString);
+        tvPostEndDate.setText(nowDateString);
+        tvPostEndTime.setText(nowTimeString);
+
         layoutCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,8 +149,7 @@ public class PartyInsertFragment extends Fragment {
         final DatePickerDialog.OnDateSetListener startDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-                String text = year + "/" + (month+1) + "/" + dayOfMonth;
+                String text = String.format("%d/%d/%d", year, month+1, dayOfMonth);
                 tvStartDate.setText(text);
             }
         };
@@ -154,7 +165,7 @@ public class PartyInsertFragment extends Fragment {
         final TimePickerDialog.OnTimeSetListener startTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String text = hourOfDay + ":" + minute;
+                String text = String.format("%d:%02d", hourOfDay, minute);
                 tvStartTime.setText(text);
             }
         };
@@ -170,8 +181,7 @@ public class PartyInsertFragment extends Fragment {
         final DatePickerDialog.OnDateSetListener endDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-                String text = year + "/" + (month+1) + "/" + dayOfMonth;
+                String text = String.format("%d/%d/%d", year, month+1, dayOfMonth);
                 tvEndDate.setText(text);
             }
         };
@@ -187,7 +197,7 @@ public class PartyInsertFragment extends Fragment {
         final TimePickerDialog.OnTimeSetListener endTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String text = hourOfDay + ":" + minute;
+                String text = String.format("%d:%02d", hourOfDay, minute);
                 tvEndTime.setText(text);
             }
         };
@@ -203,8 +213,7 @@ public class PartyInsertFragment extends Fragment {
         final DatePickerDialog.OnDateSetListener postEndDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
-                String text = year + "/" + (month+1) + "/" + dayOfMonth;
+                String text = String.format("%d/%d/%d", year, month+1, dayOfMonth);
                 tvPostEndDate.setText(text);
             }
         };
@@ -220,7 +229,7 @@ public class PartyInsertFragment extends Fragment {
         final TimePickerDialog.OnTimeSetListener postEndTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String text = hourOfDay + ":" + minute;
+                String text = String.format("%d:%02d", hourOfDay, minute);
                 tvPostEndTime.setText(text);
             }
         };
@@ -300,7 +309,7 @@ public class PartyInsertFragment extends Fragment {
                     else {
                         if (Common.networkConnected(activity)) {
                             String url = Common.URL_SERVER + "PartyServlet";
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d H:m");
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d H:mm");
                             String dateString;
 
                             try {

@@ -132,15 +132,15 @@ public class PartyDetailFragment extends Fragment {
             coverImageTask.execute();
 
             tvName.setText(party.getName());
-            String text = new SimpleDateFormat("E M月d日 H:m").format(party.getStartTime());
+            String text = new SimpleDateFormat("E M月d日 H:mm").format(party.getStartTime());
             String startDateString = new SimpleDateFormat("YYYYMMdd").format(party.getStartTime());
             String endDateString = new SimpleDateFormat("YYYYMMdd").format(party.getEndTime());
             if (startDateString.compareTo(endDateString) == 0)
-                text += new SimpleDateFormat(" ~ H:m").format(party.getEndTime());
+                text += new SimpleDateFormat(" ~ H:mm").format(party.getEndTime());
             else
-                text += new SimpleDateFormat(" ~ E M月d日 H:m").format(party.getEndTime());
+                text += new SimpleDateFormat(" ~ E M月d日 H:mm").format(party.getEndTime());
             tvTime.setText(text);
-            tvPostEndTime.setText(new SimpleDateFormat("E M月d日 H:m").format(party.getPostEndTime()));
+            tvPostEndTime.setText(new SimpleDateFormat("E M月d日 H:mm").format(party.getPostEndTime()));
             // join user table to get name
             tvOwner.setText(String.valueOf(party.getOwnerId()));
             // 點擊事件
@@ -304,7 +304,7 @@ public class PartyDetailFragment extends Fragment {
 
             holder.tvMsgName.setText(String.valueOf(message.getUserId()));
             holder.tvMsg.setText(message.getContent());
-            String text = new SimpleDateFormat("M/d HH:mm").format(message.getTime());
+            String text = new SimpleDateFormat("M/d H:mm").format(message.getTime());
             holder.tvMsgTime.setText(text);
             // 抓user頭像
 //            String url = Common.URL_SERVER + "";
