@@ -1,4 +1,4 @@
-package com.bozin.ecoparty_android;
+package tw.dp103g4.user;
 
 
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import com.bozin.partylist_android.R;
 
 public class UserFragment extends Fragment {
     private FragmentActivity activity;
-    private TextView tvTest;
+    private TextView tvTest, tvLogin;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,11 +36,20 @@ public class UserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         tvTest = view.findViewById(R.id.tvTest);
+        tvLogin = view.findViewById(R.id.tvLogin);
+
 
         tvTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(v).navigate(R.id.action_userFragment2_to_myPartyFragment);
+            }
+        });
+
+        tvLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_userFragment_to_loginFragment);
             }
         });
 

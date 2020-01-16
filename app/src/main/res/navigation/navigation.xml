@@ -10,13 +10,6 @@
         android:label="fragment_party"
         tools:layout="@layout/fragment_party" >
         <action
-            android:id="@+id/action_partyFragment_to_newsFragment"
-            app:destination="@id/newsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
             android:id="@+id/action_partyFragment_to_partyDetailFragment"
             app:destination="@id/partyDetailFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
@@ -31,8 +24,8 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
-            android:id="@+id/action_partyFragment_to_friendFragment"
-            app:destination="@id/friendFragment" />
+            android:id="@+id/action_partyFragment_to_newsFragment"
+            app:destination="@id/newsFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsFragment"
@@ -50,7 +43,7 @@
         tools:layout="@layout/fragment_my_party" />
     <fragment
         android:id="@+id/userFragment"
-        android:name="com.bozin.ecoparty_android.UserFragment"
+        android:name="tw.dp103g4.user.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user" >
         <action
@@ -60,6 +53,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_userFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/informFragment"
@@ -90,4 +86,26 @@
         android:name="tw.dp103g4.friend.FriendMsgFragment"
         android:label="fragment_friend_msg"
         tools:layout="@layout/fragment_friend_msg" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="tw.dp103g4.user.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_userInsertFragment"
+            app:destination="@id/userInsertFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userInsertFragment"
+        android:name="tw.dp103g4.user.UserInsertFragment"
+        android:label="fragment_user_insert"
+        tools:layout="@layout/fragment_user_insert" />
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="tw.dp103g4.user.UserDetailFragment"
+        android:label="fragment_user_detail"
+        tools:layout="@layout/fragment_user_detail" />
 </navigation>

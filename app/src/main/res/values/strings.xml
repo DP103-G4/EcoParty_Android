@@ -43,9 +43,17 @@
     <string name="textNoTalksFound">no talks found</string>
     <string name="txtIsRead">已讀</string>
     <string name="textNoFriendBundle">no friend bundle</string>
-    <string name="txtIsReadFail">is read faill</string>
-    <string name="txtIsReadSuccess">is reas success</string>
+    <string name="txtIsReadFail">is read fail</string>
+    <string name="txtIsReadSuccess">is read success</string>
 
+    <string name="tvAccount">Account</string>
+    <string name="tvPassword">Password</string>
+    <string name="etEmail">Email</string>
+    <string name="textNoCameraApp">No Camera App</string>
+    <string name="textNameIsInvalid">Account is invalid</string>
+    <string name="textNoUserFound">No Iser Found</string>
+    <string name="textUpdateFail">Update Fail</string>
+    <string name="textUpdateSuccess">Update Success</string>
 
 
 </resources>
