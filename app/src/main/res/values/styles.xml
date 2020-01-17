@@ -25,4 +25,10 @@
         <item name="android:tint">@android:color/white</item> <!-- 返回鍵顏色 -->
     </style>
 
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowNoTitle">true</item><!-- 隱藏Title -->
+        <item name="windowActionBar">false</item><!-- 顯示ActionBar -->
+        <item name="android:windowFullscreen">true</item><!-- 隱藏ActionBar & StatusBar -->
+    </style>
+
 </resources>

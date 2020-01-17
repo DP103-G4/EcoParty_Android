@@ -94,7 +94,7 @@ public class FriendFragment extends Fragment {
         btInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_friendFragment_to_friendMsgFragment);
+                Navigation.findNavController(v).navigate(R.id.action_friendFragment_to_friendInsertFragment);
             }
         });
 
@@ -147,13 +147,14 @@ public class FriendFragment extends Fragment {
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
+            //是否有更改已讀欄位
             if (count == 0) {
 //                Common.showToast(activity, R.string.txtIsReadFail);
             } else {
 //                Common.showToast(activity, R.string.txtIsReadSuccess);
             }
         } else {
-            Common.showToast(activity, R.string.txtNoNetwork);
+            Common.showToast(activity, R.string.textNoNetwork);
         }
     }
 
@@ -177,14 +178,14 @@ public class FriendFragment extends Fragment {
                 Log.e(TAG, e.toString());
             }
         } else {
-            Common.showToast(activity, R.string.txtNoNetwork);
+            Common.showToast(activity, R.string.textNoNetwork);
         }
         return friendShips;
     }
 
     private void showFriendShip(List<FriendShip> friendShips) {
         if (friendShips == null || friendShips.isEmpty()) {
-            Common.showToast(activity, R.string.txtNoFriendShipFound);
+            Common.showToast(activity, R.string.textNoFriendShipFound);
             return;
         }
         FriendShipAdapter friendShipAdapter = (FriendShipAdapter) rvFriends.getAdapter();
@@ -215,14 +216,14 @@ public class FriendFragment extends Fragment {
                 Log.e(TAG, e.toString());
             }
         } else {
-            Common.showToast(activity, R.string.txtNoNetwork);
+            Common.showToast(activity, R.string.textNoNetwork);
         }
         return talks;
     }
 
     private void showNewestTalk(List<NewestTalk> newestTalks) {
         if (newestTalks == null || newestTalks.isEmpty()) {
-            Common.showToast(activity, R.string.txtNoTalkFound);
+            Common.showToast(activity, R.string.textNoTalkFound);
             return;
         }
         NewestTalkAdapter newestTalkAdapter = (NewestTalkAdapter) rvFriendMsg.getAdapter();
@@ -320,16 +321,16 @@ public class FriendFragment extends Fragment {
                                             Log.e(TAG, e.toString());
                                         }
                                         if (count == 0) {
-                                            Common.showToast(activity, R.string.txtDeleteFail);
+                                            Common.showToast(activity, R.string.textDeleteFail);
                                         } else {
                                             friendShips.remove(friendShip);
                                             FriendShipAdapter.this.notifyDataSetChanged();
                                             // 外面spots也必須移除選取的spot
                                             FriendFragment.this.friendShips.remove(friendShip);
-                                            Common.showToast(activity, R.string.txtDeleteSuccess);
+                                            Common.showToast(activity, R.string.textDeleteSuccess);
                                         }
                                     } else {
-                                        Common.showToast(activity, R.string.txtNoNetwork);
+                                        Common.showToast(activity, R.string.textNoNetwork);
                                     }
                             }
                             return true;

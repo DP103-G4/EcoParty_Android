@@ -18,14 +18,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/txtFriendMsg" />
+            android:text="@string/textFriendMsg" />
 
         <Button
             android:id="@+id/btInsert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/txtFriendInsert" />
+            android:text="@string/textFriendInsert" />
 
     </LinearLayout>
 
