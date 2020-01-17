@@ -118,10 +118,11 @@ public class PartyDetailFragment extends Fragment {
         ibSend = view.findViewById(R.id.ibSend);
         etInput = view.findViewById(R.id.etInput);
         rvMessage = view.findViewById(R.id.rvMessage);
+        participantLayout = view.findViewById(R.id.participantLayout);
 
         Bundle bundle = getArguments();
         if (bundle == null || bundle.getInt("partyId") == 0) {
-            Common.showToast(activity, R.string.textNoPartiesFound);
+            Common.showToast(activity, R.string.textNoParticipantFound);
             navController.popBackStack();
             return;
         }
@@ -204,9 +205,9 @@ public class PartyDetailFragment extends Fragment {
                             count = Integer.valueOf(result.trim());
 
                             if (count == 0) {
-                                Common.showToast(getActivity(), R.string.textInsertFail);
+//                                Common.showToast(getActivity(), R.string.textInsertFail);
                             } else {
-                                Common.showToast(getActivity(), R.string.textInsertSuccess);
+//                                Common.showToast(getActivity(), R.string.textInsertSuccess);
 
                                 party.setCountCurrent(party.getCountCurrent()+1);
                                 tvParticipant.setText(String.valueOf(party.getCountCurrent()));
@@ -240,9 +241,9 @@ public class PartyDetailFragment extends Fragment {
                             count = Integer.valueOf(result.trim());
 
                             if (count == 0) {
-                                Common.showToast(getActivity(), R.string.textDeleteFail);
+//                                Common.showToast(getActivity(), R.string.textDeleteFail);
                             } else {
-                                Common.showToast(getActivity(), R.string.textDeleteSuccess);
+//                                Common.showToast(getActivity(), R.string.textDeleteSuccess);
 
                                 party.setCountCurrent(party.getCountCurrent()-1);
                                 tvParticipant.setText(String.valueOf(party.getCountCurrent()));
@@ -264,7 +265,11 @@ public class PartyDetailFragment extends Fragment {
         participantLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //
+                Bundle bundle = new Bundle();
+                bundle.putInt("partyId", partyId);
+
+                Navigation.findNavController(v).navigate(R.id.action_partyDetailFragment_to_participantListFragment, bundle);
+
             }
         });
 
@@ -286,21 +291,15 @@ public class PartyDetailFragment extends Fragment {
                     jsonObject.addProperty("message", gson.toJson(message));
                     String jsonOut = jsonObject.toString();
 
-                    int count = 0;
                     try {
                         String result = new CommonTask(url, jsonObject.toString()).execute().get();
                         System.out.println(jsonOut);
-                        count = Integer.valueOf(result.trim());
+                        System.out.println(result);
 
-                        if (count == 0) {
-//                            Common.showToast(getActivity(), R.string.textInsertFail);
-                        } else {
-//                            Common.showToast(getActivity(), R.string.textInsertSuccess);
-                            msgList.add(message);
-                            showMsgList(msgList);
-                            etInput.clearFocus();
-                            etInput.setText("");
-                        }
+                        msgList.add(message);
+                        showMsgList(msgList);
+                        etInput.clearFocus();
+                        etInput.setText("");
 
                         new Handler().post(new Runnable() {
                             @Override

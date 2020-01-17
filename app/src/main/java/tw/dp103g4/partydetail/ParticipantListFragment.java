@@ -7,7 +7,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,7 +33,8 @@ import java.util.List;
 
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.task.CommonTask;
-import tw.dp103g4.task.ImageTask;
+
+import tw.dp103g4.main_android.MainActivity;
 
 
 public class ParticipantListFragment extends Fragment {
@@ -42,14 +46,10 @@ public class ParticipantListFragment extends Fragment {
     private CommonTask getAllTask;
 
 
-    public ParticipantListFragment() {
-        // Required empty public constructor
-    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
-
     }
 
     @Override
@@ -62,9 +62,28 @@ public class ParticipantListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        final NavController navController = Navigation.findNavController(view);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.popBackStack();
+            }
+        });
         rvParticipant = view.findViewById(R.id.rvParticipant);
         rvParticipant.setLayoutManager(new LinearLayoutManager(activity));
-        participantList = getParticipantList();
+
+        Bundle bundle = getArguments();
+        if (bundle == null || bundle.getInt("partyId") == 0) {
+            Common.showToast(activity, R.string.textNoPartiesFound);
+            navController.popBackStack();
+            return;
+        }
+        final int partyId = bundle.getInt("partyId");
+
+
+
+        participantList = getParticipantList(partyId);
         showParticipantList(participantList);
 
     }
@@ -82,12 +101,9 @@ public class ParticipantListFragment extends Fragment {
         }
     }
 
-    private List<Participant> getParticipantList() {
+    private List<Participant> getParticipantList(int partyId) {
         List<Participant> participantList = null;
         if (Common.networkConnected(activity)) {
-            int partyId = 19;
-
-
             String url = Common.URL_SERVER + "ParticipantServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getParticipantList");
@@ -149,8 +165,8 @@ public class ParticipantListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ParticipantListFragment.ParticipantListAdapter.ParticipantListViewHolder holder, int position) {
             Participant participant = participantList.get(position);
-            holder.tvParticipantName.setText(participant.getId());
-            holder.tvCount.setText(participant.getCount());
+            holder.tvParticipantName.setText(String.valueOf(participant.getId()));
+            holder.tvCount.setText(String.valueOf(participant.getCount()));
         }
 
     }

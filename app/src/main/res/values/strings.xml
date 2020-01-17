@@ -54,9 +54,6 @@
     <string name="textUpdateFail">Update Fail</string>
     <string name="textUpdateSuccess">Update Success</string>
 
-
-    <string name="textDeleteFail">Delete Fail</string>
-    <string name="textDeleteSuccess">Delete Success</string>
     <string name="textNoParticipantFound">No Participant Found</string>
 
 

@@ -94,7 +94,7 @@ public class FriendFragment extends Fragment {
         btInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_friendFragment_to_friendInsertFragment);
+//                Navigation.findNavController(v).navigate(R.id.action_friendFragment_to_friendInsertFragment);
             }
         });
 

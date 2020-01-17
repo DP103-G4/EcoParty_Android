@@ -1,5 +1,6 @@
 package tw.dp103g4.main_android;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
         count.setVisibility(View.VISIBLE);
     }
-
 
     public BottomNavigationView getBottomNavigationView() {
         return bottomNavigationView;
