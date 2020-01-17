@@ -1,6 +1,5 @@
 package tw.dp103g4.partylist_android;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -53,7 +52,6 @@ public class PartyListFragment extends Fragment {
     private int imageSize;
     private NewsImageTask newsImageTask;
     private FloatingActionButton floatingActionButton;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -310,7 +308,6 @@ public class PartyListFragment extends Fragment {
     private class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
         private List<News> news;
         private LayoutInflater layoutInflater;
-
         public NewsAdapter(Context context, List<News> news) {
             layoutInflater = LayoutInflater.from(context);
             this.news = news;
