@@ -1,4 +1,5 @@
 package tw.dp103g4.friend;
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -13,12 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.bozin.partylist_android.R;
 import com.google.gson.Gson;
@@ -57,8 +61,6 @@ public class FriendMsgFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
-
-
     }
 
     @Override
@@ -75,6 +77,13 @@ public class FriendMsgFragment extends Fragment {
         rvMsg = view.findViewById(R.id.rvMsg);
         etMsg = view.findViewById(R.id.etMsg);
         ibtMsg = view.findViewById(R.id.ibtMsg);
+        androidx.appcompat.widget.Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).popBackStack();
+            }
+        });
         //拿bundle key="friend"
         final NavController navController = Navigation.findNavController(view);
         Bundle bundle = getArguments();
@@ -84,9 +93,10 @@ public class FriendMsgFragment extends Fragment {
             return;
         }
         account = bundle.getString("account");
-        activity.setTitle(account);
+        toolbar.setTitle(account);
+
+
         friendId = bundle.getInt("friendId");
-//        rvMsg.setLayoutManager(new LinearLayoutManager(activity));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
         linearLayoutManager.setStackFromEnd(true);
         rvMsg.setLayoutManager(linearLayoutManager);
@@ -221,7 +231,7 @@ public class FriendMsgFragment extends Fragment {
                 holder.tvMsgSend.setText(talk.getContent());
                 holder.tvTimeSend.setText(time);
                 if (talk.getIsRead()) {
-                    holder.tvRead.setText(R.string.txtIsRead);
+                    holder.tvRead.setText(R.string.textIsRead);
                 }
             } else {
                 holder.sendLayout.setVisibility(View.GONE);
@@ -236,7 +246,7 @@ public class FriendMsgFragment extends Fragment {
                 holder.tvMsgSend.setText(talk.getContent());
                 holder.tvTimeSend.setText(time);
                 if (talk.getIsRead()) {
-                    holder.tvRead.setText(R.string.txtIsRead);
+                    holder.tvRead.setText(R.string.textIsRead);
                 }
             } else {
                 holder.sendLayout.setVisibility(View.GONE);
@@ -269,14 +279,14 @@ public class FriendMsgFragment extends Fragment {
                 Log.e(TAG, e.toString());
             }
         } else {
-            Common.showToast(activity, R.string.txtNoNetwork);
+            Common.showToast(activity, R.string.textNoNetwork);
         }
         return talks;
     }
 
     private void showTalks(List<Talk> talks) {
         if (talks == null || talks.isEmpty()) {
-            Common.showToast(activity, R.string.txtNoTalkFound);
+            Common.showToast(activity, R.string.textNoTalkFound);
             return;
         }
         TalkAdapter talkAdapter = (TalkAdapter) rvMsg.getAdapter();

@@ -41,7 +41,7 @@
             android:textSize="@dimen/textL"
             app:layout_constraintStart_toEndOf="@+id/cardView"
             app:layout_constraintTop_toTopOf="@+id/cardView"
-            tools:text="@string/txtFriendName" />
+            tools:text="@string/textFriendName" />
 
         <TextView
             android:id="@+id/tvMsg"
