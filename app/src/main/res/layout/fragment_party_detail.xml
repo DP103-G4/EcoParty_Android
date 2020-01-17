@@ -132,7 +132,8 @@
                         android:drawableLeft="@drawable/like"
                         android:drawablePadding="-10dp"
                         android:paddingLeft="20dp"
-                        android:text="收藏" />
+                        android:text="收藏"
+                        android:visibility="visible" />
 
                     <Button
                         android:id="@+id/btIn"
@@ -144,7 +145,8 @@
                         android:drawablePadding="-10dp"
                         android:includeFontPadding="false"
                         android:paddingLeft="20dp"
-                        android:text="參加" />
+                        android:text="參加"
+                        android:visibility="visible" />
 
                     <Button
                         android:id="@+id/btShare"
@@ -155,7 +157,8 @@
                         android:drawableLeft="@drawable/share"
                         android:drawablePadding="-10dp"
                         android:paddingLeft="20dp"
-                        android:text="分享" />
+                        android:text="分享"
+                        android:visibility="visible" />
 
                 </LinearLayout>
 
@@ -207,6 +210,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/participantLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/marginSize"

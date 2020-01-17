@@ -66,7 +66,11 @@
         android:id="@+id/partyDetailFragment"
         android:name="tw.dp103g4.partydetail.PartyDetailFragment"
         android:label="fragment_party_detail"
-        tools:layout="@layout/fragment_party_detail" />
+        tools:layout="@layout/fragment_party_detail" >
+        <action
+            android:id="@+id/action_partyDetailFragment_to_participantListFragment"
+            app:destination="@id/participantListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/partyInsertFragment"
         android:name="tw.dp103g4.partydetail.PartyInsertFragment"
@@ -108,4 +112,9 @@
         android:name="tw.dp103g4.user.UserDetailFragment"
         android:label="fragment_user_detail"
         tools:layout="@layout/fragment_user_detail" />
+    <fragment
+        android:id="@+id/participantListFragment"
+        android:name="tw.dp103g4.partydetail.ParticipantListFragment"
+        android:label="fragment_participant_list"
+        tools:layout="@layout/fragment_participant_list" />
 </navigation>
