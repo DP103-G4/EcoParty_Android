@@ -51,6 +51,7 @@ public class FriendInsertFragment extends Fragment {
     private List<FriendShip> friendShips;
     private User user = null;
     private int userId = 2;
+    private int count = 0;
 
 
     @Override
@@ -219,12 +220,22 @@ public class FriendInsertFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     insertFriend(friendShip.getFriendId(),userId);
+                    if(count!= 0){
+                    friendShips.remove(friendShip);
+                    InsertFriendAdapter.this.notifyDataSetChanged();
+                    // 外面List也必須移除選取的List
+                    FriendInsertFragment.this.friendShips.remove(friendShip);}
                 }
             });
             holder.btDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     deleteFriendShip(friendShip.getFriendId(),userId);
+                    if(count!= 0){
+                        friendShips.remove(friendShip);
+                        InsertFriendAdapter.this.notifyDataSetChanged();
+                        // 外面List也必須移除選取的List
+                        FriendInsertFragment.this.friendShips.remove(friendShip);}
                 }
             });
 
@@ -294,14 +305,14 @@ public class FriendInsertFragment extends Fragment {
         }
     }
 
-    private void insertFriend(int userOne, int userTwo){
+    private int insertFriend(int userOne, int userTwo){
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "/FriendShipServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "updateIsInvite");
             jsonObject.addProperty("idOne", userOne);
             jsonObject.addProperty("idTwo", userTwo);
-            int count = 0;
+            count = 0;
             try {
                 updateIsInviteTask = new CommonTask(url, jsonObject.toString());
                 String result = updateIsInviteTask.execute().get();
@@ -318,16 +329,17 @@ public class FriendInsertFragment extends Fragment {
         } else {
             Common.showToast(activity, R.string.textNoNetwork);
         }
+        return count;
     }
 
-    private void deleteFriendShip(int userOne, int userTwo){
+    private int deleteFriendShip(int userOne, int userTwo){
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "/FriendShipServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "friendShipDelete");
             jsonObject.addProperty("idOne", userOne);
             jsonObject.addProperty("idTwo", userTwo);
-            int count = 0;
+            count = 0;
             try {
                 updateIsInviteTask = new CommonTask(url, jsonObject.toString());
                 String result = updateIsInviteTask.execute().get();
@@ -344,6 +356,7 @@ public class FriendInsertFragment extends Fragment {
         } else {
             Common.showToast(activity, R.string.textNoNetwork);
         }
+        return count;
     }
 
     @Override
