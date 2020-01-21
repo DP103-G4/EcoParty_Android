@@ -46,20 +46,6 @@ public class MainActivity extends AppCompatActivity {
         return bottomNavigationView;
     }
 
-//    // 重寫onTouchEvent的監聽方法
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//            if (MainActivity.this.getCurrentFocus() != null) {
-//                if (MainActivity.this.getCurrentFocus().getWindowToken() != null) {
-//                    imm.hideSoftInputFromWindow(MainActivity.this.getCurrentFocus().getWindowToken(),
-//                            InputMethodManager.HIDE_NOT_ALWAYS);
-//                }
-//            }
-//        }
-//        return super.onTouchEvent(event);
-//    }
 
 
 }
