@@ -1,5 +1,4 @@
 package tw.dp103g4.friend;
-import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -14,15 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
+
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.bozin.partylist_android.R;
 import com.google.gson.Gson;
@@ -50,8 +48,6 @@ public class FriendMsgFragment extends Fragment {
     private List<Talk> talks;
     private EditText etMsg;
     private ImageButton ibtMsg;
-
-    private Talk talk;
     private int friendId;
     private String account;
     private int userId = 2;
@@ -67,7 +63,17 @@ public class FriendMsgFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friend_msg, container, false);
+        View view = inflater.inflate(R.layout.fragment_friend_msg, container, false);
+
+        //點擊空白處鍵盤消失
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                getActivity().onTouchEvent(motionEvent);
+                return false;
+            }
+        });
+        return view;
     }
 
     @Override
@@ -84,6 +90,7 @@ public class FriendMsgFragment extends Fragment {
                 Navigation.findNavController(v).popBackStack();
             }
         });
+
         //拿bundle key="friend"
         final NavController navController = Navigation.findNavController(view);
         Bundle bundle = getArguments();
@@ -95,7 +102,6 @@ public class FriendMsgFragment extends Fragment {
         account = bundle.getString("account");
         toolbar.setTitle(account);
 
-
         friendId = bundle.getInt("friendId");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
         linearLayoutManager.setStackFromEnd(true);
@@ -103,7 +109,6 @@ public class FriendMsgFragment extends Fragment {
 
         talks = getTalks();
         showTalks(talks);
-
 
         ibtMsg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,17 +135,14 @@ public class FriendMsgFragment extends Fragment {
                     if (count == 0) {
                         Common.showToast(getActivity(), R.string.textInsertFail);
                     } else {
-
                         talks = getTalks();
                         showTalks(talks);
-                        FriendMsgFragment.this.talks.remove(talk);
-
+                        etMsg.setText("");
 //                        Common.showToast(getActivity(), R.string.textInsertSuccess);
                     }
                 } else {
                     Common.showToast(getActivity(), R.string.textNoNetwork);
                 }
-
             }
         });
 
@@ -201,7 +203,6 @@ public class FriendMsgFragment extends Fragment {
             final Talk talk = talks.get(position);
             String url = Common.URL_SERVER + "UserServlet";
             int id = talk.getSenderId();
-            int year = 0;
             talkImageTask = new ImageTask(url, id, imageSize, holder.ivFriend);
             talkImageTask.execute();
             int senderId = talk.getSenderId();
@@ -219,8 +220,16 @@ public class FriendMsgFragment extends Fragment {
                     String strOldTime = new SimpleDateFormat("yyyy-MM-dd").format(msgTime.getTime());
                     holder.tvOldTime.setText(strOldTime);
                 } else {
-                    String strOldTime = new SimpleDateFormat("MM-dd E").format(talk.getTime());
-                    holder.tvOldTime.setText(strOldTime);
+                    Calendar diffDay = Calendar.getInstance();
+                    diffDay.add(Calendar.DAY_OF_MONTH,-1);
+                    if(msgTime.get(Calendar.DAY_OF_MONTH) == nowTime.get(Calendar.DAY_OF_MONTH)){
+                        holder.tvOldTime.setText("今天");
+                    }else if(msgTime.get(Calendar.DAY_OF_MONTH) == diffDay.get(Calendar.DAY_OF_MONTH)){
+                        holder.tvOldTime.setText("昨天");
+                    }else {
+                        String strOldTime = new SimpleDateFormat("MM-dd E").format(talk.getTime());
+                        holder.tvOldTime.setText(strOldTime);
+                    }
                 }
             } else {
                 holder.tvOldTime.setText("");
@@ -232,21 +241,8 @@ public class FriendMsgFragment extends Fragment {
                 holder.tvTimeSend.setText(time);
                 if (talk.getIsRead()) {
                     holder.tvRead.setText(R.string.textIsRead);
-                }
-            } else {
-                holder.sendLayout.setVisibility(View.GONE);
-                holder.receiveLayout.setVisibility(View.VISIBLE);
-                holder.tvMsg.setText(talk.getContent());
-                holder.tvTime.setText(time);
-            }
-
-            if (senderId == userId) {
-                holder.receiveLayout.setVisibility(View.GONE);
-                holder.sendLayout.setVisibility(View.VISIBLE);
-                holder.tvMsgSend.setText(talk.getContent());
-                holder.tvTimeSend.setText(time);
-                if (talk.getIsRead()) {
-                    holder.tvRead.setText(R.string.textIsRead);
+                }else{
+                    holder.tvRead.setText("");
                 }
             } else {
                 holder.sendLayout.setVisibility(View.GONE);
@@ -293,9 +289,6 @@ public class FriendMsgFragment extends Fragment {
 
         if (talkAdapter == null) {
             rvMsg.setAdapter(new TalkAdapter(activity, talks));
-
-
-
         } else {
             talkAdapter.setTalks(talks);
             rvMsg.scrollToPosition(talkAdapter.getItemCount()-1);

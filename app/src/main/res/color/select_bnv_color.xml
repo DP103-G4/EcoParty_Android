@@ -4,4 +4,5 @@
     <item android:color="@color/colorIsCheck" android:state_checked="true" />
     <item android:color="@color/colorNoCheck" android:state_checked="false"/>
 
+
 </selector>

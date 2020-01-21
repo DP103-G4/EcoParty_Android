@@ -150,7 +150,7 @@ public class PartyInsertFragment extends Fragment {
         final DatePickerDialog.OnDateSetListener startDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String text = String.format("%d/%d/%d", year, month+1, dayOfMonth);
+                String text = String.format("%d/%02d/%02d", year, month+1, dayOfMonth);
                 tvStartDate.setText(text);
             }
         };
@@ -166,7 +166,7 @@ public class PartyInsertFragment extends Fragment {
         final TimePickerDialog.OnTimeSetListener startTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String text = String.format("%d:%02d", hourOfDay, minute);
+                String text = String.format("%02d:%02d", hourOfDay, minute);
                 tvStartTime.setText(text);
             }
         };
@@ -198,7 +198,7 @@ public class PartyInsertFragment extends Fragment {
         final TimePickerDialog.OnTimeSetListener endTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String text = String.format("%d:%02d", hourOfDay, minute);
+                String text = String.format("%02d:%02d", hourOfDay, minute);
                 tvEndTime.setText(text);
             }
         };
@@ -230,7 +230,7 @@ public class PartyInsertFragment extends Fragment {
         final TimePickerDialog.OnTimeSetListener postEndTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String text = String.format("%d:%02d", hourOfDay, minute);
+                String text = String.format("%02d:%02d", hourOfDay, minute);
                 tvPostEndTime.setText(text);
             }
         };
