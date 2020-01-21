@@ -84,6 +84,9 @@
         <action
             android:id="@+id/action_friendFragment_to_friendMsgFragment"
             app:destination="@id/friendMsgFragment" />
+        <action
+            android:id="@+id/action_friendFragment_to_friendInsertFragment"
+            app:destination="@id/friendInsertFragment" />
     </fragment>
     <fragment
         android:id="@+id/friendMsgFragment"
@@ -117,4 +120,9 @@
         android:name="tw.dp103g4.partydetail.ParticipantListFragment"
         android:label="fragment_participant_list"
         tools:layout="@layout/fragment_participant_list" />
+    <fragment
+        android:id="@+id/friendInsertFragment"
+        android:name="tw.dp103g4.friend.FriendInsertFragment"
+        android:label="fragment_friend_insert"
+        tools:layout="@layout/fragment_friend_insert" />
 </navigation>
