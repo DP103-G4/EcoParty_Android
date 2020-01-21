@@ -17,7 +17,7 @@ import com.bozin.partylist_android.R;
 
 public class UserFragment extends Fragment {
     private FragmentActivity activity;
-    private TextView tvTest, tvLogin;
+    private TextView tvTest, tvLogin, tvLocation;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class UserFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         tvTest = view.findViewById(R.id.tvTest);
         tvLogin = view.findViewById(R.id.tvLogin);
-
+        tvLocation = view.findViewById(R.id.tvLocation);
 
         tvTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,5 +53,11 @@ public class UserFragment extends Fragment {
             }
         });
 
+        tvLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_userFragment_to_locationFragment);
+            }
+        });
     }
 }

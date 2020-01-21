@@ -22,6 +22,7 @@
     <string name="tab_text_1">我的活動</string>
     <string name="tab_text_2">我的花絮</string>
     <string name="toolNews">最新消息</string>
+    <string name="titleLocation">定位點</string>
     <string name="textNoInform">no informs found</string>
 
     <string name="textInsertFail">Insert Fail</string>
