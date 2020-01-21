@@ -2,7 +2,9 @@ package tw.dp103g4.friend;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,7 +35,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import tw.dp103g4.main_android.Common;
@@ -42,7 +46,7 @@ import tw.dp103g4.task.ImageTask;
 
 
 public class FriendFragment extends Fragment {
-    private static final String TAG = "TAG_FriendShipFragment";
+    private static final String TAG = "TAG_FriendFragment";
     private RecyclerView rvFriends;
     private RecyclerView rvFriendMsg;
     private Activity activity;
@@ -62,6 +66,8 @@ public class FriendFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = getActivity();
         activity.setTitle("訊息");
+
+
     }
 
     @Override
@@ -306,32 +312,43 @@ public class FriendFragment extends Fragment {
                             switch (item.getItemId()) {
 
                                 case R.id.delete:
-                                    if (Common.networkConnected(activity)) {
-                                        String url = Common.URL_SERVER + "/FriendShipServlet";
-                                        JsonObject jsonObject = new JsonObject();
-                                        jsonObject.addProperty("action", "friendShipDelete");
-                                        jsonObject.addProperty("idOne", friendShip.getIdOne());
-                                        jsonObject.addProperty("idTwo", friendShip.getIdTwo());
-                                        int count = 0;
-                                        try {
-                                            friendShipDeleteTask = new CommonTask(url, jsonObject.toString());
-                                            String result = friendShipDeleteTask.execute().get();
-                                            count = Integer.valueOf(result);
-                                        } catch (Exception e) {
-                                            Log.e(TAG, e.toString());
-                                        }
-                                        if (count == 0) {
-                                            Common.showToast(activity, R.string.textDeleteFail);
-                                        } else {
-                                            friendShips.remove(friendShip);
-                                            FriendShipAdapter.this.notifyDataSetChanged();
-                                            // 外面spots也必須移除選取的spot
-                                            FriendFragment.this.friendShips.remove(friendShip);
-                                            Common.showToast(activity, R.string.textDeleteSuccess);
-                                        }
-                                    } else {
-                                        Common.showToast(activity, R.string.textNoNetwork);
-                                    }
+                                    new AlertDialog.Builder(getActivity())
+                                            .setTitle("確定要刪除好友 "+friendShip.getAccount()+" 嗎？")
+                                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    if (Common.networkConnected(activity)) {
+                                                        String url = Common.URL_SERVER + "/FriendShipServlet";
+                                                        JsonObject jsonObject = new JsonObject();
+                                                        jsonObject.addProperty("action", "friendShipDelete");
+                                                        jsonObject.addProperty("idOne", friendShip.getIdOne());
+                                                        jsonObject.addProperty("idTwo", friendShip.getIdTwo());
+                                                        int count = 0;
+                                                        try {
+                                                            friendShipDeleteTask = new CommonTask(url, jsonObject.toString());
+                                                            String result = friendShipDeleteTask.execute().get();
+                                                            count = Integer.valueOf(result.trim());
+                                                        } catch (Exception e) {
+                                                            Log.e(TAG, e.toString());
+                                                        }
+                                                        if (count == 0) {
+                                                            Common.showToast(activity, R.string.textDeleteFail);
+                                                        } else {
+                                                            friendShips.remove(friendShip);
+                                                            FriendShipAdapter.this.notifyDataSetChanged();
+                                                            // 外面spots也必須移除選取的spot
+                                                            FriendFragment.this.friendShips.remove(friendShip);
+                                                            Common.showToast(activity, R.string.textDeleteSuccess);
+                                                        }
+                                                    } else {
+                                                        Common.showToast(activity, R.string.textNoNetwork);
+                                                    }
+                                                }
+                                            }).setNegativeButton("cancel",null).create()
+                                            .show();
+                                    break;
+
+
                             }
                             return true;
                         }
@@ -364,12 +381,14 @@ public class FriendFragment extends Fragment {
             ImageView ivFriend;
             TextView tvFriendName;
             TextView tvContent;
+            TextView tvTime;
 
             MsgViewHolder(View itemView) {
                 super(itemView);
                 ivFriend = itemView.findViewById(R.id.ivFriend);
                 tvFriendName = itemView.findViewById(R.id.tvFriend);
                 tvContent = itemView.findViewById(R.id.tvMsg);
+                tvTime = itemView.findViewById(R.id.tvTime);
 
             }
         }
@@ -395,6 +414,28 @@ public class FriendFragment extends Fragment {
             friendImageTask.execute();
             holder.tvFriendName.setText(newestTalk.getAccount());
             holder.tvContent.setText(newestTalk.getContent());
+            //如果日期不相同就顯示日期
+            boolean today = false;
+            Calendar msgTime = Calendar.getInstance();
+            msgTime.setTime(newestTalk.getNewMsgTime());
+            Calendar nowTime = Calendar.getInstance();
+            String time = new SimpleDateFormat("HH:mm").format(newestTalk.getNewMsgTime());
+            if (nowTime.getTime().getTime() / 86400000 >
+                    msgTime.getTime().getTime() / 86400000) {
+                Log.d(TAG, String.valueOf(position));
+                if (msgTime.get(Calendar.YEAR) < nowTime.get(Calendar.YEAR)) {
+                    String strOldTime = new SimpleDateFormat("yyyy-MM-dd").format(msgTime.getTime());
+                    holder.tvTime.setText(strOldTime);
+                } else {
+                    String strOldTime = new SimpleDateFormat("MM-dd E").format(newestTalk.getNewMsgTime());
+                    holder.tvTime.setText(strOldTime);
+                }
+            } else {
+
+                holder.tvTime.setText(time);
+
+            }
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -409,7 +450,6 @@ public class FriendFragment extends Fragment {
 
         }
     }
-
 
     @Override
     public void onStop() {
@@ -429,6 +469,7 @@ public class FriendFragment extends Fragment {
             friendShipDeleteTask = null;
         }
     }
+
 
 
 }

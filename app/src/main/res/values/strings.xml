@@ -53,6 +53,16 @@
     <string name="textNoUserFound">No Iser Found</string>
     <string name="textUpdateFail">Update Fail</string>
     <string name="textUpdateSuccess">Update Success</string>
+    <string name="textFindByIdFail">find by id fail</string>
+    <string name="textFindByIdSuccess">find by id success</string>
+    <string name="textSearchUserFail">search user fail</string>
+    <string name="textSearchUserSuccess">search user success</string>
+    <string name="textFriendShipInsertFail">friend ship insert fail</string>
+    <string name="textFriendShipInsertSuccess">friend ship insert success</string>
+    <string name="txtUpdateIsInviteFail">update Is Invite fail</string>
+    <string name="txtUpdateIsInviteSuccess">update Is Invite success</string>
+    <string name="txtDeleteFriendShipFail">delete friendship fail</string>
+    <string name="txtDeleteFriendShipSuccess">delete friendship success</string>
 
 
 </resources>
