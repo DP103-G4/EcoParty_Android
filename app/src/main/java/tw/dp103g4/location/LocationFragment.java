@@ -32,9 +32,12 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -118,6 +121,7 @@ public class LocationFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
+                moveMap(new LatLng(24.9677449899, 121.191698313));
                 for (tw.dp103g4.location.Location location : locations) {
                     showMarker(location);
                 }
@@ -271,6 +275,17 @@ public class LocationFragment extends Fragment {
                 .snippet(location.getContent()));
     }
 
+    private void moveMap(LatLng latLng) {
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+//        target  傳進來的經緯度放這邊
+                .target(latLng)
+//                縮放
+                .zoom(17)
+                .build();
+        CameraUpdate cameraUpdate = CameraUpdateFactory
+                .newCameraPosition(cameraPosition);
+        map.animateCamera(cameraUpdate);
+    }
 
     private void showLastLocation() {
 
