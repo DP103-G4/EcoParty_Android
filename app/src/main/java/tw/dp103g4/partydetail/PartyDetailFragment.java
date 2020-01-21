@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -32,7 +33,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -55,6 +55,7 @@ public class PartyDetailFragment extends Fragment {
     private CommonTask getMsgListTask;
     private CoverImageTask coverImageTask;
     private ScrollView scrollView;
+    private ConstraintLayout participantLayout;
 
     Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -64,6 +65,9 @@ public class PartyDetailFragment extends Fragment {
     // bundle
 //    final int partyId = 138;
     final int userId = 2;
+    boolean islike = false;
+    boolean isIn = false;
+
 
     public PartyDetailFragment() {
         // Required empty public constructor
@@ -106,7 +110,7 @@ public class PartyDetailFragment extends Fragment {
         rvMessage = view.findViewById(R.id.rvMessage);
         ivCover = view.findViewById(R.id.ivCover);
         ivOwner = view.findViewById(R.id.ivOwner);
-        ivParticipant = view.findViewById(R.id.ivParticipant);
+        ivParticipant = view.findViewById(R.id.ivMsg);
         ivLocation = view.findViewById(R.id.ivLocation);
         btLike = view.findViewById(R.id.btLike);
         btIn = view.findViewById(R.id.btIn);
@@ -114,16 +118,17 @@ public class PartyDetailFragment extends Fragment {
         ibSend = view.findViewById(R.id.ibSend);
         etInput = view.findViewById(R.id.etInput);
         rvMessage = view.findViewById(R.id.rvMessage);
+        participantLayout = view.findViewById(R.id.participantLayout);
 
         Bundle bundle = getArguments();
         if (bundle == null || bundle.getInt("partyId") == 0) {
-            Common.showToast(activity, R.string.textNoPartiesFound);
+            Common.showToast(activity, R.string.textNoParticipantFound);
             navController.popBackStack();
             return;
         }
         final int partyId = bundle.getInt("partyId");
 
-        Party party = getParty(partyId);
+        final Party party = getParty(partyId);
 
         if (party != null) {
             int imageSize = (getResources().getDisplayMetrics().widthPixels > 200)?getResources().getDisplayMetrics().widthPixels:200;
@@ -161,6 +166,113 @@ public class PartyDetailFragment extends Fragment {
 //        userImageTask.execute();
 
 
+        btLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!islike) {
+                    // 加入收藏
+                    btLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unlike, 0, 0, 0);
+                    btLike.setText("已收藏");
+                    islike = true;
+                } else {
+                    // 取消收藏
+                    btLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.like, 0, 0, 0);
+                    btLike.setText("收藏");
+                    islike = false;
+                }
+            }
+        });
+
+        btIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isIn) {
+                    // 參加
+                    if (Common.networkConnected(activity)) {
+                        // 先不團報
+                        Participant participant = new Participant(userId, partyId, 1);
+
+                        String url = Common.URL_SERVER + "ParticipantServlet";
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("action", "participantInsert");
+                        jsonObject.addProperty("participant", gson.toJson(participant));
+                        String jsonOut = jsonObject.toString();
+
+                        int count = 0;
+                        try {
+                            String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                            System.out.println(jsonOut);
+                            count = Integer.valueOf(result.trim());
+
+                            if (count == 0) {
+//                                Common.showToast(getActivity(), R.string.textInsertFail);
+                            } else {
+//                                Common.showToast(getActivity(), R.string.textInsertSuccess);
+
+                                party.setCountCurrent(party.getCountCurrent()+1);
+                                tvParticipant.setText(String.valueOf(party.getCountCurrent()));
+                                btIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.out, 0, 0, 0);
+                                btIn.setText("已參加");
+                                isIn = true;
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, e.toString());
+                        }
+                    } else {
+                        Common.showToast(getActivity(), R.string.textNoNetwork);
+                    }
+
+                } else {
+                    // 取消參加
+                    if (Common.networkConnected(activity)) {
+                        // 先不團報
+                        Participant participant = new Participant(userId, partyId, 1);
+
+                        String url = Common.URL_SERVER + "ParticipantServlet";
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("action", "participantDelete");
+                        jsonObject.addProperty("participant", gson.toJson(participant));
+                        String jsonOut = jsonObject.toString();
+
+                        int count = 0;
+                        try {
+                            String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                            System.out.println(jsonOut);
+                            count = Integer.valueOf(result.trim());
+
+                            if (count == 0) {
+//                                Common.showToast(getActivity(), R.string.textDeleteFail);
+                            } else {
+//                                Common.showToast(getActivity(), R.string.textDeleteSuccess);
+
+                                party.setCountCurrent(party.getCountCurrent()-1);
+                                tvParticipant.setText(String.valueOf(party.getCountCurrent()));
+                                btIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.in, 0, 0, 0);
+                                btIn.setText("參加");
+                                isIn = false;
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, e.toString());
+                        }
+                    } else {
+                        Common.showToast(getActivity(), R.string.textNoNetwork);
+                    }
+                }
+            }
+        });
+
+
+        participantLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("partyId", partyId);
+
+                Navigation.findNavController(v).navigate(R.id.action_partyDetailFragment_to_participantListFragment, bundle);
+
+            }
+        });
+
 
         ibSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,15 +290,16 @@ public class PartyDetailFragment extends Fragment {
                     jsonObject.addProperty("action", "msgInsert");
                     jsonObject.addProperty("message", gson.toJson(message));
                     String jsonOut = jsonObject.toString();
+
                     try {
                         String result = new CommonTask(url, jsonObject.toString()).execute().get();
                         System.out.println(jsonOut);
                         System.out.println(result);
+
                         msgList.add(message);
                         showMsgList(msgList);
                         etInput.clearFocus();
                         etInput.setText("");
-
 
                         new Handler().post(new Runnable() {
                             @Override

@@ -64,5 +64,7 @@
     <string name="txtDeleteFriendShipFail">delete friendship fail</string>
     <string name="txtDeleteFriendShipSuccess">delete friendship success</string>
 
+    <string name="textNoParticipantFound">No Participant Found</string>
+
 
 </resources>
