@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.bozin.partylist_android.R;
 import com.google.gson.JsonObject;
 
 import java.io.BufferedInputStream;
@@ -15,6 +14,8 @@ import java.io.OutputStreamWriter;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import tw.dp103g4.R;
 
 public class AfterImageTask extends AsyncTask<Object, Integer, Bitmap> {
     private static final String TAG = "TAG_AfterImageTask";
