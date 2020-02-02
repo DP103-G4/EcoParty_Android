@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.bozin.partylist_android.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -24,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.task.CommonTask;
 
@@ -32,7 +32,6 @@ public class LoginFragment extends Fragment {
 
     private static final String TAG = "TAG_LoginFragment";
 
-    //    private Gson gson;
     private Activity activity;
     private Button btRegister, btLogin;
     private TextView tvMsg, tvForgot;
@@ -45,13 +44,12 @@ public class LoginFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
-//        gson = new Gson();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        activity.setTitle("Login");
+        activity.setTitle("登入");
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
@@ -62,7 +60,7 @@ public class LoginFragment extends Fragment {
         tvForgot = view.findViewById(R.id.tvForgot);
         etAccount = view.findViewById(R.id.etAccount);
         etPassword = view.findViewById(R.id.etPassword);
-        users= getUsers();
+        users = getUsers();
 
 
         btRegister = view.findViewById(R.id.btRegister);
@@ -70,7 +68,6 @@ public class LoginFragment extends Fragment {
 
         //去註冊頁面
         btRegister.setOnClickListener(new View.OnClickListener() {
-
 
             @Override
             public void onClick(View v) {
@@ -80,7 +77,7 @@ public class LoginFragment extends Fragment {
 
 
         //登入判斷
-        //先導到detail
+        //成功後導到 會員
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,36 +103,31 @@ public class LoginFragment extends Fragment {
                     Log.e(TAG, e.toString());
                 }
                 if (isValid) {      //成功
-                    Common.showToast(getActivity(), "Login Success");
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("account", account);
-                    Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_userDetailFragment,bundle);
+                    Common.showToast(getActivity(), "登入成功");
+                    Navigation.findNavController(v).popBackStack();
+
 
                 } else {            //失敗
-                    Common.showToast(getActivity(), "Login Fail");
+                    Common.showToast(getActivity(), "登入失敗");
                 }
-
-//
-//                Bundle bundle = new Bundle();
-//
-//                bundle.putString("account", account);
-//                bundle.putString("password", password);
-
 
                 //帳密空白
                 if (account.isEmpty() || password.isEmpty()) {
-                    tvMsg.setText("Account or Password is empty");
+                    tvMsg.setText("帳號和密碼不可空白");
                     return;
                 }
                 tvMsg.setText("");
-
 
             }
         });
 
         //忘記密碼
-
-
+        tvForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_userForgetFragment);
+            }
+        });
 
     }
 
@@ -165,11 +157,4 @@ public class LoginFragment extends Fragment {
 
     }
 
-
 }
-
-
-// client -> Server -> DB
-// client <- Server <- 帶資料給Server判斷<-DB
-// client <- true <- Server有資料
-// client <- false <- Server無資料

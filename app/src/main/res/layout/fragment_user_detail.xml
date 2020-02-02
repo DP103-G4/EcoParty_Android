@@ -1,14 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserDetailFragment">
+    android:padding="10sp"
+    tools:context="tw.dp103g4.user.UserDetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</FrameLayout>
+
+        <ImageView
+            android:id="@+id/ivUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
+            tools:src="@tools:sample/avatars" />
+
+        <LinearLayout
+            android:id="@+id/linearLH0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10sp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btTakePic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="開啟相機" />
+
+            <Button
+                android:id="@+id/btLoadPic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="開啟相簿" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLH1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvAccount"
+                android:layout_width="100sp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:gravity="right"
+                android:text="@string/tvAccount"
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvAccountShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/tvAccount"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/linearLH2"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:padding="16dp">-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tvPassword"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginRight="16dp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="right"-->
+        <!--                android:text="@string/tvPassword"-->
+        <!--                android:textSize="18sp" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tvPasswordShow"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_weight="1"-->
+        <!--                tools:text="password" />-->
+        <!--        </LinearLayout>-->
+
+        <LinearLayout
+            android:id="@+id/linearLH3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="100sp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:gravity="right"
+                android:text="Email"
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/etEmailShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:hint="@string/etEmail"
+                android:inputType="textEmailAddress" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLH4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="100sp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:gravity="right"
+                android:text="Name"
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/etNameShow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Name" />
+        </LinearLayout>
+
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/linearLH5"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:padding="16dp">-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tvPhone"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginRight="16dp"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="right"-->
+        <!--                android:text="Phone"-->
+        <!--                android:textSize="18sp" />-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tvPhoneShow"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="PhoneShow"-->
+        <!--                android:inputType="phone" />-->
+        <!--        </LinearLayout>-->
+        <LinearLayout
+            android:id="@+id/linearLH6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/btCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="取消" />
+
+            <Button
+                android:id="@+id/btSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="儲存" />
+
+        </LinearLayout>
+
+        <!--    <LinearLayout-->
+        <!--        android:id="@+id/linearLV2"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_weight="1"-->
+        <!--        android:orientation="vertical">-->
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/tvEdit"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="10sp"-->
+        <!--            android:scrollbarSize="4sp"-->
+        <!--            android:text="編輯會員資料"-->
+        <!--            android:textSize="24sp" />-->
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/tvChangePassword"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="10sp"-->
+        <!--            android:scrollbarSize="4sp"-->
+        <!--            android:text="修改密碼"-->
+        <!--            android:textSize="24sp" />-->
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/tvMyParty"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="10sp"-->
+        <!--            android:scrollbarSize="4sp"-->
+        <!--            android:text="我的活動"-->
+        <!--            android:textSize="24sp" />-->
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/tvSignOut"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="10sp"-->
+        <!--            android:scrollbarSize="4sp"-->
+        <!--            android:text="登出"-->
+        <!--            android:textSize="24sp" />-->
+
+        <!--    </LinearLayout>-->
+
+    </LinearLayout>
+</ScrollView>

@@ -9,7 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.bozin.partylist_android.R;
+import tw.dp103g4.R;
+
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

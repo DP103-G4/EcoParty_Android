@@ -1,40 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20sp"
     tools:context="tw.dp103g4.user.UserFragment">
 
-    <TextView
-        android:id="@+id/tvTest"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLV1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
-        android:text="我的活動"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.373"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="登入"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTest" />
+        <LinearLayout
+            android:id="@+id/linearLV2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="測試定位點"
-        app:layout_constraintBottom_toTopOf="@+id/tvLogin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTest" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tvLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:scrollbarSize="4sp"
+                android:text="登入 / 註冊"
+                android:textColor="#2196F3"
+                android:textSize="24sp" />
+
+
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:scrollbarSize="4sp"
+                android:text=""
+                android:textColor="#03A9F4"
+                android:textSize="24sp"
+                tools:text="userName"
+                tools:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:scrollbarSize="4sp"
+                android:text="編輯會員資訊"
+                android:textSize="24sp" />
+
+
+            <TextView
+                android:id="@+id/tvChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:scrollbarSize="4sp"
+                android:text="修改密碼"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tvMyParty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:scrollbarSize="4sp"
+                android:text="我的活動"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tvSignOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:scrollbarSize="4sp"
+                android:text="登出"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
