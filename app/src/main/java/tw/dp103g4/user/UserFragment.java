@@ -47,7 +47,9 @@ public class UserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String url = Common.URL_SERVER + "UserServlet";
-        SharedPreferences preferences = activity.getSharedPreferences("preferences", MODE_PRIVATE);
+        SharedPreferences preferences =
+                activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+
         int userId = 0;
 
         tvLogin = view.findViewById(R.id.tvLogin);

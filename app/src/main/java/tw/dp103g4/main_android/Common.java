@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 public class Common {
     public static String URL_SERVER = "http://10.0.2.2:8080/EcoParty/";
+    public static final String PREFERENCE_MEMBER = "member";
 
     // check if the device connect to the network
     public static boolean networkConnected(Activity activity) {

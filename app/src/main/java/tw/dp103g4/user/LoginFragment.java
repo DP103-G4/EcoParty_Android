@@ -1,6 +1,8 @@
 package tw.dp103g4.user;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +38,7 @@ public class LoginFragment extends Fragment {
     private Button btRegister, btLogin;
     private TextView tvMsg, tvForgot;
     private EditText etAccount, etPassword;
-    private CommonTask userLoginTask, userGetAllTask;
+    private CommonTask userLoginTask, userGetIdTask;
     private List<User> users;
     private String account, password;
 
@@ -60,7 +62,6 @@ public class LoginFragment extends Fragment {
         tvForgot = view.findViewById(R.id.tvForgot);
         etAccount = view.findViewById(R.id.etAccount);
         etPassword = view.findViewById(R.id.etPassword);
-        users = getUsers();
 
 
         btRegister = view.findViewById(R.id.btRegister);
@@ -104,7 +105,12 @@ public class LoginFragment extends Fragment {
                 }
                 if (isValid) {      //成功
                     Common.showToast(getActivity(), "登入成功");
-                    Navigation.findNavController(v).popBackStack();
+                    SharedPreferences pref = activity
+                            .getSharedPreferences(Common.PREFERENCE_MEMBER, Context.MODE_PRIVATE);
+                    pref.edit().putString("account", account)
+                            .putString("password", password)
+                            .putInt("id", getUserIdByAccount(account)).commit();
+                    Navigation.findNavController(v).popBackStack(R.id.partyFragment, false);
 
 
                 } else {            //失敗
@@ -131,29 +137,26 @@ public class LoginFragment extends Fragment {
 
     }
 
-    private List<User> getUsers() {
+    private int getUserIdByAccount(String account) {
         //確認網路連線
+        int id = 0;
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "UserServlet";
             JsonObject jsonObject = new JsonObject();
-
-            jsonObject.addProperty("action", "getAll");
+            jsonObject.addProperty("action", "getUserIdByAccount");
+            jsonObject.addProperty("account", account);
             String jsonOut = jsonObject.toString();
-            userGetAllTask = new CommonTask(url, jsonOut);
+            userGetIdTask = new CommonTask(url, jsonOut);
             try {
-                String jsonIn = userGetAllTask.execute().get();
-                Type listType = new TypeToken<List<User>>() {
-                }.getType();
-//
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-                users = gson.fromJson(jsonIn, listType);
+                String result = userGetIdTask.execute().get();
+                id = Integer.parseInt(result);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
         } else {
             Common.showToast(activity, R.string.textNoNetwork);
         }
-        return users;
+        return id;
 
     }
 
