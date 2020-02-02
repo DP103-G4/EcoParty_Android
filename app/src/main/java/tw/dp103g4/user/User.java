@@ -52,6 +52,14 @@ public class User implements Serializable {
 
 
 
+	public int getId(){
+    	return id;
+	}
+
+	public int setId(){
+    	return id;
+	}
+
 	public String getAccount() {
 		return account;
 	}

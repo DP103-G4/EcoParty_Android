@@ -62,6 +62,9 @@
         <action
             android:id="@+id/action_userFragment_to_userPasswordFragment"
             app:destination="@id/userPasswordFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_partyFragment"
+            app:destination="@id/partyFragment" />
     </fragment>
     <fragment
         android:id="@+id/informFragment"

@@ -17,12 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import tw.dp103g4.R;
@@ -103,17 +99,18 @@ public class LoginFragment extends Fragment {
                 } catch (Exception e) {
                     Log.e(TAG, e.toString());
                 }
-                if (isValid) {      //成功
+                if (isValid) {      //登入成功
                     Common.showToast(getActivity(), "登入成功");
+                    //  偏好設定檔
                     SharedPreferences pref = activity
                             .getSharedPreferences(Common.PREFERENCE_MEMBER, Context.MODE_PRIVATE);
                     pref.edit().putString("account", account)
                             .putString("password", password)
-                            .putInt("id", getUserIdByAccount(account)).commit();
+                            .putInt("id", getUserIdByAccount(account)).apply();
                     Navigation.findNavController(v).popBackStack(R.id.partyFragment, false);
 
 
-                } else {            //失敗
+                } else {            //登入失敗
                     Common.showToast(getActivity(), "登入失敗");
                 }
 
@@ -143,12 +140,15 @@ public class LoginFragment extends Fragment {
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "UserServlet";
             JsonObject jsonObject = new JsonObject();
+
             jsonObject.addProperty("action", "getUserIdByAccount");
             jsonObject.addProperty("account", account);
             String jsonOut = jsonObject.toString();
             userGetIdTask = new CommonTask(url, jsonOut);
             try {
+                //傳入String 回傳String 轉型int(id)
                 String result = userGetIdTask.execute().get();
+                Log.d(TAG, result);
                 id = Integer.parseInt(result);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());

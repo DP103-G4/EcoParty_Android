@@ -2,6 +2,7 @@ package tw.dp103g4.user;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +34,9 @@ import java.io.File;
 import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.task.CommonTask;
+import tw.dp103g4.task.ImageTask;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class UserDetailFragment extends Fragment {
     private final static String TAG = "TAG_DetailFragment";
@@ -51,6 +55,7 @@ public class UserDetailFragment extends Fragment {
     private TextView tvAccountShow;
     private EditText etEmailShow, etNameShow;
     private Button btTakePic, btLoadPic, btSave, btCancel;
+    private SharedPreferences pref;
 
 
     @Override
@@ -74,23 +79,18 @@ public class UserDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Bundle bundle = getArguments();
+        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        userId = pref.getInt("id", 0);
+        account = pref.getString("account", "");
+
+
         final NavController navController = Navigation.findNavController(view);
-        if (bundle == null || bundle.getSerializable("account") == null) {
-            Common.showToast(activity, "No User Found");
-            navController.popBackStack();
-            return;
-        }
-        //取出bundle資料
-        account = (String) bundle.getSerializable("account");
+
         String url = Common.URL_SERVER + "UserServlet";
 
         tvAccountShow = view.findViewById(R.id.tvAccountShow);
         etEmailShow = view.findViewById(R.id.etEmailShow);
         etNameShow = view.findViewById(R.id.etNameShow);
-//        tvChangePassword = view.findViewById(R.id.tvChangePassword);
-//        tvMyParty = view.findViewById(R.id.tvMyParty);
-//        tvSignOut = view.findViewById(R.id.tvSignOut);
 
         btTakePic = view.findViewById(R.id.btTakePic);
         btLoadPic = view.findViewById(R.id.btLoadPic);
@@ -101,7 +101,7 @@ public class UserDetailFragment extends Fragment {
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "findById");
-        jsonObject.addProperty("userId", userId);
+        jsonObject.addProperty("id", userId);
         CommonTask userDetailTask = new CommonTask(url, jsonObject.toString());
         try {
             String result = userDetailTask.execute().get();
@@ -169,7 +169,7 @@ public class UserDetailFragment extends Fragment {
         int imageSize = getResources().getDisplayMetrics().widthPixels / 3;
         Bitmap bitmap = null;
         try {
-//            bitmap = new ImageTask(url, user.getId(), imageSize).execute().get();
+            bitmap = new ImageTask(url, user.getId(), imageSize).execute().get();
         } catch (Exception e) {
             Log.e(TAG, e.toString());
         }
