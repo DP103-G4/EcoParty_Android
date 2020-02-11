@@ -271,10 +271,10 @@ public class FriendInsertFragment extends Fragment {
                 public void onClick(View v) {
                     insertFriend(friendShip.getFriendId(),userId);
                     if(count!= 0){
-                    friendShips.remove(friendShip);
-                    InsertFriendAdapter.this.notifyDataSetChanged();
-                    // 外面List也必須移除選取的List
-                    FriendInsertFragment.this.friendShips.remove(friendShip);}
+                        friendShips.remove(friendShip);
+                        InsertFriendAdapter.this.notifyDataSetChanged();
+                        // 外面List也必須移除選取的List
+                        FriendInsertFragment.this.friendShips.remove(friendShip);}
                 }
             });
             holder.btDelete.setOnClickListener(new View.OnClickListener() {
