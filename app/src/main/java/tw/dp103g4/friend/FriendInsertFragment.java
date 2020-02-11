@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -44,7 +45,9 @@ import tw.dp103g4.main_android.Common;
 import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.ImageTask;
+import tw.dp103g4.user.User;
 
+import static android.content.Context.MODE_PRIVATE;
 import static tw.dp103g4.main_android.Common.chatWebSocketClient;
 
 
@@ -60,8 +63,11 @@ public class FriendInsertFragment extends Fragment {
     private EditText etSearch;
     private List<FriendShip> friendShips;
     private User user = null;
-    private int userId = 3;
     private int count = 0;
+
+    private SharedPreferences pref;
+    private int userId;
+
     //socket
     private LocalBroadcastManager broadcastManager;
 
@@ -89,6 +95,9 @@ public class FriendInsertFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        userId = pref.getInt("id", 0);
+
         activity.getBottomNavigationView().setVisibility(View.GONE);
         rvAddFriend = view.findViewById(R.id.rvAddFriend);
         etSearch = view.findViewById(R.id.etSearch);

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -46,6 +47,8 @@ import tw.dp103g4.main_android.Common;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.ImageTask;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class FriendFragment extends Fragment {
     private static final String TAG = "TAG_FriendFragment";
@@ -60,7 +63,8 @@ public class FriendFragment extends Fragment {
     private List<FriendShip> friendShips;
     private List<NewestTalk> newestTalks;
     private Button btInsert;
-    private int userId = 2;
+    private SharedPreferences pref;
+    private int userId;
     //socket
     private LocalBroadcastManager broadcastManager;
 
@@ -87,6 +91,9 @@ public class FriendFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        userId = pref.getInt("id", 0);
+
         SearchView searchView = view.findViewById(R.id.svFriends);
         searchView.setSubmitButtonEnabled(true);
         searchView.setIconifiedByDefault(false);

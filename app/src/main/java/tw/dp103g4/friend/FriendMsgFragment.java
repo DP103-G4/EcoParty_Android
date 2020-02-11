@@ -3,6 +3,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,7 @@ import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.ImageTask;
 
+import static android.content.Context.MODE_PRIVATE;
 import static tw.dp103g4.main_android.Common.chatWebSocketClient;
 
 
@@ -57,7 +59,8 @@ public class FriendMsgFragment extends Fragment {
     private ImageButton ibtMsg;
     private int friendId;
     private String account;
-    private int userId = 2;
+    private SharedPreferences pref;
+    private int userId;
 
     //socket
     private LocalBroadcastManager broadcastManager;
@@ -94,6 +97,9 @@ public class FriendMsgFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        userId = pref.getInt("id", 0);
+
         activity.getBottomNavigationView().setVisibility(View.GONE);
         rvMsg = view.findViewById(R.id.rvMsg);
         etMsg = view.findViewById(R.id.etMsg);

@@ -46,7 +46,6 @@ public class CommonTask extends AsyncTask<String, Integer, String> {
                 String line = "";
                 while ((line = br.readLine()) != null) {
                     inStr.append(line);
-                    inStr.append("\n");
                 }
             } else {
                 Log.d(TAG, "responseCode: " + responseCode);

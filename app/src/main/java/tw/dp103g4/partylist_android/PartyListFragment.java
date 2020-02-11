@@ -136,7 +136,7 @@ public class PartyListFragment extends Fragment {
 
     private void showPartyStart(List<Party> partyStart) {
         if (partyStart == null || partyStart.isEmpty()) {
-            Common.showToast(activity, R.string.textNoPartiesFound);
+//            Common.showToast(activity, R.string.textNoPartiesFound);
         }
         PartyStartAdapter partyStartAdapter = (PartyStartAdapter) rvPartyStart.getAdapter();
         if (partyStartAdapter == null) {
