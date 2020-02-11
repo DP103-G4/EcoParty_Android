@@ -1,9 +1,8 @@
 package tw.dp103g4.friend;
 
 
-import java.io.Serializable;
 
-public class FriendShip implements Serializable {
+public class FriendShip {
 
 	private int idOne;
 	private int idTwo;
@@ -13,10 +12,17 @@ public class FriendShip implements Serializable {
 		
 	
 
-	public FriendShip(int friendId, boolean isInvite, String account) {
+	public FriendShip(int idOne, int idTwo, int friendId, boolean isInvite, String account) {
 		super();
+		this.idOne = idOne;
+		this.idTwo = idTwo;
 		this.friendId = friendId;
 		this.isInvite = isInvite;
+		this.account = account;
+	}
+	public FriendShip (int friendId, String account) {
+		super();
+		this.friendId = friendId;
 		this.account = account;
 	}
 	
