@@ -55,6 +55,7 @@
     <string name="textUpdateSuccess">Update Success</string>
 
     <string name="textNoParticipantFound">No Participant Found</string>
+    <string name="textChageStateFail">chageStateFail</string>
 
 
 </resources>
