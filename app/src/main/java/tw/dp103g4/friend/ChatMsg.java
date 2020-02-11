@@ -1,5 +1,5 @@
 package tw.dp103g4.friend;
-
+//test
 public class ChatMsg {
 	private String type;
 	private int sender;
