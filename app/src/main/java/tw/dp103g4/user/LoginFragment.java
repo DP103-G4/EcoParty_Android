@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -55,12 +56,15 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         tvMsg = view.findViewById(R.id.tvMsg);
-        tvForgot = view.findViewById(R.id.tvForgot);
+//        tvForgot = view.findViewById(R.id.tvForgot);
         etAccount = view.findViewById(R.id.etAccount);
         etPassword = view.findViewById(R.id.etPassword);
 
 
-        btRegister = view.findViewById(R.id.btRegister);
+        //etPassword鍵盤收合
+
+
+                btRegister = view.findViewById(R.id.btRegister);
         btLogin = view.findViewById(R.id.btLogin);
 
         //去註冊頁面
@@ -124,13 +128,13 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        //忘記密碼
-        tvForgot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_userForgetFragment);
-            }
-        });
+//        //忘記密碼
+//        tvForgot.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_userForgetFragment);
+//            }
+//        });
 
     }
 
@@ -159,5 +163,9 @@ public class LoginFragment extends Fragment {
         return id;
 
     }
+
+
+
+
 
 }

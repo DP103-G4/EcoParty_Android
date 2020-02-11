@@ -110,9 +110,6 @@
         <action
             android:id="@+id/action_loginFragment_to_userInsertFragment"
             app:destination="@id/userInsertFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_userForgetFragment"
-            app:destination="@id/userForgetFragment" />
     </fragment>
     <fragment
         android:id="@+id/userInsertFragment"
@@ -135,13 +132,13 @@
         android:label="fragment_user_password"
         tools:layout="@layout/fragment_user_password" />
     <fragment
-        android:id="@+id/userForgetFragment"
-        android:name="tw.dp103g4.user.UserForgetFragment"
-        android:label="fragment_user_forget"
-        tools:layout="@layout/fragment_user_forget" />
-    <fragment
         android:id="@+id/participantListFragment"
         android:name="tw.dp103g4.partydetail.ParticipantListFragment"
         android:label="fragment_participant_list"
         tools:layout="@layout/fragment_participant_list" />
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="tw.dp103g4.location.LocationFragment"
+        android:label="fragment_location"
+        tools:layout="@layout/fragment_location" />
 </navigation>

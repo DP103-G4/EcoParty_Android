@@ -127,8 +127,8 @@ public class UserInsertFragment extends Fragment {
                 String email = etEmail.getText().toString().trim();
                 String name = etName.getText().toString().trim();
 
-                if (account.length() <= 0) {
-                    Common.showToast(getActivity(), R.string.textNameIsInvalid);
+                if (account.length() <= 0 || password.length() <= 0 || name.length() <= 0 || email.length() <= 0) {
+                    Common.showToast(getActivity(), "填寫不完整");
                     return;
                 }
 
@@ -154,12 +154,12 @@ public class UserInsertFragment extends Fragment {
                         Log.e(TAG, e.toString());
                     }
                     if (count == 0) { //新增失敗
-                        Common.showToast(getActivity(), R.string.textInsertFail);
+                        Common.showToast(getActivity(), "註冊失敗");
                     } else {          //新增成功
-                        Common.showToast(getActivity(), R.string.textInsertSuccess);
+                        Common.showToast(getActivity(), "註冊成功");
                     }
                 } else {
-                    Common.showToast(getActivity(), R.string.textNoNetwork);
+                    Common.showToast(getActivity(), "連線失敗");
                 }
                 /* 回前一個Fragment */
                 navController.popBackStack();

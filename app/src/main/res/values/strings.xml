@@ -65,7 +65,7 @@
     <string name="textNoUserFound">找不到資料</string>
     <string name="textUpdateFail">更新失敗</string>
     <string name="textUpdateSuccess">更新成功</string>
-    <string name="titleLocation">titleLocation</string>
+    <string name="titleLocation">定位點</string>
 
     <string-array name="itemGuest">
         <item>登入/註冊</item>
@@ -75,6 +75,7 @@
         <item>嗨</item>
         <item>編輯會員資料</item>
         <item>修改密碼</item>
+        <item>我的活動</item>
         <item>登出</item>
     </string-array>
 

@@ -63,6 +63,7 @@ public class UserFragment extends Fragment {
         userItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+              //判斷是否登入
                 int[] action = login ? actionUser : actionGuest;
                 if (login) {
                     if (position == (userItem.getAdapter().getCount() - 1)) {
