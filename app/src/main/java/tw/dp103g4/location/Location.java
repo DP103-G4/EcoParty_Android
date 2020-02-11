@@ -11,7 +11,9 @@ public class Location {
 	private String name;
 	private String content;
 
-	public Location(int partyId, int userId, double latitude, double longitude, String name, String content) {
+	public Location(int id, int partyId, int userId, double latitude, double longitude, String name, String content) {
+		super();
+		this.id = id;
 		this.partyId = partyId;
 		this.userId = userId;
 		this.latitude = latitude;
@@ -25,8 +27,10 @@ public class Location {
 	}
 
 	public Location(int id) {
+		super();
 		this.id = id;
 	}
+
 
 	public int getId() {
 		return id;

@@ -23,7 +23,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.bozin.partylist_android.R;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -53,6 +52,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.task.CommonTask;
@@ -65,12 +65,12 @@ public class LocationFragment extends Fragment {
     private MapView mapLocation;
     private GoogleMap map;
     private Location lastLocation;
+    private tw.dp103g4.location.Location location;
     private List<tw.dp103g4.location.Location> locations;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private CommonTask locationDeleteTask;
-    private CommonTask locationGetAllTask;
+    private CommonTask locationGetAllTask, locationDeleteTask;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,11 +123,12 @@ public class LocationFragment extends Fragment {
                 map = googleMap;
                 moveMap(new LatLng(24.9677449899, 121.191698313));
                 for (tw.dp103g4.location.Location location : locations) {
-                    showMarker(location);
+                    showMarker(location, location.getId());
                 }
                 map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng latLng) {
+                        int id = getId();
                         int partyId = 4;
                         int userId = 2;
                         double latitude = latLng.latitude;
@@ -136,38 +137,24 @@ public class LocationFragment extends Fragment {
                         // 取得地址當作說明文字
                         String content = "bbb";
                         tw.dp103g4.location.Location location = new tw.dp103g4.location.Location(
-                                partyId, userId, latitude, longitude, name, content);
-                        addMarker(location);
+                                id, partyId, userId, latitude, longitude, name, content);
+                        location.setId(addMarker(location));
+                        locations.add(location);
                     }
                 });
+
 
                 // 長按訊息視窗就移除該標記
                 map.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
                     @Override
                     public void onInfoWindowLongClick(Marker marker) {
-//                        if (Common.networkConnected(activity)) {
-//                            tw.dp103g4.location.Location location = new tw.dp103g4.location.Location();
-//                            String url = Common.URL_SERVER + "LocationServlet";
-//
-//                            JsonObject jsonObject = new JsonObject();
-//                            jsonObject.addProperty("action", "locationDelete");
-//                            jsonObject.addProperty("id", location.getId());
-//                            int count = 0;
-//                            try {
-//                                locationDeleteTask = new CommonTask(url, jsonObject.toString());
-//                                String result = locationDeleteTask.execute().get();
-//                                count = Integer.valueOf(result.trim());
-//                            } catch (Exception e) {
-//                                Log.e(TAG, e.toString());
-//                            }
-//                            if (count == 0) {
-//                                Common.showToast(activity, R.string.textDeleteFail);
-//                            } else {
+                            int count = deleteMarker((Integer) marker.getTag());
+                            if (count != 0) {
                                 marker.remove();
                                 String text = marker.getTitle() + " removed";
                                 Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
+                            }
+
                     }
                 });
             }
@@ -237,14 +224,14 @@ public class LocationFragment extends Fragment {
         });
     }
 
-    private void addMarker(tw.dp103g4.location.Location location) {
+    private int addMarker(tw.dp103g4.location.Location location) {
 //        Address address = reverseGeocode(location.getLatitude(), location.getLongitude());
 //
 //        if (address == null) {
 //            Toast.makeText(activity, R.string.textLocationNotFound, Toast.LENGTH_SHORT).show();
 //            return;
 //        }
-
+        int count = 0;
         // 取得道路名稱當做標題
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "LocationServlet";
@@ -252,10 +239,9 @@ public class LocationFragment extends Fragment {
 //                    告訴server端 要做新增動作
             jsonObject.addProperty("action", "locationInsert");
             jsonObject.addProperty("location", new Gson().toJson(location));
-            int count = 0;
             try {
                 String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                count = Integer.valueOf(result.trim());
+                count = Integer.valueOf(result);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -265,14 +251,39 @@ public class LocationFragment extends Fragment {
                 Common.showToast(getActivity(), R.string.textInsertSuccess);
             }
         }
-        showMarker(location);
+        showMarker(location, count);
+        return count;
     }
 
-    private void showMarker(tw.dp103g4.location.Location location) {
-        map.addMarker(new MarkerOptions()
+    private int deleteMarker(int id) {
+        int count = 0;
+        if (Common.networkConnected(activity)) {
+            String url = Common.URL_SERVER + "LocationServlet";
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "locationDelete");
+            jsonObject.addProperty("id", id);
+            count = 0;
+            try {
+                locationDeleteTask = new CommonTask(url, jsonObject.toString());
+                String result = locationDeleteTask.execute().get();
+                count = Integer.valueOf(result.trim());
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+            if (count == 0) {
+                Common.showToast(activity, R.string.textDeleteFail);
+            } else {
+
+            }
+        }
+        return count;
+    }
+    private void showMarker(tw.dp103g4.location.Location location, int id) {
+        Marker marker = map.addMarker(new MarkerOptions()
                 .position(location.getLatLng())
                 .title(location.getName())
                 .snippet(location.getContent()));
+        marker.setTag(id);
     }
 
     private void moveMap(LatLng latLng) {
@@ -359,5 +370,13 @@ public class LocationFragment extends Fragment {
     public void onStop() {
         super.onStop();
         activity.getBottomNavigationView().setVisibility(View.VISIBLE);
+        if (locationGetAllTask != null) {
+            locationGetAllTask.cancel(true);
+            locationGetAllTask = null;
+        }
+        if (locationDeleteTask != null) {
+            locationDeleteTask.cancel(true);
+            locationDeleteTask = null;
+        }
     }
 }

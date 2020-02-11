@@ -18,11 +18,11 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.bozin.partylist_android.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
+import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.task.CommonTask;
 

@@ -32,7 +32,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.bozin.partylist_android.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -44,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.partylist_android.Party;

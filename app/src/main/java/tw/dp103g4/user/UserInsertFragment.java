@@ -6,15 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -27,15 +18,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bozin.partylist_android.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.File;
+import java.io.FileNotFoundException;
 
+import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.task.CommonTask;
 

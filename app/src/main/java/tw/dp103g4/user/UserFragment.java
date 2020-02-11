@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 
-import com.bozin.partylist_android.R;
+import tw.dp103g4.R;
 
 public class UserFragment extends Fragment {
     private FragmentActivity activity;

@@ -18,8 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.bozin.partylist_android.R;
-
+import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.task.NewsImageTask;

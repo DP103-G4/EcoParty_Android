@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.bozin.partylist_android.R;
+import tw.dp103g4.R;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -19,7 +19,8 @@ public class TabsPagerAdapter extends FragmentStatePagerAdapter {
 
     @StringRes
     private static final int[] TAB_TITLES =
-            new int[]{R.string.tab_text_1, R.string.tab_text_2};
+            new int[]{
+        R.string.tab_text_1, R.string.tab_text_2};
     private final Context mContext;
 
     public TabsPagerAdapter(Context context, FragmentManager fm) {

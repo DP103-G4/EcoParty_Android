@@ -4,7 +4,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.bozin.ecoparty_android"
+        applicationId "tw.dp103g4"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
