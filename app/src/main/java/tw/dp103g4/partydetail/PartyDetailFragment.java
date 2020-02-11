@@ -69,7 +69,8 @@ public class PartyDetailFragment extends Fragment {
     // bundle
 //    final int partyId = 138;
     final int userId = 2;
-
+    boolean islike = false;
+    boolean isIn = false;
 
 
     public PartyDetailFragment() {
@@ -411,11 +412,11 @@ public class PartyDetailFragment extends Fragment {
                             } else {
 //                                Common.showToast(getActivity(), R.string.textDeleteSuccess);
 
-                                party.setCountCurrent(party.getCountCurrent() - 1);
+                                party.setCountCurrent(party.getCountCurrent()-1);
                                 tvParticipant.setText(String.valueOf(party.getCountCurrent()));
                                 btIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.in, 0, 0, 0);
                                 btIn.setText("參加");
-                                partyInfo.setIsIn(false);
+                                isIn = false;
                             }
                         } catch (Exception e) {
                             Log.e(TAG, e.toString());

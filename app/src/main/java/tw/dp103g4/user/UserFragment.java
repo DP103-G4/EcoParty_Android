@@ -11,11 +11,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
+
+import java.lang.reflect.Array;
 
 import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
@@ -49,7 +53,9 @@ public class UserFragment extends Fragment {
         login = memId != 0;
 
         final int[] actionGuest = {R.id.action_userFragment_to_loginFragment};
-        final int[] actionUser = {0, R.id.action_userFragment_to_userDetailFragment, R.id.action_userFragment_to_userPasswordFragment, R.id.action_userFragment2_to_myPartyFragment};
+        final int[] actionUser = {0, R.id.action_userFragment_to_userDetailFragment,
+                R.id.action_userFragment_to_userPasswordFragment,
+        R.id.action_userFragment2_to_myPartyFragment};
         userItem = view.findViewById(R.id.userItem);
         String[] itemArray = getResources().getStringArray(login ? R.array.itemUser : R.array.itemGuest);
         listAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, itemArray);
@@ -69,7 +75,7 @@ public class UserFragment extends Fragment {
                                 .putInt("id", 0).apply();
                         Navigation.findNavController(view).popBackStack(R.id.partyFragment, false);
                     } else if (position != 0) {
-                        Navigation.findNavController(view).navigate(actionUser[position]);
+                        Navigation.findNavController(view).navigate(action[position]);
                     }
                 } else {
                     Navigation.findNavController(view).navigate(action[position]);
