@@ -149,17 +149,27 @@ public class FriendInsertFragment extends Fragment {
                     } catch (Exception e) {
                         Log.e(TAG, e.toString());
                     }
-                    if (user==null) {
-                        Common.showToast(getActivity(), R.string.textSearchUserFail);
+                    if (user==null || userId == user.getId()) {
+                        String type = "";
+                        if(user == null){
+                            type = "無法找到該用戶!";
+                        }else{
+                            type = "無法將自己的帳號加為好友歐！";
+                        }
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(type)
+                                .setNegativeButton("確定",null).create()
+                                .show();
+//                        Common.showToast(getActivity(), R.string.textSearchUserFail);
                     } else {
                         FriendShip isInvite = getIsInvite(userId,user.getId());
                             if(!isInvite.getNoInsert()){
                                 String type = "";
-                                if (isInvite.getIsInvite()){
-                                    type = "已經是好友囉！";
-                                }else{
-                                    type = "已發出邀請！";
-                                }
+                                    if (isInvite.getIsInvite()){
+                                        type = "已經是好友囉！";
+                                    }else{
+                                        type = "已發出邀請！";
+                                    }
                                 new AlertDialog.Builder(getActivity())
                                         .setTitle(user.getAccount() + type)
                                         .setNegativeButton("確定",null).create()
