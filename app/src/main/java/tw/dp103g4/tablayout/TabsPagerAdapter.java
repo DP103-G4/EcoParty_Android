@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import tw.dp103g4.R;
 
-
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.

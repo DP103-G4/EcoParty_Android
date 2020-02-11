@@ -31,6 +31,14 @@ import java.util.List;
 import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.task.CommonTask;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import tw.dp103g4.R;
 
 
 public class ParticipantListFragment extends Fragment {

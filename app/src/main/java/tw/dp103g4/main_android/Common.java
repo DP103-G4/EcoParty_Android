@@ -12,6 +12,7 @@ public class Common {
     public static String URL_SERVER = "http://10.0.2.2:8080/EcoParty/";
     //偏好設定檔叫做member
     public static final String PREFERENCE_MEMBER = "member";
+    //偏好設定檔叫做member
 
     public static int getUserId(Context context) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCE_MEMBER, Context.MODE_PRIVATE);

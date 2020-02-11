@@ -61,9 +61,6 @@ public class LoginFragment extends Fragment {
         etPassword = view.findViewById(R.id.etPassword);
 
 
-        //etPassword鍵盤收合
-
-
                 btRegister = view.findViewById(R.id.btRegister);
         btLogin = view.findViewById(R.id.btLogin);
 
@@ -163,7 +160,6 @@ public class LoginFragment extends Fragment {
         return id;
 
     }
-
 
 
 

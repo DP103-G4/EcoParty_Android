@@ -65,6 +65,9 @@
         <action
             android:id="@+id/action_userFragment_to_partyFragment"
             app:destination="@id/partyFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_userPasswordFragment2"
+            app:destination="@id/userPasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/informFragment"
@@ -79,6 +82,9 @@
         <action
             android:id="@+id/action_partyDetailFragment_to_participantListFragment"
             app:destination="@id/participantListFragment" />
+        <action
+            android:id="@+id/action_partyDetailFragment_to_locationFragment"
+            app:destination="@id/locationFragment" />
     </fragment>
     <fragment
         android:id="@+id/partyInsertFragment"
@@ -110,6 +116,12 @@
         <action
             android:id="@+id/action_loginFragment_to_userInsertFragment"
             app:destination="@id/userInsertFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_userForgetFragment"
+            app:destination="@id/userForgetFragment" />
     </fragment>
     <fragment
         android:id="@+id/userInsertFragment"
@@ -122,23 +134,28 @@
         android:label="fragment_user_detail"
         tools:layout="@layout/fragment_user_detail" />
     <fragment
+        android:id="@+id/participantListFragment"
+        android:name="tw.dp103g4.partydetail.ParticipantListFragment"
+        android:label="fragment_participant_list"
+        tools:layout="@layout/fragment_participant_list" />
+    <fragment
         android:id="@+id/friendInsertFragment"
         android:name="tw.dp103g4.friend.FriendInsertFragment"
         android:label="fragment_friend_insert"
         tools:layout="@layout/fragment_friend_insert" />
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="tw.dp103g4.location.LocationFragment"
+        android:label="fragment_location"
+        tools:layout="@layout/fragment_location" />
     <fragment
         android:id="@+id/userPasswordFragment"
         android:name="tw.dp103g4.user.UserPasswordFragment"
         android:label="fragment_user_password"
         tools:layout="@layout/fragment_user_password" />
     <fragment
-        android:id="@+id/participantListFragment"
-        android:name="tw.dp103g4.partydetail.ParticipantListFragment"
-        android:label="fragment_participant_list"
-        tools:layout="@layout/fragment_participant_list" />
-    <fragment
-        android:id="@+id/locationFragment"
-        android:name="tw.dp103g4.location.LocationFragment"
-        android:label="fragment_location"
-        tools:layout="@layout/fragment_location" />
+        android:id="@+id/userForgetFragment"
+        android:name="tw.dp103g4.user.UserForgetFragment"
+        android:label="fragment_user_forget"
+        tools:layout="@layout/fragment_user_forget" />
 </navigation>

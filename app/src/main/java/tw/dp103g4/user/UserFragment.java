@@ -53,7 +53,9 @@ public class UserFragment extends Fragment {
         login = memId != 0;
 
         final int[] actionGuest = {R.id.action_userFragment_to_loginFragment};
-        final int[] actionUser = {0, R.id.action_userFragment_to_userDetailFragment, R.id.action_userFragment_to_userPasswordFragment};
+        final int[] actionUser = {0, R.id.action_userFragment_to_userDetailFragment,
+                R.id.action_userFragment_to_userPasswordFragment,
+        R.id.action_userFragment2_to_myPartyFragment};
         userItem = view.findViewById(R.id.userItem);
         String[] itemArray = getResources().getStringArray(login ? R.array.itemUser : R.array.itemGuest);
         listAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, itemArray);

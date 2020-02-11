@@ -66,6 +66,8 @@
     <string name="textUpdateFail">更新失敗</string>
     <string name="textUpdateSuccess">更新成功</string>
     <string name="titleLocation">定位點</string>
+    <string name="textChageStateFail">chageStateFail</string>
+
 
     <string-array name="itemGuest">
         <item>登入/註冊</item>
@@ -78,5 +80,6 @@
         <item>我的活動</item>
         <item>登出</item>
     </string-array>
+
 
 </resources>

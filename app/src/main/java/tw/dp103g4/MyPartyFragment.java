@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
+import tw.dp103g4.R;
 import com.google.android.material.tabs.TabLayout;
 
 import tw.dp103g4.main_android.MainActivity;
