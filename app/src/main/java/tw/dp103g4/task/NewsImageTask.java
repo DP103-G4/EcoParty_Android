@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.bozin.partylist_android.R;
+import tw.dp103g4.R;
 import com.google.gson.JsonObject;
 
 import java.io.BufferedInputStream;

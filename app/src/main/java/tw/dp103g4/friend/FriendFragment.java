@@ -3,8 +3,11 @@ package tw.dp103g4.friend;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,11 +24,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bozin.partylist_android.R;
+import tw.dp103g4.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -35,6 +39,7 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import tw.dp103g4.main_android.Common;
@@ -56,6 +61,8 @@ public class FriendFragment extends Fragment {
     private List<NewestTalk> newestTalks;
     private Button btInsert;
     private int userId = 2;
+    //socket
+    private LocalBroadcastManager broadcastManager;
 
 
     @Override
@@ -63,7 +70,10 @@ public class FriendFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = getActivity();
         activity.setTitle("訊息");
-
+        //註冊 MsgSocket
+        broadcastManager = LocalBroadcastManager.getInstance(activity);
+        registerMsg();
+        Common.connectServer(activity, userId);
 
     }
 
@@ -467,6 +477,39 @@ public class FriendFragment extends Fragment {
         }
     }
 
+    //wedSocket
+    //接socket訊息
+    private void registerMsg(){
+        IntentFilter newMsgFilter = new IntentFilter("newMsg");
+        broadcastManager.registerReceiver(newMsgReceiver, newMsgFilter);
+    }
+    private BroadcastReceiver newMsgReceiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            ChatMsg chatMsg = new Gson().fromJson(message, ChatMsg.class);
+            for (int i = 0; i < newestTalks.size(); i++) {
+                if (newestTalks.get(i).getSenderId() == chatMsg.getSender()) {
+                    NewestTalk newestTalk = newestTalks.remove(i);
+                    newestTalk.setContent(chatMsg.getMessage());
+                    newestTalk.setNewMsgTime(new Date());
+                    newestTalks.add(0, newestTalk);
+                    NewestTalkAdapter newestTalkAdapter = (NewestTalkAdapter) rvFriendMsg.getAdapter();
+                    if (newestTalkAdapter != null){
+                        newestTalkAdapter.setTalks(newestTalks);
+                        newestTalkAdapter.notifyDataSetChanged();
+                        break;
+                    }
+                }
+            }
+            Log.d(TAG, message);
+        }
+    };
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        broadcastManager.unregisterReceiver(newMsgReceiver);
+//        Common.disconnectServer();
+    }
 }

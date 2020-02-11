@@ -4,10 +4,41 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.Toast;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import tw.dp103g4.friend.ChatWebSocketClient;
+
 public class Common {
+    private final static String TAG = "CommonSocket";
     public static String URL_SERVER = "http://10.0.2.2:8080/EcoParty/";
+    public static String URI_SERVER = "ws://10.0.2.2:8080/EcoParty/SocketServer/";
+    public static ChatWebSocketClient chatWebSocketClient;
+
+    //建立webSocket連線
+    public static void connectServer(Context context, int userId) {
+       URI uri = null;
+       try{
+           Log.d(TAG, URI_SERVER + userId);
+           uri = new URI(URI_SERVER + userId);
+       }catch (URISyntaxException e){
+           Log.e(TAG, e.toString());
+       }
+        if (chatWebSocketClient == null) {
+            chatWebSocketClient = new ChatWebSocketClient(uri, context);
+            chatWebSocketClient.connect();
+        }
+    }
+    // 中斷WebSocket連線
+    public static void disconnectServer() {
+        if (chatWebSocketClient != null) {
+            chatWebSocketClient.close();
+            chatWebSocketClient = null;
+        }
+    }
 
     // check if the device connect to the network
     public static boolean networkConnected(Activity activity) {

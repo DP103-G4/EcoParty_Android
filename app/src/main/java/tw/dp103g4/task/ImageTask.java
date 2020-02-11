@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.bozin.partylist_android.R;
+import tw.dp103g4.R;
 import com.google.gson.JsonObject;
 
 import java.io.BufferedInputStream;
@@ -37,7 +37,7 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
     @Override
     protected Bitmap doInBackground(Object... params) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("action", "getImage");
+        jsonObject.addProperty("action", "getUserImage");
         jsonObject.addProperty("id",id);
         jsonObject.addProperty("imageSize",imageSize);
         return getRemoteImage(url, jsonObject.toString());

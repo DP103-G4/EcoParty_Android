@@ -1,11 +1,15 @@
 package tw.dp103g4.friend;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +26,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bozin.partylist_android.R;
+import tw.dp103g4.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -31,12 +35,15 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.ImageTask;
+
+import static tw.dp103g4.main_android.Common.chatWebSocketClient;
 
 
 public class FriendMsgFragment extends Fragment {
@@ -52,11 +59,19 @@ public class FriendMsgFragment extends Fragment {
     private String account;
     private int userId = 2;
 
+    //socket
+    private LocalBroadcastManager broadcastManager;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
+        //註冊socket
+        broadcastManager = LocalBroadcastManager.getInstance(activity);
+        registerMsg();
+        Common.connectServer(activity, userId);
     }
 
     @Override
@@ -140,6 +155,12 @@ public class FriendMsgFragment extends Fragment {
                         etMsg.setText("");
 //                        Common.showToast(getActivity(), R.string.textInsertSuccess);
                     }
+
+                    //socket
+                    ChatMsg chatMsg = new ChatMsg("newMsg", userId, friendId, content);
+                    String newMsgJson = new Gson().toJson(chatMsg);
+                    chatWebSocketClient.send(newMsgJson);
+
                 } else {
                     Common.showToast(getActivity(), R.string.textNoNetwork);
                 }
@@ -255,7 +276,6 @@ public class FriendMsgFragment extends Fragment {
 
     }
 
-
     private List<Talk> getTalks() {
         List<Talk> talks = null;
         if (Common.networkConnected(activity)) {
@@ -300,5 +320,40 @@ public class FriendMsgFragment extends Fragment {
     public void onStop() {
         super.onStop();
         activity.getBottomNavigationView().setVisibility(View.VISIBLE);
+    }
+
+    //wedSocket
+    //接訊息 key: "newMsg"
+    private void registerMsg(){
+        IntentFilter newMsgFilter = new IntentFilter("newMsg");
+        broadcastManager.registerReceiver(newMsgReceiver, newMsgFilter);
+    }
+    //處理訊息
+    private BroadcastReceiver newMsgReceiver = new BroadcastReceiver(){
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            ChatMsg chatMsg = new Gson().fromJson(message, ChatMsg.class);
+            if (userId == chatMsg.getReceiver()) {
+                Talk newtalk = new Talk(chatMsg.getReceiver(),chatMsg.getSender(),-1,chatMsg.getMessage(),new Date());
+                talks.add(newtalk);
+                    TalkAdapter talkAdapter = (TalkAdapter) rvMsg.getAdapter();
+                    if (talkAdapter != null){
+                        talkAdapter.setTalks(talks);
+                        talkAdapter.notifyDataSetChanged();
+                        rvMsg.scrollToPosition(talks.size()-1);
+                    }
+            }
+
+            Log.d(TAG, message);
+        }
+    };
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Fragment頁面切換時解除註冊，但不需要關閉WebSocket，
+        // 否則回到前頁好友列表，會因為斷線而無法顯示好友
+        broadcastManager.unregisterReceiver(newMsgReceiver);
     }
 }

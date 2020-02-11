@@ -38,7 +38,7 @@
         tools:layout="@layout/fragment_piece" />
     <fragment
         android:id="@+id/myPartyFragment"
-        android:name="com.bozin.ecoparty_android.MyPartyFragment"
+        android:name="tw.dp103g4.MyPartyFragment"
         android:label="fragment_my_party"
         tools:layout="@layout/fragment_my_party" />
     <fragment
