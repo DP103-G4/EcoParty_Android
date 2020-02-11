@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.bozin.partylist_android.R;
+import tw.dp103g4.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -133,7 +133,7 @@ public class PartyListFragment extends Fragment {
 
     private void showPartyStart(List<Party> partyStart) {
         if (partyStart == null || partyStart.isEmpty()) {
-            Common.showToast(activity, R.string.textNoPartiesFound);
+//            Common.showToast(activity, R.string.textNoPartiesFound);
         }
         PartyStartAdapter partyStartAdapter = (PartyStartAdapter) rvPartyStart.getAdapter();
         if (partyStartAdapter == null) {

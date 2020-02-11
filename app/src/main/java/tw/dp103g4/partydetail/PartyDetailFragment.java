@@ -28,7 +28,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bozin.partylist_android.R;
+import tw.dp103g4.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -204,6 +204,13 @@ public class PartyDetailFragment extends Fragment {
             showMsgList(msgList);
 
         }
+
+        btMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_partyDetailFragment_to_locationFragment);
+            }
+        });
 
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override

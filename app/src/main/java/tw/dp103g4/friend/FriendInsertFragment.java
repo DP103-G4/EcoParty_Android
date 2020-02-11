@@ -1,7 +1,6 @@
 package tw.dp103g4.friend;
 
 
-import android.accounts.Account;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +13,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bozin.partylist_android.R;
+import tw.dp103g4.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -37,6 +38,7 @@ import tw.dp103g4.main_android.Common;
 import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.ImageTask;
+import tw.dp103g4.user.User;
 
 
 public class FriendInsertFragment extends Fragment {
@@ -113,42 +115,42 @@ public class FriendInsertFragment extends Fragment {
                     if (user==null) {
                         Common.showToast(getActivity(), R.string.textSearchUserFail);
                     } else {
-                            if(getIsInvite(userId,user.getUserId())){
-                                new AlertDialog.Builder(getActivity())
-                                        .setTitle(user.getAccount() + "已經是好友囉！")
-                                        .setNegativeButton("確定",null).create()
-                                        .show();
-                            }else{
-                                new AlertDialog.Builder(getActivity())
-                                        .setTitle("是否要邀請 " + user.getAccount() + " 成為好友？")
-                                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (Common.networkConnected(activity)) {
-                                            String url = Common.URL_SERVER + "/FriendShipServlet";
-                                            JsonObject jsonObject = new JsonObject();
-                                            jsonObject.addProperty("action", "friendShipInsert");
-                                            jsonObject.addProperty("idOne", userId);
-                                            jsonObject.addProperty("idTwo", user.getUserId());
-                                            int count = 0;
-                                            try {
-                                                insertFriendTask = new CommonTask(url, jsonObject.toString());
-                                                String result = insertFriendTask.execute().get();
-                                                count = Integer.valueOf(result.trim());
-                                            } catch (Exception e) {
-                                                Log.e(TAG, e.toString());
-                                            }
-                                            if (count == 0) {
-                                                Common.showToast(activity, R.string.textFriendShipInsertFail);
+                        if(getIsInvite(userId,user.getId())){
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle(user.getAccount() + "已經是好友囉！")
+                                    .setNegativeButton("確定",null).create()
+                                    .show();
+                        }else{
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("是否要邀請 " + user.getAccount() + " 成為好友？")
+                                    .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Common.networkConnected(activity)) {
+                                                String url = Common.URL_SERVER + "/FriendShipServlet";
+                                                JsonObject jsonObject = new JsonObject();
+                                                jsonObject.addProperty("action", "friendShipInsert");
+                                                jsonObject.addProperty("idOne", userId);
+                                                jsonObject.addProperty("idTwo", user.getId());
+                                                int count = 0;
+                                                try {
+                                                    insertFriendTask = new CommonTask(url, jsonObject.toString());
+                                                    String result = insertFriendTask.execute().get();
+                                                    count = Integer.valueOf(result.trim());
+                                                } catch (Exception e) {
+                                                    Log.e(TAG, e.toString());
+                                                }
+                                                if (count == 0) {
+                                                    Common.showToast(activity, R.string.textFriendShipInsertFail);
+                                                } else {
+                                                    Common.showToast(activity, R.string.textFriendShipInsertSuccess);
+                                                }
                                             } else {
-                                                Common.showToast(activity, R.string.textFriendShipInsertSuccess);
+                                                Common.showToast(activity, R.string.textNoNetwork);
                                             }
-                                        } else {
-                                            Common.showToast(activity, R.string.textNoNetwork);
                                         }
-                                    }
-                                }).setNegativeButton("取消",null).create()
-                                .show();}
+                                    }).setNegativeButton("取消",null).create()
+                                    .show();}
                         Common.showToast(getActivity(), R.string.textSearchUserSuccess);
                     }
                 } else {
@@ -221,10 +223,10 @@ public class FriendInsertFragment extends Fragment {
                 public void onClick(View v) {
                     insertFriend(friendShip.getFriendId(),userId);
                     if(count!= 0){
-                    friendShips.remove(friendShip);
-                    InsertFriendAdapter.this.notifyDataSetChanged();
-                    // 外面List也必須移除選取的List
-                    FriendInsertFragment.this.friendShips.remove(friendShip);}
+                        friendShips.remove(friendShip);
+                        InsertFriendAdapter.this.notifyDataSetChanged();
+                        // 外面List也必須移除選取的List
+                        FriendInsertFragment.this.friendShips.remove(friendShip);}
                 }
             });
             holder.btDelete.setOnClickListener(new View.OnClickListener() {
