@@ -125,7 +125,7 @@
                         android:layout_width="@dimen/buttonWidth"
                         android:layout_height="@dimen/buttonHeight"
                         android:text="進行中"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/tvTime"
@@ -147,7 +147,7 @@
                         android:drawablePadding="-10dp"
                         android:paddingLeft="20dp"
                         android:text="收藏"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/btIn"
@@ -160,7 +160,7 @@
                         android:includeFontPadding="false"
                         android:paddingLeft="20dp"
                         android:text="參加"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/btSet"
@@ -170,7 +170,7 @@
                         android:layout_weight="1"
                         android:includeFontPadding="false"
                         android:text="指派工作人員"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/btShare"
@@ -182,7 +182,7 @@
                         android:drawablePadding="-10dp"
                         android:paddingLeft="20dp"
                         android:text="分享"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -199,7 +199,7 @@
                         android:layout_margin="@dimen/marginSize"
                         android:layout_weight="1"
                         android:text="點名系統"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/btQR"
@@ -208,7 +208,7 @@
                         android:layout_margin="@dimen/marginSize"
                         android:layout_weight="1"
                         android:text="QRcode 報到"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/btMap"
@@ -217,7 +217,7 @@
                         android:layout_margin="@dimen/marginSize"
                         android:layout_weight="1"
                         android:text="活動地圖"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
 
                     <Button
                         android:id="@+id/btICC"
@@ -226,7 +226,7 @@
                         android:layout_margin="@dimen/marginSize"
                         android:layout_weight="1"
                         android:text="ICC表格"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout

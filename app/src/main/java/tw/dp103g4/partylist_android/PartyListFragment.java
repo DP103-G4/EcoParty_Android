@@ -2,6 +2,7 @@ package tw.dp103g4.partylist_android;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +41,8 @@ import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.CoverImageTask;
 import tw.dp103g4.task.NewsImageTask;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class PartyListFragment extends Fragment {
     private static final String TAG = "TAG_PartyList";
     private Activity activity;
@@ -72,12 +75,16 @@ public class PartyListFragment extends Fragment {
         SearchView searchView = view.findViewById(R.id.searchView);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         rvPartyStart = view.findViewById(R.id.rvPartyStart);
-        rvPartyStart.setLayoutManager(new LinearLayoutManager(activity));
+        rvPartyStart.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
         rvParty = view.findViewById(R.id.rvParty);
         rvParty.setLayoutManager(new GridLayoutManager(activity, 2));
         rvNews = view.findViewById(R.id.rvNews);
         rvNews.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
-        partyStart = getPartyStart();
+
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        final int userId = pref.getInt("id", 0);
+
+        partyStart = getPartyStart(userId);
         showPartyStart(partyStart);
         parties = getParties();
         showParties(parties);
@@ -85,11 +92,12 @@ public class PartyListFragment extends Fragment {
         showNews(news);
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(rvNews);
+        pagerSnapHelper.attachToRecyclerView(rvPartyStart);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 parties = getParties();
-                partyStart = getPartyStart();
+                partyStart = getPartyStart(userId);
                 swipeRefreshLayout.setRefreshing(true);
                 showParties(parties);
                 showPartyStart(partyStart);
@@ -144,21 +152,22 @@ public class PartyListFragment extends Fragment {
         }
     }
 
-    private List<Party> getPartyStart() {
+    private List<Party> getPartyStart(int userId) {
         List<Party> partyStart = null;
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "PartyServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getCurrentParty");
             jsonObject.addProperty("state", 3);
-            jsonObject.addProperty("participantId", 2);
+            jsonObject.addProperty("participantId", userId);
             String jsonOut = jsonObject.toString();
             partyGetAllTask = new CommonTask(url, jsonOut);
             try {
                 String jsonIn = partyGetAllTask.execute().get();
                 Type listType = new TypeToken<List<Party>>() {
                 }.getType();
-                partyStart = new Gson().fromJson(jsonIn, listType);
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                partyStart = gson.fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -365,7 +374,7 @@ public class PartyListFragment extends Fragment {
         public PartyStartAdapter(Context context, List<Party> partyStart) {
             layoutInflater = LayoutInflater.from(context);
             this.partyStart = partyStart;
-            imageSize = getResources().getDisplayMetrics().widthPixels / 2;
+            imageSize = getResources().getDisplayMetrics().widthPixels / 3;
         }
 
         void setPartyStart(List<Party> partyStart) {
@@ -395,11 +404,20 @@ public class PartyListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull PartyStartViewHolder holder, int position) {
-            Party mPartyStart = partyStart.get(position);
+            final Party mPartyStart = partyStart.get(position);
             String url = Common.URL_SERVER + "PartyServlet";
             int id = mPartyStart.getId();
             partyImageTask = new CoverImageTask(url, id, imageSize, holder.ivPartyStart);
             partyImageTask.execute();
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("partyId", mPartyStart.getId());
+                    Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_partyDetailFragment, bundle);
+                }
+            });
         }
 
     }

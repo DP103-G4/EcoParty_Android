@@ -3,6 +3,7 @@ package tw.dp103g4.location;
 
 import android.Manifest;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -56,6 +57,8 @@ import java.util.List;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.task.CommonTask;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class LocationFragment extends Fragment {
     private static final int REQ_CHECK_SETTINGS = 101;
@@ -128,8 +131,15 @@ public class LocationFragment extends Fragment {
                 map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng latLng) {
-                        int partyId = 4;
-                        int userId = 2;
+                        final Bundle bundle = getArguments();
+                        if (bundle == null || bundle.getInt("partyId") == 0) {
+                            Common.showToast(activity, R.string.textNoParticipantFound);
+                            navController.popBackStack();
+                            return;
+                        }
+                        int partyId = bundle.getInt("partyId");
+                        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+                        int userId = pref.getInt("id", 0);
                         double latitude = latLng.latitude;
                         double longitude = latLng.longitude;
                         String name = "aaa";
