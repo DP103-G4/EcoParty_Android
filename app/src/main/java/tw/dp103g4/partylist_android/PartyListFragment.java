@@ -55,6 +55,9 @@ public class PartyListFragment extends Fragment {
     private int imageSize;
     private NewsImageTask newsImageTask;
     private FloatingActionButton floatingActionButton;
+    //Socket
+    private int userId = 2;
+    //------
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -438,5 +441,7 @@ public class PartyListFragment extends Fragment {
             newsImageTask = null;
         }
     }
+
+
 
 }

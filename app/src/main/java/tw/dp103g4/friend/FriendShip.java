@@ -8,6 +8,7 @@ public class FriendShip {
 	private int idTwo;
 	private int friendId; 
 	private boolean isInvite;
+	private boolean noInsert;
 	private String account;
 		
 	
@@ -24,6 +25,11 @@ public class FriendShip {
 		super();
 		this.friendId = friendId;
 		this.account = account;
+	}
+	public FriendShip (boolean noInsert, boolean isIvite) {
+		super();
+		this.noInsert = noInsert;
+		this.isInvite = isIvite;
 	}
 	
 
@@ -68,5 +74,12 @@ public class FriendShip {
 	public void setIdTwo(int idTwo) {
 		this.idTwo = idTwo;
 	}
-
+	public boolean getNoInsert() {
+		return noInsert;
+	}
+	public void setNoInsert(boolean noInsert) {
+		this.noInsert = noInsert;
+	}
+	
+	
 }

@@ -1,19 +1,24 @@
 package tw.dp103g4.friend;
 
 
+import android.accounts.Account;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +37,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import tw.dp103g4.main_android.Common;
@@ -40,11 +47,15 @@ import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.ImageTask;
 import tw.dp103g4.user.User;
 
+import static android.content.Context.MODE_PRIVATE;
+import static tw.dp103g4.main_android.Common.chatWebSocketClient;
+
 
 public class FriendInsertFragment extends Fragment {
     private static final String TAG = "TAG_FInsertFragment";
     private MainActivity activity;
     private RecyclerView rvAddFriend;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private CommonTask insertFriendTask,updateIsInviteTask;
     private ImageTask insertFriendImageTask;
     private Button btQRCode;
@@ -52,14 +63,26 @@ public class FriendInsertFragment extends Fragment {
     private EditText etSearch;
     private List<FriendShip> friendShips;
     private User user = null;
-    private int userId = 2;
     private int count = 0;
+
+    private SharedPreferences pref;
+    private int userId;
+
+    //socket
+    private LocalBroadcastManager broadcastManager;
+
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
+        //註冊socket
+        broadcastManager = LocalBroadcastManager.getInstance(activity);
+        registerMsg();
+        Common.connectServer(activity, userId);
+
+
     }
 
     @Override
@@ -72,11 +95,15 @@ public class FriendInsertFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        userId = pref.getInt("id", 0);
+
         activity.getBottomNavigationView().setVisibility(View.GONE);
         rvAddFriend = view.findViewById(R.id.rvAddFriend);
         etSearch = view.findViewById(R.id.etSearch);
         btQRCode = view.findViewById(R.id.btQR);
         ibtSearch = view.findViewById(R.id.ibtSearch);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         androidx.appcompat.widget.Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setTitle("加入好友");
@@ -91,6 +118,16 @@ public class FriendInsertFragment extends Fragment {
 
         friendShips = getFriendShips();
         showFriendShips(friendShips);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                friendShips = getFriendShips();
+                swipeRefreshLayout.setRefreshing(true);
+                showFriendShips(friendShips);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         ibtSearch.setOnClickListener(new View.OnClickListener() {
 
@@ -112,45 +149,66 @@ public class FriendInsertFragment extends Fragment {
                     } catch (Exception e) {
                         Log.e(TAG, e.toString());
                     }
-                    if (user==null) {
-                        Common.showToast(getActivity(), R.string.textSearchUserFail);
-                    } else {
-                        if(getIsInvite(userId,user.getId())){
-                            new AlertDialog.Builder(getActivity())
-                                    .setTitle(user.getAccount() + "已經是好友囉！")
-                                    .setNegativeButton("確定",null).create()
-                                    .show();
+                    if (user==null || userId == user.getId()) {
+                        String type = "";
+                        if(user == null){
+                            type = "無法找到該用戶!";
                         }else{
-                            new AlertDialog.Builder(getActivity())
-                                    .setTitle("是否要邀請 " + user.getAccount() + " 成為好友？")
-                                    .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (Common.networkConnected(activity)) {
-                                                String url = Common.URL_SERVER + "/FriendShipServlet";
-                                                JsonObject jsonObject = new JsonObject();
-                                                jsonObject.addProperty("action", "friendShipInsert");
-                                                jsonObject.addProperty("idOne", userId);
-                                                jsonObject.addProperty("idTwo", user.getId());
-                                                int count = 0;
-                                                try {
-                                                    insertFriendTask = new CommonTask(url, jsonObject.toString());
-                                                    String result = insertFriendTask.execute().get();
-                                                    count = Integer.valueOf(result.trim());
-                                                } catch (Exception e) {
-                                                    Log.e(TAG, e.toString());
-                                                }
-                                                if (count == 0) {
-                                                    Common.showToast(activity, R.string.textFriendShipInsertFail);
-                                                } else {
-                                                    Common.showToast(activity, R.string.textFriendShipInsertSuccess);
-                                                }
-                                            } else {
-                                                Common.showToast(activity, R.string.textNoNetwork);
+                            type = "無法將自己的帳號加為好友歐！";
+                        }
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle(type)
+                                .setNegativeButton("確定",null).create()
+                                .show();
+//                        Common.showToast(getActivity(), R.string.textSearchUserFail);
+                    } else {
+                        FriendShip isInvite = getIsInvite(userId,user.getId());
+                            if(!isInvite.getNoInsert()){
+                                String type = "";
+                                    if (isInvite.getIsInvite()){
+                                        type = "已經是好友囉！";
+                                    }else{
+                                        type = "已發出邀請！";
+                                    }
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle(user.getAccount() + type)
+                                        .setNegativeButton("確定",null).create()
+                                        .show();
+                            }else{
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("是否要邀請 " + user.getAccount() + " 成為好友？")
+                                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (Common.networkConnected(activity)) {
+                                            String url = Common.URL_SERVER + "/FriendShipServlet";
+                                            JsonObject jsonObject = new JsonObject();
+                                            jsonObject.addProperty("action", "friendShipInsert");
+                                            jsonObject.addProperty("idOne", userId);
+                                            jsonObject.addProperty("idTwo", user.getId());
+                                            int count = 0;
+                                            try {
+                                                insertFriendTask = new CommonTask(url, jsonObject.toString());
+                                                String result = insertFriendTask.execute().get();
+                                                count = Integer.valueOf(result.trim());
+                                            } catch (Exception e) {
+                                                Log.e(TAG, e.toString());
                                             }
+                                            if (count == 0) {
+                                                Common.showToast(activity, R.string.textFriendShipInsertFail);
+                                            } else {
+                                                Common.showToast(activity, R.string.textFriendShipInsertSuccess);
+                                                //socket
+                                                ChatMsg chatMsg = new ChatMsg("newFriend", userId, user.getId(), user.getAccount());
+                                                String newFriendJson = new Gson().toJson(chatMsg);
+                                                chatWebSocketClient.send(newFriendJson);
+                                            }
+                                        } else {
+                                            Common.showToast(activity, R.string.textNoNetwork);
                                         }
-                                    }).setNegativeButton("取消",null).create()
-                                    .show();}
+                                    }
+                                }).setNegativeButton("取消",null).create()
+                                .show();}
                         Common.showToast(getActivity(), R.string.textSearchUserSuccess);
                     }
                 } else {
@@ -243,8 +301,8 @@ public class FriendInsertFragment extends Fragment {
 
         }
     }
-    private boolean getIsInvite(int userId, int friendId){
-        boolean isInvite = false;
+    private FriendShip getIsInvite(int userId, int friendId){
+        FriendShip isInvite = null;
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "/FriendShipServlet";
             JsonObject jsonObject = new JsonObject();
@@ -255,9 +313,7 @@ public class FriendInsertFragment extends Fragment {
             insertFriendTask = new CommonTask(url, jsonOut);
             try {
                 String jsonIn = insertFriendTask.execute().get();
-                Type listType = new TypeToken<Boolean>() {
-                }.getType();
-                isInvite = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(jsonIn, listType);
+                isInvite = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(jsonIn, FriendShip.class);
             } catch (Exception e) {
                 Log.e(TAG,e.toString());
             }
@@ -294,7 +350,7 @@ public class FriendInsertFragment extends Fragment {
     private void showFriendShips(List<FriendShip> friendShips) {
         if (friendShips== null || friendShips.isEmpty()) {
             Common.showToast(activity, R.string.textNoFriendShipFound);
-            return;
+            friendShips = new ArrayList<>();
         }
         InsertFriendAdapter insertFriendAdapter = (InsertFriendAdapter) rvAddFriend.getAdapter();
 
@@ -365,5 +421,38 @@ public class FriendInsertFragment extends Fragment {
     public void onStop() {
         super.onStop();
         activity.getBottomNavigationView().setVisibility(View.VISIBLE);
+    }
+
+    //wedSocket
+    //接訊息 key: "newFriend"
+    private void registerMsg(){
+        IntentFilter newFriendFilter = new IntentFilter("newFriend");
+        broadcastManager.registerReceiver(newMsgReceiver, newFriendFilter);
+    }
+    //處理訊息
+    private BroadcastReceiver newMsgReceiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            ChatMsg chatMsg = new Gson().fromJson(message, ChatMsg.class);
+            System.out.println(TAG+" : "+chatMsg.getMessage());
+            if(userId == chatMsg.getReceiver()){
+                FriendShip friendShip = new FriendShip(chatMsg.getSender(),chatMsg.getMessage());
+                friendShips.add(0,friendShip);
+                InsertFriendAdapter insertFriendAdapter= (InsertFriendAdapter) rvAddFriend.getAdapter();
+                if (insertFriendAdapter != null){
+                    insertFriendAdapter.setFriendShips(friendShips);
+                    insertFriendAdapter.notifyDataSetChanged();
+                }
+            }
+            Log.d(TAG, message);
+        }
+    };
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Fragment頁面切換時解除註冊，但不需要關閉WebSocket，
+        // 否則回到前頁好友列表，會因為斷線而無法顯示好友
+        broadcastManager.unregisterReceiver(newMsgReceiver);
     }
 }
