@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import tw.dp103g4.R;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,6 +48,8 @@ import static android.content.Context.MODE_PRIVATE;
 public class PartyListFragment extends Fragment {
     private static final String TAG = "TAG_PartyList";
     private Activity activity;
+    private BottomNavigationView bottomNavigationView;
+
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView rvParty, rvNews, rvPartyStart;
     private List<Party> parties, partyStart;
@@ -56,7 +60,7 @@ public class PartyListFragment extends Fragment {
     private NewsImageTask newsImageTask;
     private FloatingActionButton floatingActionButton;
     //Socket
-    private int userId = 2;
+//    private int userId = 2;
     //------
 
     @Override
@@ -74,6 +78,10 @@ public class PartyListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bottomNavigationView= activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+
+
         floatingActionButton = view.findViewById(R.id.btAdd);
         SearchView searchView = view.findViewById(R.id.searchView);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -111,6 +119,10 @@ public class PartyListFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (userId == 0) {
+                    Common.showToast(getActivity(), R.string.textNoLogin);
+                    return;
+                }
                 Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_partyInsertFragment);
             }
         });
@@ -440,6 +452,7 @@ public class PartyListFragment extends Fragment {
             newsImageTask.cancel(true);
             newsImageTask = null;
         }
+
     }
 
 

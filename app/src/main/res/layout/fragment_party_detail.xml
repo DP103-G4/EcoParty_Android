@@ -120,16 +120,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvTime"
                         tools:text="週六, 12月19日 14:00" />
 
-                    <Button
-                        android:id="@+id/btStart"
-                        android:layout_width="@dimen/buttonWidth"
-                        android:layout_height="@dimen/buttonHeight"
-                        android:text="進行中"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/tvTime"
-                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
@@ -139,7 +129,7 @@
 
                     <Button
                         android:id="@+id/btLike"
-                        android:layout_width="@dimen/buttonWidth"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/buttonHeight"
                         android:layout_margin="@dimen/marginSize"
                         android:layout_weight="1"
@@ -151,30 +141,34 @@
 
                     <Button
                         android:id="@+id/btIn"
-                        android:layout_width="@dimen/buttonWidth"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/buttonHeight"
                         android:layout_margin="@dimen/marginSize"
                         android:layout_weight="1"
                         android:drawableStart="@drawable/in"
                         android:drawablePadding="-10dp"
-                        android:includeFontPadding="false"
                         android:paddingLeft="20dp"
                         android:text="參加"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                     <Button
-                        android:id="@+id/btSet"
-                        android:layout_width="@dimen/buttonWidth"
+                        android:id="@+id/btStart"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/buttonHeight"
                         android:layout_margin="@dimen/marginSize"
                         android:layout_weight="1"
+                        android:drawableLeft="@drawable/start"
+                        android:drawablePadding="-10dp"
                         android:includeFontPadding="false"
-                        android:text="指派工作人員"
-                        android:visibility="gone" />
+                        android:paddingLeft="20dp"
+                        android:text="進行中"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                     <Button
                         android:id="@+id/btShare"
-                        android:layout_width="@dimen/buttonWidth"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/buttonHeight"
                         android:layout_margin="@dimen/marginSize"
                         android:layout_weight="1"
@@ -182,7 +176,8 @@
                         android:drawablePadding="-10dp"
                         android:paddingLeft="20dp"
                         android:text="分享"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                 </LinearLayout>
 
@@ -194,7 +189,7 @@
 
                     <Button
                         android:id="@+id/btRollCall"
-                        android:layout_width="@dimen/buttonWidth"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/buttonHeight"
                         android:layout_margin="@dimen/marginSize"
                         android:layout_weight="1"
@@ -203,7 +198,7 @@
 
                     <Button
                         android:id="@+id/btQR"
-                        android:layout_width="@dimen/buttonWidth"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/buttonHeight"
                         android:layout_margin="@dimen/marginSize"
                         android:layout_weight="1"
@@ -212,7 +207,7 @@
 
                     <Button
                         android:id="@+id/btMap"
-                        android:layout_width="@dimen/buttonWidth"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/buttonHeight"
                         android:layout_margin="@dimen/marginSize"
                         android:layout_weight="1"
@@ -221,7 +216,7 @@
 
                     <Button
                         android:id="@+id/btICC"
-                        android:layout_width="@dimen/buttonWidth"
+                        android:layout_width="wrap_content"
                         android:layout_height="@dimen/buttonHeight"
                         android:layout_margin="@dimen/marginSize"
                         android:layout_weight="1"

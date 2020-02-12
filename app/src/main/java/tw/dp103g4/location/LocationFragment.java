@@ -2,6 +2,7 @@ package tw.dp103g4.location;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -64,7 +65,7 @@ public class LocationFragment extends Fragment {
     private static final int REQ_CHECK_SETTINGS = 101;
     private static final int PER_ACCESS_LOCATION = 202;
     private static final String TAG = "TAG_LocationFragment";
-    private MainActivity activity;
+    private Activity activity;
     private MapView mapLocation;
     private GoogleMap map;
     private Location lastLocation;
@@ -78,7 +79,7 @@ public class LocationFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (MainActivity) getActivity();
+        activity = getActivity();
 
 
         locationRequest = LocationRequest.create()
@@ -107,7 +108,7 @@ public class LocationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        activity.getBottomNavigationView().setVisibility(View.GONE);
+
         mapLocation = view.findViewById(R.id.mapLocation);
         mapLocation.onCreate(savedInstanceState);
         mapLocation.onStart();
@@ -368,6 +369,5 @@ public class LocationFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        activity.getBottomNavigationView().setVisibility(View.VISIBLE);
     }
 }

@@ -27,9 +27,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView= findViewById(R.id.navigation);
+        bottomNavigationView = findViewById(R.id.navigation);
         NavController navController = Navigation.findNavController(this, R.id.nav_party_fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
 
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
         View messageTab = menuView.getChildAt(3);

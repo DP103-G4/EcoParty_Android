@@ -31,6 +31,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import tw.dp103g4.R;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -55,6 +57,7 @@ public class FriendFragment extends Fragment {
     private RecyclerView rvFriends;
     private RecyclerView rvFriendMsg;
     private Activity activity;
+    private BottomNavigationView bottomNavigationView;
     private CommonTask friendShipGetAllTask;
     private CommonTask friendShipDeleteTask;
     private CommonTask talkGetAllTask;
@@ -91,6 +94,9 @@ public class FriendFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bottomNavigationView= activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+
         pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         userId = pref.getInt("id", 0);
 
@@ -482,6 +488,7 @@ public class FriendFragment extends Fragment {
             friendShipDeleteTask.cancel(true);
             friendShipDeleteTask = null;
         }
+
     }
 
     //wedSocket

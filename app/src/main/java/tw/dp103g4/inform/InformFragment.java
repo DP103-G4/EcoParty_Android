@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import tw.dp103g4.R;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -33,6 +35,7 @@ import tw.dp103g4.task.CommonTask;
 public class InformFragment extends Fragment {
     private static final String TAG = "TAG_Inform";
     private FragmentActivity activity;
+    private BottomNavigationView bottomNavigationView;
     private RecyclerView rvInform;
     private List<Inform> informs;
     private CommonTask informGetAllTask;
@@ -54,6 +57,9 @@ public class InformFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bottomNavigationView = activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+
         rvInform = view.findViewById(R.id.rvInform);
         btInformIsRead = view.findViewById(R.id.btInformIsRead);
         rvInform.setLayoutManager(new LinearLayoutManager(activity));

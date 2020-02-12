@@ -28,10 +28,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
-        app:menu="@menu/tab_menu"
-        app:labelVisibilityMode="selected"
+        android:visibility="gone"
+        app:itemBackground="@null"
+        app:itemIconSize="25dp"
         app:itemIconTint="@color/select_bnv_color"
         app:itemTextColor="@color/select_bnv_color"
-        app:itemIconSize="25dp"
-        app:itemBackground="@null"/>
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/tab_menu"
+        tools:visibility="visible" />
 </LinearLayout>
