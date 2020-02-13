@@ -5,13 +5,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -50,12 +53,13 @@ public class PartyDetailFragment extends Fragment {
     private ImageView ivCover, ivOwner, ivParticipant, ivLocation;
     private ImageButton ibSend;
     private EditText etInput;
-    private Button btLike, btIn, btShare, bt;
+    private Button btLike, btIn, btShare, btStart, btSet, btQR, btRollCall, btMap, btICC;
     private List<PartyMessage> msgList;
     private CommonTask getMsgListTask;
     private CoverImageTask coverImageTask;
     private ScrollView scrollView;
     private ConstraintLayout participantLayout;
+    private final int review = 0, post = 1, close = 2, start = 3, end = 4, delete = 5;
 
     Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -65,8 +69,7 @@ public class PartyDetailFragment extends Fragment {
     // bundle
 //    final int partyId = 138;
     final int userId = 2;
-    boolean islike = false;
-    boolean isIn = false;
+
 
 
     public PartyDetailFragment() {
@@ -98,6 +101,7 @@ public class PartyDetailFragment extends Fragment {
                 navController.popBackStack();
             }
         });
+
         scrollView = view.findViewById(R.id.scrollView);
         tvName = view.findViewById(R.id.tvName);
         tvTime = view.findViewById(R.id.tvTime);
@@ -112,13 +116,21 @@ public class PartyDetailFragment extends Fragment {
         ivOwner = view.findViewById(R.id.ivOwner);
         ivParticipant = view.findViewById(R.id.ivMsg);
         ivLocation = view.findViewById(R.id.ivLocation);
+        btQR = view.findViewById(R.id.btQR);
+        btRollCall = view.findViewById(R.id.btRollCall);
+        btMap = view.findViewById(R.id.btMap);
+        btICC = view.findViewById(R.id.btICC);
+        btSet = view.findViewById(R.id.btSet);
         btLike = view.findViewById(R.id.btLike);
+        btStart = view.findViewById(R.id.btStart);
         btIn = view.findViewById(R.id.btIn);
         btShare = view.findViewById(R.id.btShare);
         ibSend = view.findViewById(R.id.ibSend);
         etInput = view.findViewById(R.id.etInput);
         rvMessage = view.findViewById(R.id.rvMessage);
         participantLayout = view.findViewById(R.id.participantLayout);
+
+
 
         Bundle bundle = getArguments();
         if (bundle == null || bundle.getInt("partyId") == 0) {
@@ -128,10 +140,11 @@ public class PartyDetailFragment extends Fragment {
         }
         final int partyId = bundle.getInt("partyId");
 
-        final Party party = getParty(partyId);
+        final PartyInfo partyInfo = getPartyInfo(partyId, userId);
+        final Party party = partyInfo.getParty();
 
         if (party != null) {
-            int imageSize = (getResources().getDisplayMetrics().widthPixels > 200)?getResources().getDisplayMetrics().widthPixels:200;
+            int imageSize = (getResources().getDisplayMetrics().widthPixels > 200) ? getResources().getDisplayMetrics().widthPixels : 200;
             String url = Common.URL_SERVER + "/PartyServlet";
             coverImageTask = new CoverImageTask(url, partyId, imageSize, ivCover);
             coverImageTask.execute();
@@ -146,9 +159,41 @@ public class PartyDetailFragment extends Fragment {
                 text += new SimpleDateFormat(" ~ E M月d日 H:mm").format(party.getEndTime());
             tvTime.setText(text);
             tvPostEndTime.setText(new SimpleDateFormat("E M月d日 H:mm").format(party.getPostEndTime()));
-            // join user table to get name
+
+            if (party.getOwnerId() == userId) {
+                btIn.setVisibility(View.GONE);
+                btQR.setVisibility(View.GONE);
+            } else {
+                btStart.setVisibility(View.GONE);
+                btSet.setVisibility(View.GONE);
+                btRollCall.setVisibility(View.GONE);
+                btICC.setVisibility(View.GONE);
+            }
+
+            if (party.getState() == post) {
+                btStart.setText("發布中");
+            } else if (party.getState() == close) {
+                btStart.setText("已截止");
+            } else if (party.getState() == start) {
+                btStart.setText("進行中");
+            }
+
+            if (partyInfo.getIsIn()) {
+                btIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.out, 0, 0, 0);
+                btIn.setText("已參加");
+            } else {
+                btIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.in, 0, 0, 0);
+                btIn.setText("參加");
+            }
+            if (partyInfo.getIsLike()) {
+                btLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unlike, 0, 0, 0);
+                btLike.setText("已收藏");
+            } else {
+                btLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.like, 0, 0, 0);
+                btLike.setText("收藏");
+            }
+
             tvOwner.setText(String.valueOf(party.getOwnerId()));
-            // 點擊事件
             tvParticipant.setText(String.valueOf(party.getCountCurrent()));
             tvLocation.setText(party.getLocation());
             tvAddress.setText(party.getAddress());
@@ -160,33 +205,154 @@ public class PartyDetailFragment extends Fragment {
 
         }
 
-//        String userId =
-//        int imageSize = 40;
-//        userImageTask = new CoverImageTask(url, userId, imageSize, ivOwner);
-//        userImageTask.execute();
+        btMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_partyDetailFragment_to_locationFragment);
+            }
+        });
+
+        btStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                PopupMenu popupMenu = new PopupMenu(activity, view, Gravity.END);
+                popupMenu.inflate(R.menu.start_menu);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        String text = "";
+                        int state = 0;
+
+                        switch (item.getItemId()) {
+                            case R.id.post:
+                                text = "發布中";
+                                state = post;
+                                break;
+                            case R.id.close:
+                                text = "已截止";
+                                state = close;
+                                break;
+                            case R.id.start:
+                                text = "進行中";
+                                state = start;
+                                break;
+                            case R.id.end:
+                                state = end;
+                                break;
+                            case R.id.delete:
+                                state = delete;
+                                break;
+                        }
+
+                        if (Common.networkConnected(activity)) {
+                            String url = Common.URL_SERVER + "PartyServlet";
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("action", "chagePartyState");
+                            jsonObject.addProperty("id", gson.toJson(party.getId()));
+                            jsonObject.addProperty("state", gson.toJson(state));
+                            String jsonOut = jsonObject.toString();
+
+                            int count = 0;
+                            try {
+                                String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                                System.out.println(jsonOut);
+                                count = Integer.valueOf(result.trim());
+
+                                if (count == 0) {
+                                    Common.showToast(getActivity(), R.string.textChageStateFail);
+                                } else {
+                                    party.setState(state);
+                                    btStart.setText(text);
+                                }
+                            } catch (Exception e) {
+                                Log.e(TAG, e.toString());
+                            }
+                        } else {
+                            Common.showToast(getActivity(), R.string.textNoNetwork);
+                        }
+
+                        return true;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
 
 
         btLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!islike) {
-                    // 加入收藏
-                    btLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unlike, 0, 0, 0);
-                    btLike.setText("已收藏");
-                    islike = true;
+                if (!partyInfo.getIsLike()) {
+                    if (Common.networkConnected(activity)) {
+                        PartyLike partyLike = new PartyLike(userId, partyId);
+
+                        String url = Common.URL_SERVER + "PartyLikeServlet";
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("action", "partyLikeInsert");
+                        jsonObject.addProperty("partyLike", gson.toJson(partyLike));
+                        String jsonOut = jsonObject.toString();
+
+                        int count = 0;
+                        try {
+                            String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                            System.out.println(jsonOut);
+                            count = Integer.valueOf(result.trim());
+
+                            if (count == 0) {
+//                                Common.showToast(getActivity(), R.string.textInsertFail);
+                            } else {
+//                                Common.showToast(getActivity(), R.string.textInsertSuccess);
+
+                                btLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.unlike, 0, 0, 0);
+                                btLike.setText("已收藏");
+                                partyInfo.setIsLike(true);
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, e.toString());
+                        }
+                    } else {
+                        Common.showToast(getActivity(), R.string.textNoNetwork);
+                    }
                 } else {
-                    // 取消收藏
-                    btLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.like, 0, 0, 0);
-                    btLike.setText("收藏");
-                    islike = false;
+                    if (Common.networkConnected(activity)) {
+                        PartyLike partyLike = new PartyLike(userId, partyId);
+
+                        String url = Common.URL_SERVER + "PartyLikeServlet";
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("action", "partyLikeDelete");
+                        jsonObject.addProperty("partyLike", gson.toJson(partyLike));
+                        String jsonOut = jsonObject.toString();
+
+                        int count = 0;
+                        try {
+                            String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                            System.out.println(jsonOut);
+                            count = Integer.valueOf(result.trim());
+
+                            if (count == 0) {
+//                                Common.showToast(getActivity(), R.string.textInsertFail);
+                            } else {
+//                                Common.showToast(getActivity(), R.string.textInsertSuccess);
+
+                                btLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.like, 0, 0, 0);
+                                btLike.setText("收藏");
+                                partyInfo.setIsLike(false);
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, e.toString());
+                        }
+                    } else {
+                        Common.showToast(getActivity(), R.string.textNoNetwork);
+                    }
                 }
             }
+
         });
 
         btIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!isIn) {
+                if (!partyInfo.getIsIn()) {
                     // 參加
                     if (Common.networkConnected(activity)) {
                         // 先不團報
@@ -209,11 +375,11 @@ public class PartyDetailFragment extends Fragment {
                             } else {
 //                                Common.showToast(getActivity(), R.string.textInsertSuccess);
 
-                                party.setCountCurrent(party.getCountCurrent()+1);
+                                party.setCountCurrent(party.getCountCurrent() + 1);
                                 tvParticipant.setText(String.valueOf(party.getCountCurrent()));
                                 btIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.out, 0, 0, 0);
                                 btIn.setText("已參加");
-                                isIn = true;
+                                partyInfo.setIsIn(true);
                             }
                         } catch (Exception e) {
                             Log.e(TAG, e.toString());
@@ -245,11 +411,11 @@ public class PartyDetailFragment extends Fragment {
                             } else {
 //                                Common.showToast(getActivity(), R.string.textDeleteSuccess);
 
-                                party.setCountCurrent(party.getCountCurrent()-1);
+                                party.setCountCurrent(party.getCountCurrent() - 1);
                                 tvParticipant.setText(String.valueOf(party.getCountCurrent()));
                                 btIn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.in, 0, 0, 0);
                                 btIn.setText("參加");
-                                isIn = false;
+                                partyInfo.setIsIn(false);
                             }
                         } catch (Exception e) {
                             Log.e(TAG, e.toString());
@@ -317,6 +483,7 @@ public class PartyDetailFragment extends Fragment {
             }
         });
 
+
     }
 
     private void showMsgList(List<PartyMessage> msgList) {
@@ -355,18 +522,19 @@ public class PartyDetailFragment extends Fragment {
         return msgList;
     }
 
-    private Party getParty(int id) {
-        Party party = null;
+    private PartyInfo getPartyInfo(int id, int userId) {
+        PartyInfo partyInfo = null;
 
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "PartyServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getParty");
             jsonObject.addProperty("id", id);
+            jsonObject.addProperty("userId", userId);
             String jsonOut = jsonObject.toString();
             try {
                 String jsonIn = new CommonTask(url, jsonOut).execute().get();
-                party = gson.fromJson(jsonIn, Party.class);
+                partyInfo = gson.fromJson(jsonIn, PartyInfo.class);
                 System.out.println(jsonOut);
                 System.out.println(jsonIn);
             } catch (Exception e) {
@@ -375,7 +543,7 @@ public class PartyDetailFragment extends Fragment {
         } else {
             Common.showToast(getActivity(), R.string.textNoNetwork);
         }
-        return party;
+        return partyInfo;
     }
 
     private class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {

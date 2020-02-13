@@ -2,6 +2,7 @@ package tw.dp103g4.partylist_android;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +41,8 @@ import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.CoverImageTask;
 import tw.dp103g4.task.NewsImageTask;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class PartyListFragment extends Fragment {
     private static final String TAG = "TAG_PartyList";
     private Activity activity;
@@ -52,6 +55,8 @@ public class PartyListFragment extends Fragment {
     private int imageSize;
     private NewsImageTask newsImageTask;
     private FloatingActionButton floatingActionButton;
+    private SharedPreferences pref;
+    private int memId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +73,8 @@ public class PartyListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        memId = pref.getInt("id", 0);
         floatingActionButton = view.findViewById(R.id.btAdd);
         SearchView searchView = view.findViewById(R.id.searchView);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -151,7 +158,7 @@ public class PartyListFragment extends Fragment {
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getCurrentParty");
             jsonObject.addProperty("state", 3);
-            jsonObject.addProperty("participantId", 2);
+            jsonObject.addProperty("participantId", memId);
             String jsonOut = jsonObject.toString();
             partyGetAllTask = new CommonTask(url, jsonOut);
             try {

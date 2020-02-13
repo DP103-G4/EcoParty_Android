@@ -66,7 +66,7 @@ public class UserInsertFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        activity.setTitle("Register");
+        activity.setTitle("註冊");
         return inflater.inflate(R.layout.fragment_insert, container, false);
     }
 

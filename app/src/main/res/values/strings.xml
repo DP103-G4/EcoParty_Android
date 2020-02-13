@@ -67,6 +67,20 @@
     <string name="txtDeleteFriendShipSuccess">delete friendship success</string>
 
     <string name="textNoParticipantFound">No Participant Found</string>
+    <string name="textChageStateFail">chageStateFail</string>
+
+
+    <string-array name="itemGuest">
+        <item>登入/註冊</item>
+    </string-array>
+
+    <string-array name="itemUser">
+        <item>嗨</item>
+        <item>編輯會員資料</item>
+        <item>修改密碼</item>
+        <item>我的活動</item>
+        <item>登出</item>
+    </string-array>
 
 
 </resources>

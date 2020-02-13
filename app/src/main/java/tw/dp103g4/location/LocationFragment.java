@@ -3,6 +3,7 @@ package tw.dp103g4.location;
 
 import android.Manifest;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -57,6 +58,8 @@ import tw.dp103g4.main_android.Common;
 import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.task.CommonTask;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class LocationFragment extends Fragment {
     private static final int REQ_CHECK_SETTINGS = 101;
     private static final int PER_ACCESS_LOCATION = 202;
@@ -65,12 +68,14 @@ public class LocationFragment extends Fragment {
     private MapView mapLocation;
     private GoogleMap map;
     private Location lastLocation;
-    private tw.dp103g4.location.Location location;
     private List<tw.dp103g4.location.Location> locations;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private CommonTask locationGetAllTask, locationDeleteTask;
+    private CommonTask locationDeleteTask;
+    private CommonTask locationGetAllTask;
+    private SharedPreferences pref;
+    private int memId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,6 +109,8 @@ public class LocationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        memId = pref.getInt("id", 0);
         activity.getBottomNavigationView().setVisibility(View.GONE);
         mapLocation = view.findViewById(R.id.mapLocation);
         mapLocation.onCreate(savedInstanceState);
@@ -130,7 +137,7 @@ public class LocationFragment extends Fragment {
                     public void onMapLongClick(LatLng latLng) {
                         int id = getId();
                         int partyId = 4;
-                        int userId = 2;
+                        int userId = memId;
                         double latitude = latLng.latitude;
                         double longitude = latLng.longitude;
                         String name = "aaa";

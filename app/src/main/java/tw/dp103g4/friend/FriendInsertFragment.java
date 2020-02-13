@@ -35,6 +35,7 @@ import tw.dp103g4.main_android.Common;
 import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.ImageTask;
+import tw.dp103g4.user.User;
 
 
 public class FriendInsertFragment extends Fragment {
@@ -111,7 +112,7 @@ public class FriendInsertFragment extends Fragment {
                     if (user==null) {
                         Common.showToast(getActivity(), R.string.textSearchUserFail);
                     } else {
-                            if(getIsInvite(userId,user.getUserId())){
+                            if(getIsInvite(userId,user.getId())){
                                 new AlertDialog.Builder(getActivity())
                                         .setTitle(user.getAccount() + "已經是好友囉！")
                                         .setNegativeButton("確定",null).create()
@@ -127,7 +128,7 @@ public class FriendInsertFragment extends Fragment {
                                             JsonObject jsonObject = new JsonObject();
                                             jsonObject.addProperty("action", "friendShipInsert");
                                             jsonObject.addProperty("idOne", userId);
-                                            jsonObject.addProperty("idTwo", user.getUserId());
+                                            jsonObject.addProperty("idTwo", user.getId());
                                             int count = 0;
                                             try {
                                                 insertFriendTask = new CommonTask(url, jsonObject.toString());

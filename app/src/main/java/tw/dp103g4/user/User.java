@@ -4,15 +4,26 @@ import java.io.Serializable;
 import java.sql.Date;
 
 public class User implements Serializable {
-	
-//	private int id;
+
+    private int id;
 	private String account;
 	private String password;
 	private String email;
 	private String name;
 	private boolean isOver;
 	private Date time;
-	
+
+
+    public User(int id, String account, String password, String email, String name, boolean isOver, Date time) {
+        super();
+        this.id = id;
+        this.account = account;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.isOver = isOver;
+        this.time = time;
+    }
 	
 	public User(String account, String password, String email, String name, boolean isOver, Date time) {
 		super();
@@ -40,6 +51,14 @@ public class User implements Serializable {
 
 
 
+
+	public int getId(){
+    	return id;
+	}
+
+	public int setId(){
+    	return id;
+	}
 
 	public String getAccount() {
 		return account;

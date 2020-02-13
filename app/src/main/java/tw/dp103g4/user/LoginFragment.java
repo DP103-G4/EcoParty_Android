@@ -1,6 +1,8 @@
 package tw.dp103g4.user;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,12 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import tw.dp103g4.R;
@@ -32,12 +30,11 @@ public class LoginFragment extends Fragment {
 
     private static final String TAG = "TAG_LoginFragment";
 
-    //    private Gson gson;
     private Activity activity;
     private Button btRegister, btLogin;
     private TextView tvMsg, tvForgot;
     private EditText etAccount, etPassword;
-    private CommonTask userLoginTask, userGetAllTask;
+    private CommonTask userLoginTask, userGetIdTask;
     private List<User> users;
     private String account, password;
 
@@ -45,13 +42,12 @@ public class LoginFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = getActivity();
-//        gson = new Gson();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        activity.setTitle("Login");
+        activity.setTitle("登入");
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
@@ -62,7 +58,6 @@ public class LoginFragment extends Fragment {
         tvForgot = view.findViewById(R.id.tvForgot);
         etAccount = view.findViewById(R.id.etAccount);
         etPassword = view.findViewById(R.id.etPassword);
-        users= getUsers();
 
 
         btRegister = view.findViewById(R.id.btRegister);
@@ -70,7 +65,6 @@ public class LoginFragment extends Fragment {
 
         //去註冊頁面
         btRegister.setOnClickListener(new View.OnClickListener() {
-
 
             @Override
             public void onClick(View v) {
@@ -80,7 +74,7 @@ public class LoginFragment extends Fragment {
 
 
         //登入判斷
-        //先導到detail
+        //成功後導到 會員
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,71 +99,65 @@ public class LoginFragment extends Fragment {
                 } catch (Exception e) {
                     Log.e(TAG, e.toString());
                 }
-                if (isValid) {      //成功
-                    Common.showToast(getActivity(), "Login Success");
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("account", account);
-                    Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_userDetailFragment,bundle);
+                if (isValid) {      //登入成功
+                    Common.showToast(getActivity(), "登入成功");
+                    //  偏好設定檔
+                    SharedPreferences pref = activity
+                            .getSharedPreferences(Common.PREFERENCE_MEMBER, Context.MODE_PRIVATE);
+                    pref.edit().putString("account", account)
+                            .putString("password", password)
+                            .putInt("id", getUserIdByAccount(account)).apply();
+                    Navigation.findNavController(v).popBackStack(R.id.partyFragment, false);
 
-                } else {            //失敗
-                    Common.showToast(getActivity(), "Login Fail");
+
+                } else {            //登入失敗
+                    Common.showToast(getActivity(), "登入失敗");
                 }
-
-//
-//                Bundle bundle = new Bundle();
-//
-//                bundle.putString("account", account);
-//                bundle.putString("password", password);
-
 
                 //帳密空白
                 if (account.isEmpty() || password.isEmpty()) {
-                    tvMsg.setText("Account or Password is empty");
+                    tvMsg.setText("帳號和密碼不可空白");
                     return;
                 }
                 tvMsg.setText("");
-
 
             }
         });
 
         //忘記密碼
-
-
+        tvForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_loginFragment_to_userForgetFragment);
+            }
+        });
 
     }
 
-    private List<User> getUsers() {
+    private int getUserIdByAccount(String account) {
         //確認網路連線
+        int id = 0;
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "UserServlet";
             JsonObject jsonObject = new JsonObject();
 
-            jsonObject.addProperty("action", "getAll");
+            jsonObject.addProperty("action", "getUserIdByAccount");
+            jsonObject.addProperty("account", account);
             String jsonOut = jsonObject.toString();
-            userGetAllTask = new CommonTask(url, jsonOut);
+            userGetIdTask = new CommonTask(url, jsonOut);
             try {
-                String jsonIn = userGetAllTask.execute().get();
-                Type listType = new TypeToken<List<User>>() {
-                }.getType();
-//
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-                users = gson.fromJson(jsonIn, listType);
+                //傳入String 回傳String 轉型int(id)
+                String result = userGetIdTask.execute().get();
+                Log.d(TAG, result);
+                id = Integer.parseInt(result);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
         } else {
             Common.showToast(activity, R.string.textNoNetwork);
         }
-        return users;
+        return id;
 
     }
 
-
 }
-
-
-// client -> Server -> DB
-// client <- Server <- 帶資料給Server判斷<-DB
-// client <- true <- Server有資料
-// client <- false <- Server無資料

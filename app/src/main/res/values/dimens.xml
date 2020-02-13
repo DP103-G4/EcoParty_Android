@@ -26,4 +26,5 @@
     <dimen name="textL">18sp</dimen>
     <dimen name="textXL">24sp</dimen>
     <dimen name="textXXL">28sp</dimen>
+    <dimen name="buttonWidth">100dp</dimen>
 </resources>
