@@ -2,6 +2,7 @@ package tw.dp103g4.inform;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import tw.dp103g4.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -26,12 +27,16 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.task.CommonTask;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class InformFragment extends Fragment {
     private static final String TAG = "TAG_Inform";
     private FragmentActivity activity;
+    private BottomNavigationView bottomNavigationView;
     private RecyclerView rvInform;
     private List<Inform> informs;
     private CommonTask informGetAllTask;
@@ -53,10 +58,14 @@ public class InformFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bottomNavigationView = activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        int receiverId = pref.getInt("id", 0);
         rvInform = view.findViewById(R.id.rvInform);
         btInformIsRead = view.findViewById(R.id.btInformIsRead);
         rvInform.setLayoutManager(new LinearLayoutManager(activity));
-        informs = getInforms();
+        informs = getInforms(receiverId);
         showInform(informs);
     }
 
@@ -73,13 +82,13 @@ public class InformFragment extends Fragment {
         }
     }
 
-    private List<Inform> getInforms() {
+    private List<Inform> getInforms(int receiverId) {
         List<Inform> informs = null;
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "InformServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getAllInform");
-            jsonObject.addProperty("receiverId", 2);
+            jsonObject.addProperty("receiverId", receiverId);
             String jsonOut = jsonObject.toString();
             informGetAllTask = new CommonTask(url, jsonOut);
             try {

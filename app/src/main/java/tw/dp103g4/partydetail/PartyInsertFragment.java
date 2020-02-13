@@ -4,6 +4,7 @@ package tw.dp103g4.partydetail;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -50,6 +51,7 @@ import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.CommonTask;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class PartyInsertFragment extends Fragment {
@@ -71,9 +73,6 @@ public class PartyInsertFragment extends Fragment {
             .create();
     private static final String TAG = "TAG_PartyInsert";
 
-
-    // bundle
-    final int userId = 2;
 
     public PartyInsertFragment() {
         // Required empty public constructor
@@ -124,6 +123,10 @@ public class PartyInsertFragment extends Fragment {
         sbUpper = view.findViewById(R.id.sbUpper);
         sbLower = view.findViewById(R.id.sbLower);
         sbDistance = view.findViewById(R.id.sbDistance);
+
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        final int userId = pref.getInt("id", 0);
+
 
         final SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY/MM/dd");
         final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
@@ -453,6 +456,5 @@ public class PartyInsertFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        activity.getBottomNavigationView().setVisibility(View.VISIBLE);
     }
 }

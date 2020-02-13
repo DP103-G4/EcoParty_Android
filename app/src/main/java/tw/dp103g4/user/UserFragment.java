@@ -11,11 +11,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.lang.reflect.Array;
 
 import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
@@ -24,6 +30,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class UserFragment extends Fragment {
     private Activity activity;
+    private BottomNavigationView bottomNavigationView;
     private ListView userItem;
     private ListAdapter listAdapter;
     private boolean login = true;
@@ -44,13 +51,19 @@ public class UserFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        bottomNavigationView= activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+
+
         pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         memId = pref.getInt("id", 0);
         login = memId != 0;
 
         final int[] actionGuest = {R.id.action_userFragment_to_loginFragment};
-        final int[] actionUser = {0, R.id.action_userFragment_to_userDetailFragment, R.id.action_userFragment_to_userPasswordFragment, R.id.action_userFragment2_to_myPartyFragment};
-        userItem = view.findViewById(R.id.userItem);
+        final int[] actionUser = {0, R.id.action_userFragment_to_userDetailFragment,
+                R.id.action_userFragment_to_userPasswordFragment,
+        R.id.action_userFragment2_to_myPartyFragment};
+        userItem = view.findViewById(R.id.itemUser);
         String[] itemArray = getResources().getStringArray(login ? R.array.itemUser : R.array.itemGuest);
         listAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, itemArray);
 
@@ -69,7 +82,7 @@ public class UserFragment extends Fragment {
                                 .putInt("id", 0).apply();
                         Navigation.findNavController(view).popBackStack(R.id.partyFragment, false);
                     } else if (position != 0) {
-                        Navigation.findNavController(view).navigate(actionUser[position]);
+                        Navigation.findNavController(view).navigate(action[position]);
                     }
                 } else {
                     Navigation.findNavController(view).navigate(action[position]);
@@ -81,5 +94,10 @@ public class UserFragment extends Fragment {
 
 
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

@@ -17,12 +17,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,6 +39,7 @@ import tw.dp103g4.main_android.Common;
 import tw.dp103g4.news.News;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.CoverImageTask;
+import tw.dp103g4.task.ImageTask;
 import tw.dp103g4.task.NewsImageTask;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -46,6 +47,8 @@ import static android.content.Context.MODE_PRIVATE;
 public class PartyListFragment extends Fragment {
     private static final String TAG = "TAG_PartyList";
     private Activity activity;
+    private BottomNavigationView bottomNavigationView;
+
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView rvParty, rvNews, rvPartyStart;
     private List<Party> parties, partyStart;
@@ -55,8 +58,10 @@ public class PartyListFragment extends Fragment {
     private int imageSize;
     private NewsImageTask newsImageTask;
     private FloatingActionButton floatingActionButton;
-    private SharedPreferences pref;
-    private int memId;
+    private ImageTask getUserImageTask;
+    //Socket
+//    private int userId = 2;
+    //------
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,18 +78,24 @@ public class PartyListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
-        memId = pref.getInt("id", 0);
+        bottomNavigationView= activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+
+
         floatingActionButton = view.findViewById(R.id.btAdd);
         SearchView searchView = view.findViewById(R.id.searchView);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         rvPartyStart = view.findViewById(R.id.rvPartyStart);
-        rvPartyStart.setLayoutManager(new LinearLayoutManager(activity));
+        rvPartyStart.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
         rvParty = view.findViewById(R.id.rvParty);
         rvParty.setLayoutManager(new GridLayoutManager(activity, 2));
         rvNews = view.findViewById(R.id.rvNews);
         rvNews.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
-        partyStart = getPartyStart();
+
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        final int userId = pref.getInt("id", 0);
+
+        partyStart = getPartyStart(userId);
         showPartyStart(partyStart);
         parties = getParties();
         showParties(parties);
@@ -92,11 +103,12 @@ public class PartyListFragment extends Fragment {
         showNews(news);
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(rvNews);
+        pagerSnapHelper.attachToRecyclerView(rvPartyStart);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 parties = getParties();
-                partyStart = getPartyStart();
+                partyStart = getPartyStart(userId);
                 swipeRefreshLayout.setRefreshing(true);
                 showParties(parties);
                 showPartyStart(partyStart);
@@ -107,6 +119,10 @@ public class PartyListFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (userId == 0) {
+                    Common.showToast(getActivity(), R.string.textNoLogin);
+                    return;
+                }
                 Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_partyInsertFragment);
             }
         });
@@ -140,7 +156,7 @@ public class PartyListFragment extends Fragment {
 
     private void showPartyStart(List<Party> partyStart) {
         if (partyStart == null || partyStart.isEmpty()) {
-            Common.showToast(activity, R.string.textNoPartiesFound);
+//            Common.showToast(activity, R.string.textNoPartiesFound);
         }
         PartyStartAdapter partyStartAdapter = (PartyStartAdapter) rvPartyStart.getAdapter();
         if (partyStartAdapter == null) {
@@ -151,21 +167,22 @@ public class PartyListFragment extends Fragment {
         }
     }
 
-    private List<Party> getPartyStart() {
+    private List<Party> getPartyStart(int userId) {
         List<Party> partyStart = null;
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "PartyServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getCurrentParty");
             jsonObject.addProperty("state", 3);
-            jsonObject.addProperty("participantId", memId);
+            jsonObject.addProperty("participantId", userId);
             String jsonOut = jsonObject.toString();
             partyGetAllTask = new CommonTask(url, jsonOut);
             try {
                 String jsonIn = partyGetAllTask.execute().get();
                 Type listType = new TypeToken<List<Party>>() {
                 }.getType();
-                partyStart = new Gson().fromJson(jsonIn, listType);
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                partyStart = gson.fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -291,10 +308,14 @@ public class PartyListFragment extends Fragment {
         public void onBindViewHolder(@NonNull PartyViewHolder holder, int position) {
             Party party = parties.get(position);
             String url = Common.URL_SERVER + "PartyServlet";
+            String userUrl = Common.URL_SERVER + "UserServlet";
             final int id = party.getId();
+            int userId = party.getOwnerId();
+            System.out.println("userId" + userId);
+            getUserImageTask = new ImageTask(userUrl, userId, imageSize, holder.ivUser);
+            getUserImageTask.execute();
             partyImageTask = new CoverImageTask(url, id, imageSize, holder.ivParty);
             partyImageTask.execute();
-            holder.ivUser.setImageResource(R.drawable.ivy);
             holder.tvTitle.setText(party.getName());
             holder.tvAddress.setText(party.getAddress());
             holder.tvTime.setText(new SimpleDateFormat("E M月d日").format(party.getStartTime()));
@@ -372,7 +393,7 @@ public class PartyListFragment extends Fragment {
         public PartyStartAdapter(Context context, List<Party> partyStart) {
             layoutInflater = LayoutInflater.from(context);
             this.partyStart = partyStart;
-            imageSize = getResources().getDisplayMetrics().widthPixels / 2;
+            imageSize = getResources().getDisplayMetrics().widthPixels / 3;
         }
 
         void setPartyStart(List<Party> partyStart) {
@@ -402,11 +423,20 @@ public class PartyListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull PartyStartViewHolder holder, int position) {
-            Party mPartyStart = partyStart.get(position);
+            final Party mPartyStart = partyStart.get(position);
             String url = Common.URL_SERVER + "PartyServlet";
             int id = mPartyStart.getId();
             partyImageTask = new CoverImageTask(url, id, imageSize, holder.ivPartyStart);
             partyImageTask.execute();
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("partyId", mPartyStart.getId());
+                    Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_partyDetailFragment, bundle);
+                }
+            });
         }
 
     }
@@ -426,6 +456,13 @@ public class PartyListFragment extends Fragment {
             newsImageTask.cancel(true);
             newsImageTask = null;
         }
+        if (getUserImageTask != null) {
+            getUserImageTask.cancel(true);
+            getUserImageTask = null;
+        }
+
     }
+
+
 
 }

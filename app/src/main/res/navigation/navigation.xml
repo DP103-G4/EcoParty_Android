@@ -40,7 +40,11 @@
         android:id="@+id/myPartyFragment"
         android:name="tw.dp103g4.MyPartyFragment"
         android:label="fragment_my_party"
-        tools:layout="@layout/fragment_my_party" />
+        tools:layout="@layout/fragment_my_party" >
+        <action
+            android:id="@+id/action_myPartyFragment_to_partyDetailFragment"
+            app:destination="@id/partyDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/userFragment"
         android:name="tw.dp103g4.user.UserFragment"
@@ -158,4 +162,9 @@
         android:name="tw.dp103g4.user.UserForgetFragment"
         android:label="fragment_user_forget"
         tools:layout="@layout/fragment_user_forget" />
+    <fragment
+        android:id="@+id/myPartyDetailFragment"
+        android:name="tw.dp103g4.tablayout.MyPartyDetailFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" />
 </navigation>

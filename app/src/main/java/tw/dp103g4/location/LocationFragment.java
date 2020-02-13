@@ -2,6 +2,7 @@ package tw.dp103g4.location;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -55,7 +56,6 @@ import java.util.List;
 
 import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
-import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.task.CommonTask;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -64,7 +64,7 @@ public class LocationFragment extends Fragment {
     private static final int REQ_CHECK_SETTINGS = 101;
     private static final int PER_ACCESS_LOCATION = 202;
     private static final String TAG = "TAG_LocationFragment";
-    private MainActivity activity;
+    private Activity activity;
     private MapView mapLocation;
     private GoogleMap map;
     private Location lastLocation;
@@ -80,7 +80,7 @@ public class LocationFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (MainActivity) getActivity();
+        activity = getActivity();
 
 
         locationRequest = LocationRequest.create()
@@ -109,9 +109,9 @@ public class LocationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         memId = pref.getInt("id", 0);
-        activity.getBottomNavigationView().setVisibility(View.GONE);
         mapLocation = view.findViewById(R.id.mapLocation);
         mapLocation.onCreate(savedInstanceState);
         mapLocation.onStart();
@@ -123,7 +123,14 @@ public class LocationFragment extends Fragment {
                 navController.popBackStack();
             }
         });
-        locations = getLocation();
+        final Bundle bundle = getArguments();
+        if (bundle == null || bundle.getInt("partyId") == 0) {
+            Common.showToast(activity, R.string.textNoParticipantFound);
+            navController.popBackStack();
+            return;
+        }
+        final int partyId = bundle.getInt("partyId");
+        locations = getLocation(partyId);
         mapLocation.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -135,9 +142,17 @@ public class LocationFragment extends Fragment {
                 map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng latLng) {
+//                        final Bundle bundle = getArguments();
+//                        if (bundle == null || bundle.getInt("partyId") == 0) {
+//                            Common.showToast(activity, R.string.textNoParticipantFound);
+//                            navController.popBackStack();
+//                            return;
+//                        }
+//                        int partyId = bundle.getInt("partyId");
+                        getLocation(partyId);
+                        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+                        int userId = pref.getInt("id", 0);
                         int id = getId();
-                        int partyId = 4;
-                        int userId = memId;
                         double latitude = latLng.latitude;
                         double longitude = latLng.longitude;
                         String name = "aaa";
@@ -168,13 +183,13 @@ public class LocationFragment extends Fragment {
         });
         checkLocationSettings();
     }
-    private List<tw.dp103g4.location.Location> getLocation() {
+    private List<tw.dp103g4.location.Location> getLocation(int partyId) {
         List<tw.dp103g4.location.Location> locations = null;
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "LocationServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getAll");
-            jsonObject.addProperty("partyId", 4);
+            jsonObject.addProperty("partyId", partyId);
             String jsonOut = jsonObject.toString();
             locationGetAllTask = new CommonTask(url, jsonOut);
             try {
@@ -376,7 +391,6 @@ public class LocationFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        activity.getBottomNavigationView().setVisibility(View.VISIBLE);
         if (locationGetAllTask != null) {
             locationGetAllTask.cancel(true);
             locationGetAllTask = null;

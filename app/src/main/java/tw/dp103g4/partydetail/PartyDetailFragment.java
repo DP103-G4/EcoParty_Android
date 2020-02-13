@@ -1,7 +1,9 @@
 package tw.dp103g4.partydetail;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -28,6 +30,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -40,20 +43,22 @@ import java.util.List;
 
 import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
-import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.CoverImageTask;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class PartyDetailFragment extends Fragment {
-    private MainActivity activity;
+    private Activity activity;
+    private BottomNavigationView bottomNavigationView;
     private TextView tvName, tvTime, tvPostEndTime, tvOwner, tvParticipant, tvLocation, tvAddress, tvContent;
     private RecyclerView rvMessage;
     private ImageView ivCover, ivOwner, ivParticipant, ivLocation;
     private ImageButton ibSend;
     private EditText etInput;
-    private Button btLike, btIn, btShare, btStart, btSet, btQR, btRollCall, btMap, btICC;
+    private Button btLike, btIn, btShare, btStart, btQR, btRollCall, btMap, btICC;
     private List<PartyMessage> msgList;
     private CommonTask getMsgListTask;
     private CoverImageTask coverImageTask;
@@ -66,12 +71,6 @@ public class PartyDetailFragment extends Fragment {
             .create();
     private static final String TAG = "TAG_PartyDetail";
 
-    // bundle
-//    final int partyId = 138;
-    final int userId = 2;
-
-
-
     public PartyDetailFragment() {
         // Required empty public constructor
     }
@@ -79,7 +78,7 @@ public class PartyDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (MainActivity) getActivity();
+        activity = getActivity();
     }
 
     @Override
@@ -92,8 +91,11 @@ public class PartyDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        activity.getBottomNavigationView().setVisibility(View.GONE);
         final NavController navController = Navigation.findNavController(view);
+
+        bottomNavigationView = activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.GONE);
+
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +122,6 @@ public class PartyDetailFragment extends Fragment {
         btRollCall = view.findViewById(R.id.btRollCall);
         btMap = view.findViewById(R.id.btMap);
         btICC = view.findViewById(R.id.btICC);
-        btSet = view.findViewById(R.id.btSet);
         btLike = view.findViewById(R.id.btLike);
         btStart = view.findViewById(R.id.btStart);
         btIn = view.findViewById(R.id.btIn);
@@ -131,14 +132,16 @@ public class PartyDetailFragment extends Fragment {
         participantLayout = view.findViewById(R.id.participantLayout);
 
 
-
-        Bundle bundle = getArguments();
+        final Bundle bundle = getArguments();
         if (bundle == null || bundle.getInt("partyId") == 0) {
             Common.showToast(activity, R.string.textNoParticipantFound);
             navController.popBackStack();
             return;
         }
         final int partyId = bundle.getInt("partyId");
+
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        final int userId = pref.getInt("id", 0);
 
         final PartyInfo partyInfo = getPartyInfo(partyId, userId);
         final Party party = partyInfo.getParty();
@@ -160,15 +163,15 @@ public class PartyDetailFragment extends Fragment {
             tvTime.setText(text);
             tvPostEndTime.setText(new SimpleDateFormat("E M月d日 H:mm").format(party.getPostEndTime()));
 
+            btLike.setVisibility(View.VISIBLE);
+            btShare.setVisibility(View.VISIBLE);
+
             if (party.getOwnerId() == userId) {
-                btIn.setVisibility(View.GONE);
-                btQR.setVisibility(View.GONE);
+                btStart.setVisibility(View.VISIBLE);
             } else {
-                btStart.setVisibility(View.GONE);
-                btSet.setVisibility(View.GONE);
-                btRollCall.setVisibility(View.GONE);
-                btICC.setVisibility(View.GONE);
+                btIn.setVisibility(View.VISIBLE);
             }
+
 
             if (party.getState() == post) {
                 btStart.setText("發布中");
@@ -176,6 +179,15 @@ public class PartyDetailFragment extends Fragment {
                 btStart.setText("已截止");
             } else if (party.getState() == start) {
                 btStart.setText("進行中");
+
+                if (party.getOwnerId() == userId) {
+                    btRollCall.setVisibility(View.VISIBLE);
+                    btMap.setVisibility(View.VISIBLE);
+                    btICC.setVisibility(View.VISIBLE);
+                } else {
+                    btQR.setVisibility(View.VISIBLE);
+                    btMap.setVisibility(View.VISIBLE);
+                }
             }
 
             if (partyInfo.getIsIn()) {
@@ -208,7 +220,10 @@ public class PartyDetailFragment extends Fragment {
         btMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_partyDetailFragment_to_locationFragment);
+                Bundle bundle = new Bundle();
+                bundle.putInt("partyId", party.getId());
+
+                Navigation.findNavController(v).navigate(R.id.action_partyDetailFragment_to_locationFragment, bundle);
             }
         });
 
@@ -222,6 +237,7 @@ public class PartyDetailFragment extends Fragment {
                     public boolean onMenuItemClick(MenuItem item) {
                         String text = "";
                         int state = 0;
+                        int btImg = 0;
 
                         switch (item.getItemId()) {
                             case R.id.post:
@@ -235,6 +251,7 @@ public class PartyDetailFragment extends Fragment {
                             case R.id.start:
                                 text = "進行中";
                                 state = start;
+                                btImg = R.drawable.ing;
                                 break;
                             case R.id.end:
                                 state = end;
@@ -262,7 +279,13 @@ public class PartyDetailFragment extends Fragment {
                                     Common.showToast(getActivity(), R.string.textChageStateFail);
                                 } else {
                                     party.setState(state);
-                                    btStart.setText(text);
+                                    if (state != end && state != delete) {
+                                        if (btImg != 0)
+                                            btStart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ing, 0, 0, 0);
+                                        btStart.setText(text);
+                                    } else {
+                                        // 未完成
+                                    }
                                 }
                             } catch (Exception e) {
                                 Log.e(TAG, e.toString());
@@ -284,6 +307,11 @@ public class PartyDetailFragment extends Fragment {
             public void onClick(View v) {
                 if (!partyInfo.getIsLike()) {
                     if (Common.networkConnected(activity)) {
+                        if (userId == 0) {
+                            Common.showToast(getActivity(), R.string.textNoLogin);
+                            return;
+                        }
+
                         PartyLike partyLike = new PartyLike(userId, partyId);
 
                         String url = Common.URL_SERVER + "PartyLikeServlet";
@@ -355,6 +383,11 @@ public class PartyDetailFragment extends Fragment {
                 if (!partyInfo.getIsIn()) {
                     // 參加
                     if (Common.networkConnected(activity)) {
+                        if (userId == 0) {
+                            Common.showToast(getActivity(), R.string.textNoLogin);
+                            return;
+                        }
+
                         // 先不團報
                         Participant participant = new Participant(userId, partyId, 1);
 
@@ -449,6 +482,10 @@ public class PartyDetailFragment extends Fragment {
                         .create();
 
                 if (Common.networkConnected(activity)) {
+                    if (userId == 0) {
+                        Common.showToast(getActivity(), R.string.textNoLogin);
+                        return;
+                    }
                     message = new PartyMessage(userId, partyId, etInput.getText().toString(), new Date());
 
                     String url = Common.URL_SERVER + "PartyMessageServlet";
@@ -609,6 +646,5 @@ public class PartyDetailFragment extends Fragment {
             getMsgListTask.cancel(true);
             getMsgListTask = null;
         }
-        activity.getBottomNavigationView().setVisibility(View.VISIBLE);
     }
 }

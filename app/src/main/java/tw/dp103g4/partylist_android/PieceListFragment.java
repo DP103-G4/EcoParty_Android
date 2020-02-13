@@ -11,12 +11,15 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import tw.dp103g4.R;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -31,6 +34,7 @@ import tw.dp103g4.task.CommonTask;
 public class PieceListFragment extends Fragment {
     private static final String TAG = "TAG_PieceFragment";
     private FragmentActivity activity;
+    private BottomNavigationView bottomNavigationView;
     private RecyclerView rvPiece;
     private List<Party> parties;
     private CommonTask pieceGetAllTask;
@@ -53,6 +57,9 @@ public class PieceListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bottomNavigationView= activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+
         rvPiece = view.findViewById(R.id.rvPiece);
         rvPiece.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         parties = getParties();
@@ -153,5 +160,6 @@ public class PieceListFragment extends Fragment {
             afterImageTask.cancel(true);
             afterImageTask = null;
         }
+
     }
 }
