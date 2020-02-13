@@ -41,6 +41,9 @@ public class InformFragment extends Fragment {
     private List<Inform> informs;
     private CommonTask informGetAllTask;
     private Button btInformIsRead;
+    private SharedPreferences pref;
+    private int receiverId;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,14 +63,44 @@ public class InformFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         bottomNavigationView = activity.findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.VISIBLE);
-        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
-        int receiverId = pref.getInt("id", 0);
+        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        receiverId = pref.getInt("id", 0);
         rvInform = view.findViewById(R.id.rvInform);
         btInformIsRead = view.findViewById(R.id.btInformIsRead);
         rvInform.setLayoutManager(new LinearLayoutManager(activity));
         informs = getInforms(receiverId);
         showInform(informs);
+        btInformIsRead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Common.networkConnected(activity)) {
+                    String url = Common.URL_SERVER + "InformServlet";
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("action", "setRead");
+                    jsonObject.addProperty("receiverId", receiverId);
+                    int count = 0;
+                    try {
+                        String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                        count = Integer.valueOf(result);
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                    }
+                    if (count == 0) {
+                        Common.showToast(activity, R.string.textIsReadFail);
+                    } else {
+                        for (int i = 0; i<informs.size();i++ ) {
+                            informs.get(i).setRead(true);
+
+                        }
+                        showInform(informs);
+                    }
+                }
+            }
+        });
+
     }
+
+
 
     private void showInform(List<Inform> informs) {
         if (informs == null || informs.isEmpty()) {
@@ -76,6 +109,7 @@ public class InformFragment extends Fragment {
         InfromAdapter informAdapter = (InfromAdapter) rvInform.getAdapter();
         if (informAdapter == null) {
             rvInform.setAdapter(new InfromAdapter(activity, informs));
+
         } else {
             informAdapter.setInforms(informs);
             informAdapter.notifyDataSetChanged();
@@ -139,9 +173,15 @@ public class InformFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull InformViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final InformViewHolder holder, int position) {
             Inform inform = informs.get(position);
             holder.tvInformContent.setText(inform.getContent());
+
+            if(inform.isRead()){
+                holder.itemView.setBackgroundColor(0xFFAED581);
+            }
+
+
         }
 
     }
