@@ -22,27 +22,7 @@ public class Party implements Serializable {
     private int state;
     private int distance;
 
-    public Party(int ownerId, String name, Date startTime, Date endTime, Date postTime, Date postEndTime,
-                 String location, String address, double longitude, double latitude, String content, int countUpperLimit,
-                 int countLowerLimit, int countCurrent, int state, int distance) {
-        super();
-        this.ownerId = ownerId;
-        this.name = name;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.postTime = postTime;
-        this.postEndTime = postEndTime;
-        this.location = location;
-        this.address = address;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.content = content;
-        this.countUpperLimit = countUpperLimit;
-        this.countLowerLimit = countLowerLimit;
-        this.countCurrent = countCurrent;
-        this.state = state;
-        this.distance = distance;
-    }
+
 
     public Party(int id, int ownerId, String name, Date startTime, Date endTime, Date postTime, Date postEndTime,
                  String location, String address, double longitude, double latitude, String content, int countUpperLimit,
@@ -65,6 +45,49 @@ public class Party implements Serializable {
         this.countCurrent = countCurrent;
         this.state = state;
         this.distance = distance;
+    }
+
+    public Party(int ownerId, String name, Date startTime, Date endTime, Date postTime, Date postEndTime,
+                 String location, String address, double longitude, double latitude, String content, int countUpperLimit,
+                 int countLowerLimit, int countCurrent, int state, int distance) {
+        super();
+        this.ownerId = ownerId;
+        this.name = name;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.postTime = postTime;
+        this.postEndTime = postEndTime;
+        this.location = location;
+        this.address = address;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.content = content;
+        this.countUpperLimit = countUpperLimit;
+        this.countLowerLimit = countLowerLimit;
+        this.countCurrent = countCurrent;
+        this.state = state;
+        this.distance = distance;
+    }
+
+    public Party(int id, int ownerId, String name, Date startTime, String address, int state) {
+        super();
+        this.id = id;
+        this.ownerId = ownerId;
+        this.name = name;
+        this.startTime = startTime;
+        this.address = address;
+        this.state = state;
+    }
+
+    public Party(int id, int state) {
+        super();
+        this.id = id;
+        this.state = state;
+    }
+
+    public Party(int id) {
+        super();
+        this.id = id;
     }
 
     public int getId() {
@@ -202,8 +225,6 @@ public class Party implements Serializable {
     public void setDistance(int distance) {
         this.distance = distance;
     }
-
-
 
     @Override
     public boolean equals(Object obj) {

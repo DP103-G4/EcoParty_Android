@@ -51,6 +51,7 @@ import tw.dp103g4.main_android.Common;
 import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.CommonTask;
+import tw.dp103g4.task.CoverImageTask;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
@@ -65,6 +66,7 @@ public class PartyUpdateFragment extends Fragment {
     private SeekBar sbUpper, sbLower, sbDistance;
     private Button btOk, btCancel;
     private byte[] image;
+    private CoverImageTask partyImageTask;
     private Party party;
     private static final int REQ_PICK_PICTURE = 1;
     private static final int REQ_CROP_PICTURE = 2;
@@ -126,7 +128,7 @@ public class PartyUpdateFragment extends Fragment {
         sbDistance = view.findViewById(R.id.sbDistance);
 
         final Bundle bundle = getArguments();
-        if (bundle == null || bundle.getSerializable("party") == 0) {
+        if (bundle == null || bundle.getSerializable("party") == null) {
             navController.popBackStack();
             return;
         }
@@ -134,11 +136,20 @@ public class PartyUpdateFragment extends Fragment {
 
         SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         final int userId = pref.getInt("id", 0);
+        String url = Common.URL_SERVER + "PartyServlet";
+
+        final int id = party.getId();
+        int imageSize = getResources().getDisplayMetrics().widthPixels;
+        partyImageTask = new CoverImageTask(url, id, imageSize, ivCover);
+        partyImageTask.execute();
 
         etName.setText(party.getName());
         etLoction.setText(party.getLocation());
         etAddress.setText(party.getAddress());
         etContent.setText(party.getContent());
+        tvUpper.setText(String.valueOf(party.getCountUpperLimit()));
+        tvLower.setText(String.valueOf(party.getCountLowerLimit()));
+        tvDistance.setText(String.valueOf(party.getDistance()));
         sbUpper.setProgress(party.getCountUpperLimit());
         sbLower.setProgress(party.getCountLowerLimit());
         sbDistance.setProgress(party.getDistance());
@@ -342,7 +353,7 @@ public class PartyUpdateFragment extends Fragment {
                         return;
                     }
 
-                    party = new Party(userId, etName.getText().toString(), startTime, endTime, new Date(), postEndTime,
+                    party = new Party(party.getId(), userId, etName.getText().toString(), startTime, endTime, new Date(), postEndTime,
                             etLoction.getText().toString(), etAddress.getText().toString(), -181, -181, etContent.getText().toString(),
                             sbUpper.getProgress(), sbLower.getProgress(), 0, 1, sbDistance.getProgress());
 

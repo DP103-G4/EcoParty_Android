@@ -166,4 +166,9 @@
         android:name="tw.dp103g4.partydetail.PartyUpdateFragment"
         android:label="fragment_party_update"
         tools:layout="@layout/fragment_party_update" />
+    <fragment
+        android:id="@+id/pieceDetailFragment"
+        android:name="tw.dp103g4.piece.PieceDetailFragment"
+        android:label="fragment_piece_detail"
+        tools:layout="@layout/fragment_piece_detail" />
 </navigation>
