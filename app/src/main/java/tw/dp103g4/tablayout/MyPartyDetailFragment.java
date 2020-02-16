@@ -1,6 +1,7 @@
 package tw.dp103g4.tablayout;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +30,7 @@ import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.CoverImageTask;
 
+import static android.content.Context.MODE_PRIVATE;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
@@ -66,9 +69,11 @@ public class MyPartyDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        final int userId = pref.getInt("id", 0);
         rvMyParty = view.findViewById(R.id.rvMyParty);
         rvMyParty.setLayoutManager(new LinearLayoutManager(activity));
-        myParties = getMyParties();
+        myParties = getMyParties(userId);
         showMyParties(myParties);
     }
 
@@ -85,14 +90,13 @@ public class MyPartyDetailFragment extends Fragment {
         }
     }
 
-    private List<Party> getMyParties() {
+    private List<Party> getMyParties(int userId) {
         List<Party> myParties = null;
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "PartyServlet";
             JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("action", "getCurrentParty");
-            jsonObject.addProperty("state", 1);
-            jsonObject.addProperty("participantId", 2);
+            jsonObject.addProperty("action", "getMyParty");
+            jsonObject.addProperty("userId", userId);
             String jsonOut = jsonObject.toString();
             partyGetAllTask = new CommonTask(url, jsonOut);
             try {
@@ -125,6 +129,7 @@ public class MyPartyDetailFragment extends Fragment {
 
         @Override
         public int getItemCount() {
+
             return myParties.size();
         }
 
@@ -148,9 +153,17 @@ public class MyPartyDetailFragment extends Fragment {
         public void onBindViewHolder(@NonNull MyPartyViewHolder holder, int position) {
             Party party = myParties.get(position);
             String url = Common.URL_SERVER + "PartyServlet";
-            int id = party.getId();
+            final int id = party.getId();
             partyImageTask = new CoverImageTask(url, id, imageSize, holder.ivMyParty);
             partyImageTask.execute();
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("partyId", id);
+                    Navigation.findNavController(v).navigate(R.id.action_myPartyFragment_to_partyDetailFragment, bundle);
+                }
+            });
         }
     }
 

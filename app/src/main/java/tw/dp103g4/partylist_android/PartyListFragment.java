@@ -17,13 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import tw.dp103g4.R;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,10 +34,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.news.News;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.CoverImageTask;
+import tw.dp103g4.task.ImageTask;
 import tw.dp103g4.task.NewsImageTask;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -59,6 +58,7 @@ public class PartyListFragment extends Fragment {
     private int imageSize;
     private NewsImageTask newsImageTask;
     private FloatingActionButton floatingActionButton;
+    private ImageTask getUserImageTask;
     //Socket
 //    private int userId = 2;
     //------
@@ -309,10 +309,14 @@ public class PartyListFragment extends Fragment {
         public void onBindViewHolder(@NonNull PartyViewHolder holder, int position) {
             Party party = parties.get(position);
             String url = Common.URL_SERVER + "PartyServlet";
+            String userUrl = Common.URL_SERVER + "UserServlet";
             final int id = party.getId();
+            int userId = party.getOwnerId();
+            System.out.println("userId" + userId);
+            getUserImageTask = new ImageTask(userUrl, userId, imageSize, holder.ivUser);
+            getUserImageTask.execute();
             partyImageTask = new CoverImageTask(url, id, imageSize, holder.ivParty);
             partyImageTask.execute();
-            holder.ivUser.setImageResource(R.drawable.ivy);
             holder.tvTitle.setText(party.getName());
             holder.tvAddress.setText(party.getAddress());
             holder.tvTime.setText(new SimpleDateFormat("E M月d日").format(party.getStartTime()));
@@ -452,6 +456,10 @@ public class PartyListFragment extends Fragment {
         if (newsImageTask != null) {
             newsImageTask.cancel(true);
             newsImageTask = null;
+        }
+        if (getUserImageTask != null) {
+            getUserImageTask.cancel(true);
+            getUserImageTask = null;
         }
 
     }
