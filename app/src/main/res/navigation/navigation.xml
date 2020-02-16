@@ -85,6 +85,9 @@
         <action
             android:id="@+id/action_partyDetailFragment_to_locationFragment"
             app:destination="@id/locationFragment" />
+        <action
+            android:id="@+id/action_partyDetailFragment_to_partyUpdateFragment"
+            app:destination="@id/partyUpdateFragment" />
     </fragment>
     <fragment
         android:id="@+id/partyInsertFragment"
@@ -158,4 +161,9 @@
         android:name="tw.dp103g4.user.UserForgetFragment"
         android:label="fragment_user_forget"
         tools:layout="@layout/fragment_user_forget" />
+    <fragment
+        android:id="@+id/partyUpdateFragment"
+        android:name="tw.dp103g4.partydetail.PartyUpdateFragment"
+        android:label="fragment_party_update"
+        tools:layout="@layout/fragment_party_update" />
 </navigation>
