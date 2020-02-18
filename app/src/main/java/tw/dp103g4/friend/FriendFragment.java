@@ -408,7 +408,7 @@ public class FriendFragment extends Fragment {
                 super(itemView);
                 ivFriend = itemView.findViewById(R.id.ivFriend);
                 tvFriendName = itemView.findViewById(R.id.tvFriend);
-                tvContent = itemView.findViewById(R.id.tvMsg);
+                tvContent = itemView.findViewById(R.id.tvContent);
                 tvTime = itemView.findViewById(R.id.tvTime);
 
             }
