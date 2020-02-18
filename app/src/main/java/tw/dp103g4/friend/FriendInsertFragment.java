@@ -169,13 +169,21 @@ public class FriendInsertFragment extends Fragment {
                             FriendShip isInvite = getIsInvite(userId, user.getId());
                             if (!isInvite.getNoInsert()) {
                                 String type = "";
-                                if (isInvite.getIsInvite()) {
-                                    type = "已經是好友囉！";
+                                if (!isInvite.getIsInvite()) {
+                                    if(user.getId() == isInvite.getIdOne()){
+                                        insertFriend(isInvite.getIdOne(),userId);
+                                        type = "您已同意 "+user.getAccount()+" 的好友邀請";
+                                        friendShips = getFriendShips();
+                                        showFriendShips(friendShips);
+                                    }else{
+                                    type = "已發出邀請！";}
+
                                 } else {
-                                    type = "已發出邀請！";
+                                    type = user.getAccount()+" 已經是好友囉！";
+
                                 }
                                 new AlertDialog.Builder(getActivity())
-                                        .setTitle(user.getAccount() + type)
+                                        .setTitle(type)
                                         .setNegativeButton("確定", null).create()
                                         .show();
                             } else {
@@ -284,6 +292,7 @@ public class FriendInsertFragment extends Fragment {
             holder.btAgree.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    int count = 0;
                     insertFriend(friendShip.getFriendId(),userId);
                     if(count!= 0){
                         friendShips.remove(friendShip);
@@ -295,6 +304,7 @@ public class FriendInsertFragment extends Fragment {
             holder.btDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    int count = 0;
                     deleteFriendShip(friendShip.getFriendId(),userId);
                     if(count!= 0){
                         friendShips.remove(friendShip);
