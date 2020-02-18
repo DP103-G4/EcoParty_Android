@@ -31,6 +31,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import tw.dp103g4.R;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -55,6 +57,7 @@ public class FriendFragment extends Fragment {
     private RecyclerView rvFriends;
     private RecyclerView rvFriendMsg;
     private Activity activity;
+    private BottomNavigationView bottomNavigationView;
     private CommonTask friendShipGetAllTask;
     private CommonTask friendShipDeleteTask;
     private CommonTask talkGetAllTask;

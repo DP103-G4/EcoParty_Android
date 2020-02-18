@@ -20,6 +20,11 @@ public class Inform {
 		this.isRead = isRead;
 	}
 
+	public Inform(int userId) {
+		super();
+		this.userId = userId;
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.lang.reflect.Array;
 
 import tw.dp103g4.R;
@@ -28,6 +30,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class UserFragment extends Fragment {
     private Activity activity;
+    private BottomNavigationView bottomNavigationView;
     private ListView userItem;
     private ListAdapter listAdapter;
     private boolean login = true;
@@ -48,6 +51,10 @@ public class UserFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        bottomNavigationView= activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+
+
         pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         memId = pref.getInt("id", 0);
         login = memId != 0;
@@ -56,7 +63,7 @@ public class UserFragment extends Fragment {
         final int[] actionUser = {0, R.id.action_userFragment_to_userDetailFragment,
                 R.id.action_userFragment_to_userPasswordFragment,
         R.id.action_userFragment2_to_myPartyFragment};
-        userItem = view.findViewById(R.id.userItem);
+        userItem = view.findViewById(R.id.itemUser);
         String[] itemArray = getResources().getStringArray(login ? R.array.itemUser : R.array.itemGuest);
         listAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, itemArray);
 
@@ -87,5 +94,10 @@ public class UserFragment extends Fragment {
 
 
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 }

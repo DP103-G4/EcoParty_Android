@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.view.MotionEvent;
 import android.util.Log;
 import android.widget.Toast;
 

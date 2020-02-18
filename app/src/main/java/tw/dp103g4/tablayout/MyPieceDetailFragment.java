@@ -1,6 +1,7 @@
 package tw.dp103g4.tablayout;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import tw.dp103g4.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -23,11 +23,13 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.AfterImageTask;
 import tw.dp103g4.task.CommonTask;
 
+import static android.content.Context.MODE_PRIVATE;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 
@@ -66,9 +68,11 @@ public class MyPieceDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        final int participantId = pref.getInt("id", 0);
         rvMyParty = view.findViewById(R.id.rvMyParty);
         rvMyParty.setLayoutManager(new LinearLayoutManager(activity));
-        myPieces = getMyPieces();
+        myPieces = getMyPieces(participantId);
         showMyParties(myPieces);
     }
 
@@ -85,14 +89,14 @@ public class MyPieceDetailFragment extends Fragment {
         }
     }
 
-    private List<Party> getMyPieces() {
+    private List<Party> getMyPieces(int participantId) {
         List<Party> myPieces = null;
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "PartyServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getCurrentParty");
             jsonObject.addProperty("state", 4);
-            jsonObject.addProperty("participantId", 2);
+            jsonObject.addProperty("participantId", participantId);
             String jsonOut = jsonObject.toString();
             pieceGetAllTask = new CommonTask(url, jsonOut);
             try {
