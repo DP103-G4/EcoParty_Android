@@ -77,6 +77,8 @@ public class FriendInsertFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
+        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        userId = pref.getInt("id", 0);
         //註冊socket
         broadcastManager = LocalBroadcastManager.getInstance(activity);
         registerMsg();
@@ -95,8 +97,7 @@ public class FriendInsertFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
-        userId = pref.getInt("id", 0);
+
 
         activity.getBottomNavigationView().setVisibility(View.GONE);
         rvAddFriend = view.findViewById(R.id.rvAddFriend);
@@ -133,88 +134,92 @@ public class FriendInsertFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                if (Common.networkConnected(activity)) {
-                    String url = Common.URL_SERVER + "UserServlet";
-                    String userAccound = etSearch.getText().toString();
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("action", "searchUser");
-                    jsonObject.addProperty("account", userAccound);
-                    String jsonOut = jsonObject.toString();
-                    insertFriendTask = new CommonTask(url, jsonOut);
-                    try {
-                        String jsonIn = insertFriendTask.execute().get();
-                        Type listType = new TypeToken<User>(){}.getType();
-                        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-                        user = gson.fromJson(jsonIn, listType);
-                    } catch (Exception e) {
-                        Log.e(TAG, e.toString());
-                    }
-                    if (user==null || userId == user.getId()) {
-                        String type = "";
-                        if(user == null){
-                            type = "無法找到該用戶!";
-                        }else{
-                            type = "無法將自己的帳號加為好友歐！";
+                if (etSearch.getText().toString().equals("")){
+                }else {
+                    if (Common.networkConnected(activity)) {
+                        String url = Common.URL_SERVER + "UserServlet";
+                        String userAccound = etSearch.getText().toString();
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("action", "searchUser");
+                        jsonObject.addProperty("account", userAccound);
+                        String jsonOut = jsonObject.toString();
+                        insertFriendTask = new CommonTask(url, jsonOut);
+                        try {
+                            String jsonIn = insertFriendTask.execute().get();
+                            Type listType = new TypeToken<User>() {
+                            }.getType();
+                            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+                            user = gson.fromJson(jsonIn, listType);
+                        } catch (Exception e) {
+                            Log.e(TAG, e.toString());
                         }
-                        new AlertDialog.Builder(getActivity())
-                                .setTitle(type)
-                                .setNegativeButton("確定",null).create()
-                                .show();
+                        if (user == null || userId == user.getId()) {
+                            String type = "";
+                            if (user == null) {
+                                type = "無法找到該用戶!";
+                            } else {
+                                type = "無法將自己的帳號加為好友歐！";
+                            }
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle(type)
+                                    .setNegativeButton("確定", null).create()
+                                    .show();
 //                        Common.showToast(getActivity(), R.string.textSearchUserFail);
-                    } else {
-                        FriendShip isInvite = getIsInvite(userId,user.getId());
-                            if(!isInvite.getNoInsert()){
+                        } else {
+                            FriendShip isInvite = getIsInvite(userId, user.getId());
+                            if (!isInvite.getNoInsert()) {
                                 String type = "";
-                                    if (isInvite.getIsInvite()){
-                                        type = "已經是好友囉！";
-                                    }else{
-                                        type = "已發出邀請！";
-                                    }
+                                if (isInvite.getIsInvite()) {
+                                    type = "已經是好友囉！";
+                                } else {
+                                    type = "已發出邀請！";
+                                }
                                 new AlertDialog.Builder(getActivity())
                                         .setTitle(user.getAccount() + type)
-                                        .setNegativeButton("確定",null).create()
+                                        .setNegativeButton("確定", null).create()
                                         .show();
-                            }else{
+                            } else {
                                 new AlertDialog.Builder(getActivity())
                                         .setTitle("是否要邀請 " + user.getAccount() + " 成為好友？")
-                                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (Common.networkConnected(activity)) {
-                                            String url = Common.URL_SERVER + "/FriendShipServlet";
-                                            JsonObject jsonObject = new JsonObject();
-                                            jsonObject.addProperty("action", "friendShipInsert");
-                                            jsonObject.addProperty("idOne", userId);
-                                            jsonObject.addProperty("idTwo", user.getId());
-                                            int count = 0;
-                                            try {
-                                                insertFriendTask = new CommonTask(url, jsonObject.toString());
-                                                String result = insertFriendTask.execute().get();
-                                                count = Integer.valueOf(result.trim());
-                                            } catch (Exception e) {
-                                                Log.e(TAG, e.toString());
+                                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Common.networkConnected(activity)) {
+                                                    String url = Common.URL_SERVER + "/FriendShipServlet";
+                                                    JsonObject jsonObject = new JsonObject();
+                                                    jsonObject.addProperty("action", "friendShipInsert");
+                                                    jsonObject.addProperty("idOne", userId);
+                                                    jsonObject.addProperty("idTwo", user.getId());
+                                                    int count = 0;
+                                                    try {
+                                                        insertFriendTask = new CommonTask(url, jsonObject.toString());
+                                                        String result = insertFriendTask.execute().get();
+                                                        count = Integer.valueOf(result.trim());
+                                                    } catch (Exception e) {
+                                                        Log.e(TAG, e.toString());
+                                                    }
+                                                    if (count == 0) {
+                                                        Common.showToast(activity, R.string.textFriendShipInsertFail);
+                                                    } else {
+                                                        Common.showToast(activity, R.string.textFriendShipInsertSuccess);
+                                                        //socket
+                                                        ChatMsg chatMsg = new ChatMsg("newFriend", userId, user.getId(), user.getAccount());
+                                                        String newFriendJson = new Gson().toJson(chatMsg);
+                                                        chatWebSocketClient.send(newFriendJson);
+                                                    }
+                                                } else {
+                                                    Common.showToast(activity, R.string.textNoNetwork);
+                                                }
                                             }
-                                            if (count == 0) {
-                                                Common.showToast(activity, R.string.textFriendShipInsertFail);
-                                            } else {
-                                                Common.showToast(activity, R.string.textFriendShipInsertSuccess);
-                                                //socket
-                                                ChatMsg chatMsg = new ChatMsg("newFriend", userId, user.getId(), user.getAccount());
-                                                String newFriendJson = new Gson().toJson(chatMsg);
-                                                chatWebSocketClient.send(newFriendJson);
-                                            }
-                                        } else {
-                                            Common.showToast(activity, R.string.textNoNetwork);
-                                        }
-                                    }
-                                }).setNegativeButton("取消",null).create()
-                                .show();}
-                        Common.showToast(getActivity(), R.string.textSearchUserSuccess);
+                                        }).setNegativeButton("取消", null).create()
+                                        .show();
+                            }
+                            Common.showToast(getActivity(), R.string.textSearchUserSuccess);
+                        }
+                    } else {
+                        Common.showToast(getActivity(), R.string.textNoNetwork);
                     }
-                } else {
-                    Common.showToast(getActivity(), R.string.textNoNetwork);
                 }
-
             }
         });
 
@@ -349,7 +354,7 @@ public class FriendInsertFragment extends Fragment {
 
     private void showFriendShips(List<FriendShip> friendShips) {
         if (friendShips== null || friendShips.isEmpty()) {
-            Common.showToast(activity, R.string.textNoFriendShipFound);
+//            Common.showToast(activity, R.string.textNoFriendShipFound);
             friendShips = new ArrayList<>();
         }
         InsertFriendAdapter insertFriendAdapter = (InsertFriendAdapter) rvAddFriend.getAdapter();
@@ -439,11 +444,7 @@ public class FriendInsertFragment extends Fragment {
             if(userId == chatMsg.getReceiver()){
                 FriendShip friendShip = new FriendShip(chatMsg.getSender(),chatMsg.getMessage());
                 friendShips.add(0,friendShip);
-                InsertFriendAdapter insertFriendAdapter= (InsertFriendAdapter) rvAddFriend.getAdapter();
-                if (insertFriendAdapter != null){
-                    insertFriendAdapter.setFriendShips(friendShips);
-                    insertFriendAdapter.notifyDataSetChanged();
-                }
+                showFriendShips(friendShips);
             }
             Log.d(TAG, message);
         }

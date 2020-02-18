@@ -77,6 +77,8 @@ public class FriendFragment extends Fragment {
         super.onCreate(savedInstanceState);
         activity = getActivity();
         activity.setTitle("訊息");
+        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        userId = pref.getInt("id", 0);
         //註冊 MsgSocket
         broadcastManager = LocalBroadcastManager.getInstance(activity);
         registerMsg();
@@ -94,19 +96,18 @@ public class FriendFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        bottomNavigationView= activity.findViewById(R.id.navigation);
-        bottomNavigationView.setVisibility(View.VISIBLE);
-
-        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
-        userId = pref.getInt("id", 0);
 
         SearchView searchView = view.findViewById(R.id.svFriends);
-        searchView.setSubmitButtonEnabled(true);
+//        searchView.setSubmitButtonEnabled(true);
         searchView.setIconifiedByDefault(false);
         rvFriends = view.findViewById(R.id.rvFriends);
         rvFriendMsg = view.findViewById(R.id.rvFriendMsg);
         btInsert = view.findViewById(R.id.btInsert);
-
+        if(userId == 0){
+            btInsert.setVisibility(View.GONE);
+        }else{
+            btInsert.setVisibility(View.VISIBLE);
+        }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvFriends.setLayoutManager(linearLayoutManager);
@@ -211,7 +212,7 @@ public class FriendFragment extends Fragment {
 
     private void showFriendShip(List<FriendShip> friendShips) {
         if (friendShips == null || friendShips.isEmpty()) {
-            Common.showToast(activity, R.string.textNoFriendShipFound);
+//            Common.showToast(activity, R.string.textNoFriendShipFound);
             return;
         }
         FriendShipAdapter friendShipAdapter = (FriendShipAdapter) rvFriends.getAdapter();
@@ -242,14 +243,14 @@ public class FriendFragment extends Fragment {
                 Log.e(TAG, e.toString());
             }
         } else {
-            Common.showToast(activity, R.string.textNoNetwork);
+//            Common.showToast(activity, R.string.textNoNetwork);
         }
         return talks;
     }
 
     private void showNewestTalk(List<NewestTalk> newestTalks) {
         if (newestTalks == null || newestTalks.isEmpty()) {
-            Common.showToast(activity, R.string.textNoTalkFound);
+//            Common.showToast(activity, R.string.textNoTalkFound);
             return;
         }
         NewestTalkAdapter newestTalkAdapter = (NewestTalkAdapter) rvFriendMsg.getAdapter();
@@ -488,7 +489,6 @@ public class FriendFragment extends Fragment {
             friendShipDeleteTask.cancel(true);
             friendShipDeleteTask = null;
         }
-
     }
 
     //wedSocket
@@ -508,12 +508,12 @@ public class FriendFragment extends Fragment {
                     newestTalk.setContent(chatMsg.getMessage());
                     newestTalk.setNewMsgTime(new Date());
                     newestTalks.add(0, newestTalk);
-                    NewestTalkAdapter newestTalkAdapter = (NewestTalkAdapter) rvFriendMsg.getAdapter();
-                    if (newestTalkAdapter != null){
-                        newestTalkAdapter.setTalks(newestTalks);
-                        newestTalkAdapter.notifyDataSetChanged();
-                        break;
-                    }
+                    showNewestTalk(newestTalks);
+                    break;
+
+                }else{
+                    newestTalks = getNewestTalk();
+                    showNewestTalk(newestTalks);
                 }
             }
             Log.d(TAG, message);
@@ -523,7 +523,8 @@ public class FriendFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        // Fragment頁面切換時解除註冊，關閉WebSocket，
         broadcastManager.unregisterReceiver(newMsgReceiver);
-//        Common.disconnectServer();
+        Common.disconnectServer();
     }
 }

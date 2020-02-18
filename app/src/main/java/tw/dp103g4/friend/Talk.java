@@ -12,6 +12,18 @@ public class Talk implements Serializable {
 	private Date time;
 	private Boolean isRead;
 
+	public Talk(int receiverId,int senderId, int partyId, String content, Date time, Boolean isRead) {
+		super();
+
+		this.receiverId = receiverId;
+		this.senderId = senderId;
+		this.partyId = partyId;
+		this.content = content;
+		this.time = time;
+		this.isRead = isRead;
+
+	}
+
 	public Talk(int receiverId,int senderId, int partyId, String content, Date time) {
 		super();
 
