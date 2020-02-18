@@ -35,6 +35,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -55,6 +56,8 @@ public class FriendMsgFragment extends Fragment {
     private CommonTask msgGetAllTask;
     private ImageTask talkImageTask;
     private List<Talk> talks;
+    private List<Talk> noReadTalks = new ArrayList<Talk>();
+    private List<Talk> readTalks = new ArrayList<Talk>();
     private EditText etMsg;
     private ImageButton ibtMsg;
     private int friendId;
@@ -71,6 +74,8 @@ public class FriendMsgFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = (MainActivity) getActivity();
+        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        userId = pref.getInt("id", 0);
         //註冊socket
         broadcastManager = LocalBroadcastManager.getInstance(activity);
         registerMsg();
@@ -82,23 +87,13 @@ public class FriendMsgFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_friend_msg, container, false);
-
-        //點擊空白處鍵盤消失
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                getActivity().onTouchEvent(motionEvent);
-                return false;
-            }
-        });
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
-        userId = pref.getInt("id", 0);
+
 
         activity.getBottomNavigationView().setVisibility(View.GONE);
         rvMsg = view.findViewById(R.id.rvMsg);
@@ -156,8 +151,19 @@ public class FriendMsgFragment extends Fragment {
                     if (count == 0) {
                         Common.showToast(getActivity(), R.string.textInsertFail);
                     } else {
-                        talks = getTalks();
-                        showTalks(talks);
+                        TalkAdapter talkAdapter = (TalkAdapter) rvMsg.getAdapter();
+                        talk.setTime(new Date());
+                        talk.setIsRead(false);
+                        noReadTalks.add(talk);
+                        talks.add(talk);
+                        if (talkAdapter == null) {
+                            rvMsg.setAdapter(new TalkAdapter(activity, talks));
+                        } else {
+                            talkAdapter.setTalks(talks);
+                            rvMsg.scrollToPosition(talkAdapter.getItemCount()-1);
+                            talkAdapter.notifyDataSetChanged();
+                        }
+
                         etMsg.setText("");
 //                        Common.showToast(getActivity(), R.string.textInsertSuccess);
                     }
@@ -297,18 +303,27 @@ public class FriendMsgFragment extends Fragment {
                 Type listType = new TypeToken<List<Talk>>() {
                 }.getType();
                 talks = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().fromJson(jsonIn, listType);
+                for(int i = 0;i<talks.size();i++){
+                    if (talks.get(i).getIsRead() == true){
+                        readTalks.add(talks.get(i));
+
+                    }else{
+                        noReadTalks.add(talks.get(i));
+                    }
+                }
+
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
         } else {
-            Common.showToast(activity, R.string.textNoNetwork);
+//            Common.showToast(activity, R.string.textNoNetwork);
         }
         return talks;
     }
 
     private void showTalks(List<Talk> talks) {
         if (talks == null || talks.isEmpty()) {
-            Common.showToast(activity, R.string.textNoTalkFound);
+//            Common.showToast(activity, R.string.textNoTalkFound);
             return;
         }
         TalkAdapter talkAdapter = (TalkAdapter) rvMsg.getAdapter();
@@ -332,7 +347,9 @@ public class FriendMsgFragment extends Fragment {
     //接訊息 key: "newMsg"
     private void registerMsg(){
         IntentFilter newMsgFilter = new IntentFilter("newMsg");
+        IntentFilter isReadFilter = new IntentFilter("isRead");
         broadcastManager.registerReceiver(newMsgReceiver, newMsgFilter);
+        broadcastManager.registerReceiver(isReadReceiver, isReadFilter);
     }
     //處理訊息
     private BroadcastReceiver newMsgReceiver = new BroadcastReceiver(){
@@ -344,17 +361,40 @@ public class FriendMsgFragment extends Fragment {
             if (userId == chatMsg.getReceiver()) {
                 Talk newtalk = new Talk(chatMsg.getReceiver(),chatMsg.getSender(),-1,chatMsg.getMessage(),new Date());
                 talks.add(newtalk);
-                    TalkAdapter talkAdapter = (TalkAdapter) rvMsg.getAdapter();
-                    if (talkAdapter != null){
-                        talkAdapter.setTalks(talks);
-                        talkAdapter.notifyDataSetChanged();
-                        rvMsg.scrollToPosition(talks.size()-1);
-                    }
+                for(int i = 0; i < noReadTalks.size(); i++){
+                    noReadTalks.get(i).setIsRead(true);
+                    readTalks.add(noReadTalks.get(i));
+                }
+                noReadTalks.clear();
+                readTalks.add(newtalk);
+                showTalks(readTalks);
+                chatMsg = new ChatMsg("isRead", userId, friendId, "");
+                String newMsgJson = new Gson().toJson(chatMsg);
+                chatWebSocketClient.send(newMsgJson);
             }
 
             Log.d(TAG, message);
         }
     };
+
+    private  BroadcastReceiver isReadReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            ChatMsg chatMsg = new Gson().fromJson(message, ChatMsg.class);
+            if (userId == chatMsg.getReceiver()){
+                for(int i = 0; i < noReadTalks.size(); i++){
+                    noReadTalks.get(i).setIsRead(true);
+                    readTalks.add(noReadTalks.get(i));
+                }
+                noReadTalks.clear();
+                Log.d(TAG,"noRead:"+noReadTalks.size());
+                showTalks(readTalks);
+            }
+            Log.d(TAG, message);
+        }
+    };
+
     @Override
     public void onDestroy() {
         super.onDestroy();

@@ -92,6 +92,7 @@ public class PartyListFragment extends Fragment {
         parties = getParties();
         showParties(parties);
         news = getNews();
+        System.out.print("hello : "+news.size());
         showNews(news);
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(rvNews);
