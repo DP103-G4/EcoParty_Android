@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,7 +60,7 @@ public class PartyDetailFragment extends Fragment {
     private ImageView ivCover, ivOwner, ivParticipant, ivLocation;
     private ImageButton ibSend;
     private EditText etInput;
-    private Button btLike, btIn, btShare, btStart, btQR, btRollCall, btMap, btICC;
+    private Button btLike, btIn, btShare, btStart, btQR, btRollCall, btMap, btICC, btEdit;
     private List<PartyMsgInfo> msgList;
     private CommonTask getMsgListTask;
     private ImageTask ownerImagetask, msgImagetask;
@@ -118,9 +119,9 @@ public class PartyDetailFragment extends Fragment {
         tvAddress = view.findViewById(R.id.tvAddress);
         tvContent = view.findViewById(R.id.tvContent);
         rvMessage = view.findViewById(R.id.rvMessage);
-        ivCover = view.findViewById(R.id.ivCover);
+        ivCover = view.findViewById(R.id.PartyImg);
         ivOwner = view.findViewById(R.id.ivOwner);
-        ivParticipant = view.findViewById(R.id.ivMsg);
+        ivParticipant = view.findViewById(R.id.ivParticipant);
         ivLocation = view.findViewById(R.id.ivLocation);
         btQR = view.findViewById(R.id.btQR);
         btRollCall = view.findViewById(R.id.btRollCall);
@@ -134,6 +135,7 @@ public class PartyDetailFragment extends Fragment {
         etInput = view.findViewById(R.id.etInput);
         rvMessage = view.findViewById(R.id.rvMessage);
         participantLayout = view.findViewById(R.id.participantLayout);
+        btEdit = view.findViewById(R.id.btPartyEdit);
 
 
         final Bundle bundle = getArguments();
@@ -174,6 +176,7 @@ public class PartyDetailFragment extends Fragment {
             btLike.setVisibility(View.VISIBLE);
             btShare.setVisibility(View.VISIBLE);
             if (party.getOwnerId() == userId) {
+                btEdit.setVisibility(View.VISIBLE);
                 btStart.setVisibility(View.VISIBLE);
             } else {
                 btIn.setVisibility(View.VISIBLE);
@@ -240,6 +243,35 @@ public class PartyDetailFragment extends Fragment {
             }
         });
 
+        btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                PopupMenu popupMenu = new PopupMenu(activity, view, Gravity.END);
+                popupMenu.inflate(R.menu.party_edit_menu);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.delete:
+                                if (changePartyState(partyId, delete)) {
+                                    party.setState(delete);
+                                    Navigation.findNavController(view).popBackStack();
+                                }
+                                break;
+                            case R.id.update:
+                                bundle.putSerializable("party", party);
+                                Navigation.findNavController(view).navigate(R.id.action_partyDetailFragment_to_partyUpdateFragment, bundle);
+                                break;
+                        }
+
+                        return true;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
+
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -252,36 +284,23 @@ public class PartyDetailFragment extends Fragment {
                         switch (item.getItemId()) {
                             case R.id.post:
                                 if (changePartyState(partyId, post)) {
-                                    btStart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.start, 0, 0, 0);
-                                    btStart.setText("發布中");
                                     party.setState(post);
+                                    reLoadFragment();
                                 }
                                 break;
                             case R.id.close:
                                 if (changePartyState(partyId, close)) {
-                                    btStart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.start, 0, 0, 0);
-                                    btStart.setText("已截止");
                                     party.setState(close);
+                                    reLoadFragment();
                                 }
                                 break;
                             case R.id.start:
                                 if (changePartyState(partyId, start)) {
-                                    btStart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ing, 0, 0, 0);
-                                    btStart.setText("進行中");
                                     party.setState(start);
+                                    reLoadFragment();
                                 }
                                 break;
                             case R.id.end:
-                                break;
-                            case R.id.delete:
-                                if (changePartyState(partyId, delete)) {
-                                    party.setState(delete);
-                                    Navigation.findNavController(view).popBackStack();
-                                }
-                                break;
-                            case R.id.update:
-                                bundle.putSerializable("party", party);
-                                Navigation.findNavController(view).navigate(R.id.action_partyDetailFragment_to_partyUpdateFragment, bundle);
                                 break;
                         }
 
@@ -448,6 +467,17 @@ public class PartyDetailFragment extends Fragment {
                         Common.showToast(getActivity(), R.string.textNoNetwork);
                     }
                 }
+            }
+        });
+
+        btRollCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("partyId", partyId);
+
+                Navigation.findNavController(v).navigate(R.id.action_partyDetailFragment_to_participantListFragment, bundle);
+
             }
         });
 
@@ -670,5 +700,23 @@ public class PartyDetailFragment extends Fragment {
             getMsgListTask.cancel(true);
             getMsgListTask = null;
         }
+        if (coverImageTask != null) {
+            coverImageTask.cancel(true);
+            coverImageTask = null;
+        }
+        if (ownerImagetask != null) {
+            ownerImagetask.cancel(true);
+            ownerImagetask = null;
+        }
+        if (msgImagetask != null) {
+            msgImagetask.cancel(true);
+            msgImagetask = null;
+        }
+    }
+
+    public void reLoadFragment()
+    {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
     }
 }

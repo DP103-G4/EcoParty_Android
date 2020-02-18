@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -152,9 +153,18 @@ public class MyPieceDetailFragment extends Fragment {
         public void onBindViewHolder(@NonNull MyPieceAdapter.MyPieceViewHolder holder, int position) {
             Party myPiece = myPieces.get(position);
             String url = Common.URL_SERVER + "PartyServlet";
-            int id = myPiece.getId();
+            final int id = myPiece.getId();
             pieceImageTask = new AfterImageTask(url, id, imageSize, holder.ivMyParty);
             pieceImageTask.execute();
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("partyId", id);
+                    Navigation.findNavController(v).navigate(R.id.action_myPartyFragment_to_partyDetailFragment, bundle);
+                }
+            });
         }
     }
 

@@ -35,15 +35,22 @@
         android:id="@+id/pieceFragment"
         android:name="tw.dp103g4.partylist_android.PieceListFragment"
         android:label="fragment_piece"
-        tools:layout="@layout/fragment_piece" />
+        tools:layout="@layout/fragment_piece" >
+        <action
+            android:id="@+id/action_pieceFragment_to_pieceDetailFragment"
+            app:destination="@id/pieceDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myPartyFragment"
-        android:name="tw.dp103g4.MyPartyFragment"
+        android:name="tw.dp103g4.tablayout.MyPartyFragment"
         android:label="fragment_my_party"
         tools:layout="@layout/fragment_my_party" >
         <action
             android:id="@+id/action_myPartyFragment_to_partyDetailFragment"
             app:destination="@id/partyDetailFragment" />
+        <action
+            android:id="@+id/action_myPartyFragment_to_pieceFragment"
+            app:destination="@id/pieceFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -89,6 +96,9 @@
         <action
             android:id="@+id/action_partyDetailFragment_to_locationFragment"
             app:destination="@id/locationFragment" />
+        <action
+            android:id="@+id/action_partyDetailFragment_to_partyUpdateFragment"
+            app:destination="@id/partyUpdateFragment" />
     </fragment>
     <fragment
         android:id="@+id/partyInsertFragment"
@@ -169,7 +179,7 @@
         tools:layout="@layout/fragment_party_update" />
     <fragment
         android:id="@+id/pieceDetailFragment"
-        android:name="tw.dp103g4.piece.PieceDetailFragment"
+        android:name="tw.dp103g4.partydetail.PieceDetailFragment"
         android:label="fragment_piece_detail"
         tools:layout="@layout/fragment_piece_detail" />
     <fragment

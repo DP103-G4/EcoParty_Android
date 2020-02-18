@@ -103,7 +103,7 @@ public class PartyInsertFragment extends Fragment {
                 navController.popBackStack();
             }
         });
-        ivCover = view.findViewById(R.id.ivCover);
+        ivCover = view.findViewById(R.id.PartyImg);
         layoutCover = view.findViewById(R.id.layoutCover);
         etName = view.findViewById(R.id.etName);
         etLoction = view.findViewById(R.id.etLoction);

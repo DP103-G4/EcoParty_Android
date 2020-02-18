@@ -13,10 +13,4 @@
     <item
         android:id="@+id/end"
         android:title="製作花絮" />
-    <item
-        android:id="@+id/update"
-        android:title="修改活動" />
-    <item
-        android:id="@+id/delete"
-        android:title="刪除活動" />
 </menu>
