@@ -55,10 +55,10 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvMsg = view.findViewById(R.id.tvMsg);
 //        tvForgot = view.findViewById(R.id.tvForgot);
         etAccount = view.findViewById(R.id.etAccount);
         etPassword = view.findViewById(R.id.etPassword);
+        tvMsg = view.findViewById(R.id.tvLoginMsg);
 
 
                 btRegister = view.findViewById(R.id.btRegister);
