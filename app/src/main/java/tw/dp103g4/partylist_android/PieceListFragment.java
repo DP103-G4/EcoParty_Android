@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -142,10 +143,18 @@ public class PieceListFragment extends Fragment {
         public void onBindViewHolder(@NonNull PieceViewHolder holder, int position) {
             Party party = parties.get(position);
             String url = Common.URL_SERVER + "PartyServlet";
-            int id = party.getId();
+            final int id = party.getId();
             afterImageTask = new AfterImageTask(url, id, imageSize, holder.ivPiece1);
             afterImageTask.execute();
 //            bundle花絮
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("partyId", id);
+                    Navigation.findNavController(v).navigate(R.id.action_pieceFragment_to_pieceDetailFragment, bundle);
+                }
+            });
         }
     }
 

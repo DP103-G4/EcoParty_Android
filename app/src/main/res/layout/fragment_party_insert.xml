@@ -55,7 +55,7 @@
             android:layout_height="@dimen/pictureHeight">
 
             <ImageView
-                android:id="@+id/ivCover"
+                android:id="@+id/PartyImg"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:alpha="0.5"

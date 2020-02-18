@@ -1,6 +1,7 @@
 package tw.dp103g4.partydetail;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -9,6 +10,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -25,15 +35,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
-import tw.dp103g4.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -45,17 +46,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
-import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.CommonTask;
+import tw.dp103g4.task.CoverImageTask;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
-
-public class PartyInsertFragment extends Fragment {
-    private MainActivity activity;
+public class PartyUpdateFragment extends Fragment {
+    private Activity activity;
     private ConstraintLayout layoutCover;
     private ImageView ivCover;
     private EditText etName, etLoction, etAddress,etContent;
@@ -64,6 +65,7 @@ public class PartyInsertFragment extends Fragment {
     private SeekBar sbUpper, sbLower, sbDistance;
     private Button btOk, btCancel;
     private byte[] image;
+    private CoverImageTask partyImageTask;
     private Party party;
     private static final int REQ_PICK_PICTURE = 1;
     private static final int REQ_CROP_PICTURE = 2;
@@ -71,30 +73,30 @@ public class PartyInsertFragment extends Fragment {
     Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
-    private static final String TAG = "TAG_PartyInsert";
+    private static final String TAG = "TAG_PartyUpdate";
 
 
-    public PartyInsertFragment() {
+    public PartyUpdateFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = (MainActivity) getActivity();
+        activity = getActivity();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_party_insert, container, false);
+        return inflater.inflate(R.layout.fragment_party_update, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        activity.getBottomNavigationView().setVisibility(View.GONE);
+
         final NavController navController = Navigation.findNavController(view);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -124,21 +126,42 @@ public class PartyInsertFragment extends Fragment {
         sbLower = view.findViewById(R.id.sbLower);
         sbDistance = view.findViewById(R.id.sbDistance);
 
+        final Bundle bundle = getArguments();
+        if (bundle == null || bundle.getSerializable("party") == null) {
+            navController.popBackStack();
+            return;
+        }
+        party = (Party) bundle.getSerializable("party");
+
         SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         final int userId = pref.getInt("id", 0);
+        String url = Common.URL_SERVER + "PartyServlet";
 
+        final int id = party.getId();
+        int imageSize = getResources().getDisplayMetrics().widthPixels;
+        partyImageTask = new CoverImageTask(url, id, imageSize, ivCover);
+        partyImageTask.execute();
+
+        etName.setText(party.getName());
+        etLoction.setText(party.getLocation());
+        etAddress.setText(party.getAddress());
+        etContent.setText(party.getContent());
+        tvUpper.setText(String.valueOf(party.getCountUpperLimit()));
+        tvLower.setText(String.valueOf(party.getCountLowerLimit()));
+        tvDistance.setText(String.valueOf(party.getDistance()));
+        sbUpper.setProgress(party.getCountUpperLimit());
+        sbLower.setProgress(party.getCountLowerLimit());
+        sbDistance.setProgress(party.getDistance());
 
         final SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY/MM/dd");
         final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
-        String nowDateString = sdfDate.format(new Date());
-        String nowTimeString = sdfTime.format(new Date());
 
-        tvStartDate.setText(nowDateString);
-        tvStartTime.setText(nowTimeString);
-        tvEndDate.setText(nowDateString);
-        tvEndTime.setText(nowTimeString);
-        tvPostEndDate.setText(nowDateString);
-        tvPostEndTime.setText(nowTimeString);
+        tvStartDate.setText(sdfDate.format(party.getStartTime()));
+        tvStartTime.setText(sdfTime.format(party.getStartTime()));
+        tvEndDate.setText(sdfDate.format(party.getEndTime()));
+        tvEndTime.setText(sdfTime.format(party.getEndTime()));
+        tvPostEndDate.setText(sdfDate.format(party.getPostEndTime()));
+        tvPostEndTime.setText(sdfTime.format(party.getPostEndTime()));
 
         layoutCover.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -329,7 +352,7 @@ public class PartyInsertFragment extends Fragment {
                         return;
                     }
 
-                    party = new Party(userId, etName.getText().toString(), startTime, endTime, new Date(), postEndTime,
+                    party = new Party(party.getId(), userId, etName.getText().toString(), startTime, endTime, new Date(), postEndTime,
                             etLoction.getText().toString(), etAddress.getText().toString(), -181, -181, etContent.getText().toString(),
                             sbUpper.getProgress(), sbLower.getProgress(), 0, 1, sbDistance.getProgress());
 
@@ -342,7 +365,7 @@ public class PartyInsertFragment extends Fragment {
                     String url = Common.URL_SERVER + "PartyServlet";
 
                     JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("action", "partyInsert");
+                    jsonObject.addProperty("action", "partyUpdate");
                     jsonObject.addProperty("party", gson.toJson(party));
                     // 有圖才上傳
                     if (image != null) {

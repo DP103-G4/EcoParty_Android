@@ -27,7 +27,7 @@
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/tvMsg"
+            android:id="@+id/tvLoginMsg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="60dp"

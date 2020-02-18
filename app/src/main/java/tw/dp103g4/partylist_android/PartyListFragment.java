@@ -89,6 +89,7 @@ public class PartyListFragment extends Fragment {
         rvPartyStart.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
         rvParty = view.findViewById(R.id.rvParty);
         rvParty.setLayoutManager(new GridLayoutManager(activity, 2));
+
         rvNews = view.findViewById(R.id.rvNews);
         rvNews.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
 

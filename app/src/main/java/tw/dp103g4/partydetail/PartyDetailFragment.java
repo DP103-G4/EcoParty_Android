@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,6 +47,7 @@ import tw.dp103g4.main_android.Common;
 import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.CoverImageTask;
+import tw.dp103g4.task.ImageTask;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -58,10 +60,13 @@ public class PartyDetailFragment extends Fragment {
     private ImageView ivCover, ivOwner, ivParticipant, ivLocation;
     private ImageButton ibSend;
     private EditText etInput;
-    private Button btLike, btIn, btShare, btStart, btQR, btRollCall, btMap, btICC;
-    private List<PartyMessage> msgList;
+    private Button btLike, btIn, btShare, btStart, btQR, btRollCall, btMap, btICC, btEdit;
+    private List<PartyMsgInfo> msgList;
     private CommonTask getMsgListTask;
+    private ImageTask ownerImagetask, msgImagetask;
     private CoverImageTask coverImageTask;
+    private int imageSize;
+    private String url;
     private ScrollView scrollView;
     private ConstraintLayout participantLayout;
     private final int review = 0, post = 1, close = 2, start = 3, end = 4, delete = 5;
@@ -114,9 +119,9 @@ public class PartyDetailFragment extends Fragment {
         tvAddress = view.findViewById(R.id.tvAddress);
         tvContent = view.findViewById(R.id.tvContent);
         rvMessage = view.findViewById(R.id.rvMessage);
-        ivCover = view.findViewById(R.id.ivCover);
+        ivCover = view.findViewById(R.id.PartyImg);
         ivOwner = view.findViewById(R.id.ivOwner);
-        ivParticipant = view.findViewById(R.id.ivMsg);
+        ivParticipant = view.findViewById(R.id.ivParticipant);
         ivLocation = view.findViewById(R.id.ivLocation);
         btQR = view.findViewById(R.id.btQR);
         btRollCall = view.findViewById(R.id.btRollCall);
@@ -130,11 +135,11 @@ public class PartyDetailFragment extends Fragment {
         etInput = view.findViewById(R.id.etInput);
         rvMessage = view.findViewById(R.id.rvMessage);
         participantLayout = view.findViewById(R.id.participantLayout);
+        btEdit = view.findViewById(R.id.btPartyEdit);
 
 
         final Bundle bundle = getArguments();
         if (bundle == null || bundle.getInt("partyId") == 0) {
-            Common.showToast(activity, R.string.textNoParticipantFound);
             navController.popBackStack();
             return;
         }
@@ -147,10 +152,15 @@ public class PartyDetailFragment extends Fragment {
         final Party party = partyInfo.getParty();
 
         if (party != null) {
-            int imageSize = (getResources().getDisplayMetrics().widthPixels > 200) ? getResources().getDisplayMetrics().widthPixels : 200;
-            String url = Common.URL_SERVER + "/PartyServlet";
+            imageSize = (getResources().getDisplayMetrics().widthPixels > 200) ? getResources().getDisplayMetrics().widthPixels : 200;
+            url = Common.URL_SERVER + "/PartyServlet";
             coverImageTask = new CoverImageTask(url, partyId, imageSize, ivCover);
             coverImageTask.execute();
+
+            imageSize = getResources().getDisplayMetrics().widthPixels / 4;
+            url = Common.URL_SERVER + "/UserServlet";
+            ownerImagetask = new ImageTask(url, party.getOwnerId(), imageSize, ivOwner);
+            ownerImagetask.execute();
 
             tvName.setText(party.getName());
             String text = new SimpleDateFormat("E M月d日 H:mm").format(party.getStartTime());
@@ -165,21 +175,27 @@ public class PartyDetailFragment extends Fragment {
 
             btLike.setVisibility(View.VISIBLE);
             btShare.setVisibility(View.VISIBLE);
-
             if (party.getOwnerId() == userId) {
+                btEdit.setVisibility(View.VISIBLE);
                 btStart.setVisibility(View.VISIBLE);
             } else {
                 btIn.setVisibility(View.VISIBLE);
             }
 
-
             if (party.getState() == post) {
                 btStart.setText("發布中");
+                btStart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.start, 0, 0, 0);
+
             } else if (party.getState() == close) {
                 btStart.setText("已截止");
+                btStart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.start, 0, 0, 0);
+
+                btIn.setVisibility(View.GONE);
             } else if (party.getState() == start) {
                 btStart.setText("進行中");
+                btStart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ing, 0, 0, 0);
 
+                btIn.setVisibility(View.GONE);
                 if (party.getOwnerId() == userId) {
                     btRollCall.setVisibility(View.VISIBLE);
                     btMap.setVisibility(View.VISIBLE);
@@ -205,7 +221,7 @@ public class PartyDetailFragment extends Fragment {
                 btLike.setText("收藏");
             }
 
-            tvOwner.setText(String.valueOf(party.getOwnerId()));
+            tvOwner.setText(partyInfo.getOwnerName());
             tvParticipant.setText(String.valueOf(party.getCountCurrent()));
             tvLocation.setText(party.getLocation());
             tvAddress.setText(party.getAddress());
@@ -227,71 +243,65 @@ public class PartyDetailFragment extends Fragment {
             }
         });
 
+        btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                PopupMenu popupMenu = new PopupMenu(activity, view, Gravity.END);
+                popupMenu.inflate(R.menu.party_edit_menu);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+                            case R.id.delete:
+                                if (changePartyState(partyId, delete)) {
+                                    party.setState(delete);
+                                    Navigation.findNavController(view).popBackStack();
+                                }
+                                break;
+                            case R.id.update:
+                                bundle.putSerializable("party", party);
+                                Navigation.findNavController(view).navigate(R.id.action_partyDetailFragment_to_partyUpdateFragment, bundle);
+                                break;
+                        }
+
+                        return true;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
+
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 PopupMenu popupMenu = new PopupMenu(activity, view, Gravity.END);
-                popupMenu.inflate(R.menu.start_menu);
+                popupMenu.inflate(R.menu.party_start_menu);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        String text = "";
-                        int state = 0;
-                        int btImg = 0;
 
                         switch (item.getItemId()) {
                             case R.id.post:
-                                text = "發布中";
-                                state = post;
+                                if (changePartyState(partyId, post)) {
+                                    party.setState(post);
+                                    reLoadFragment();
+                                }
                                 break;
                             case R.id.close:
-                                text = "已截止";
-                                state = close;
+                                if (changePartyState(partyId, close)) {
+                                    party.setState(close);
+                                    reLoadFragment();
+                                }
                                 break;
                             case R.id.start:
-                                text = "進行中";
-                                state = start;
-                                btImg = R.drawable.ing;
+                                if (changePartyState(partyId, start)) {
+                                    party.setState(start);
+                                    reLoadFragment();
+                                }
                                 break;
                             case R.id.end:
-                                state = end;
                                 break;
-                            case R.id.delete:
-                                state = delete;
-                                break;
-                        }
-
-                        if (Common.networkConnected(activity)) {
-                            String url = Common.URL_SERVER + "PartyServlet";
-                            JsonObject jsonObject = new JsonObject();
-                            jsonObject.addProperty("action", "chagePartyState");
-                            jsonObject.addProperty("id", gson.toJson(party.getId()));
-                            jsonObject.addProperty("state", gson.toJson(state));
-                            String jsonOut = jsonObject.toString();
-
-                            int count = 0;
-                            try {
-                                String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                                System.out.println(jsonOut);
-                                count = Integer.valueOf(result.trim());
-
-                                if (count == 0) {
-                                    Common.showToast(getActivity(), R.string.textChageStateFail);
-                                } else {
-                                    party.setState(state);
-                                    if (state != end && state != delete) {
-                                        if (btImg != 0)
-                                            btStart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ing, 0, 0, 0);
-                                        btStart.setText(text);
-                                    } else {
-                                        // 未完成
-                                    }
-                                }
-                            } catch (Exception e) {
-                                Log.e(TAG, e.toString());
-                            }
-                        } else {
-                            Common.showToast(getActivity(), R.string.textNoNetwork);
                         }
 
                         return true;
@@ -460,6 +470,17 @@ public class PartyDetailFragment extends Fragment {
             }
         });
 
+        btRollCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("partyId", partyId);
+
+                Navigation.findNavController(v).navigate(R.id.action_partyDetailFragment_to_participantListFragment, bundle);
+
+            }
+        });
+
 
         participantLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -499,10 +520,11 @@ public class PartyDetailFragment extends Fragment {
                         System.out.println(jsonOut);
                         System.out.println(result);
 
-                        msgList.add(message);
-                        showMsgList(msgList);
-                        etInput.clearFocus();
                         etInput.setText("");
+
+
+                        msgList = getMsgList(party.getId());
+                        showMsgList(msgList);
 
                         new Handler().post(new Runnable() {
                             @Override
@@ -523,7 +545,38 @@ public class PartyDetailFragment extends Fragment {
 
     }
 
-    private void showMsgList(List<PartyMessage> msgList) {
+    private boolean changePartyState(int partyId, int state) {
+        if (Common.networkConnected(activity)) {
+            String url = Common.URL_SERVER + "PartyServlet";
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "changePartyState");
+            jsonObject.addProperty("id", gson.toJson(partyId));
+            jsonObject.addProperty("state", gson.toJson(state));
+            String jsonOut = jsonObject.toString();
+
+            int count = 0;
+            try {
+                String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                System.out.println(jsonOut);
+                count = Integer.valueOf(result.trim());
+
+                if (count == 0) {
+                    Common.showToast(getActivity(), R.string.textChageStateFail);
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+        } else {
+            Common.showToast(getActivity(), R.string.textNoNetwork);
+            return false;
+        }
+        return false;
+    }
+
+    private void showMsgList(List<PartyMsgInfo> msgList) {
         MyAdapter myAdapter = (MyAdapter) rvMessage.getAdapter();
         if (myAdapter == null) {
             rvMessage.setAdapter(new MyAdapter(activity, msgList));
@@ -533,8 +586,8 @@ public class PartyDetailFragment extends Fragment {
         }
     }
 
-    private List<PartyMessage> getMsgList(int partyId) {
-        List<PartyMessage> msgList = null;
+    private List<PartyMsgInfo> getMsgList(int partyId) {
+        List<PartyMsgInfo> msgList = null;
 
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "PartyMessageServlet";
@@ -545,7 +598,7 @@ public class PartyDetailFragment extends Fragment {
             getMsgListTask = new CommonTask(url, jsonOut);
             try {
                 String jsonIn = getMsgListTask.execute().get();
-                Type listType = new TypeToken<List<PartyMessage>>() {
+                Type listType = new TypeToken<List<PartyMsgInfo>>() {
                 }.getType();
                 msgList = gson.fromJson(jsonIn, listType);
                 System.out.println(jsonOut);
@@ -584,15 +637,15 @@ public class PartyDetailFragment extends Fragment {
     }
 
     private class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-        private List<PartyMessage> msgList;
+        private List<PartyMsgInfo> msgList;
         private LayoutInflater layoutInflater;
 
-        MyAdapter(Context context, List<PartyMessage> msgList) {
+        MyAdapter(Context context, List<PartyMsgInfo> msgList) {
             layoutInflater = LayoutInflater.from(context);
             this.msgList = msgList;
         }
 
-        void setMsgList(List<PartyMessage> msgList) {
+        void setMsgList(List<PartyMsgInfo> msgList) {
             this.msgList = msgList;
         }
 
@@ -603,6 +656,7 @@ public class PartyDetailFragment extends Fragment {
 
             public MyViewHolder(@NonNull View itemView) {
                 super(itemView);
+                ivMsg = itemView.findViewById(R.id.ivMsg);
                 tvMsgName = itemView.findViewById(R.id.tvMsgName);
                 tvMsg = itemView.findViewById(R.id.tvMessage);
                 tvMsgTime = itemView.findViewById(R.id.tvMsgTime);
@@ -618,17 +672,17 @@ public class PartyDetailFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull final MyAdapter.MyViewHolder holder, int position) {
-            PartyMessage message = msgList.get(position);
+            PartyMsgInfo msgInfo = msgList.get(position);
 
-            holder.tvMsgName.setText(String.valueOf(message.getUserId()));
-            holder.tvMsg.setText(message.getContent());
-            String text = new SimpleDateFormat("M/d H:mm").format(message.getTime());
+            holder.tvMsgName.setText(msgInfo.getMsgName());
+            holder.tvMsg.setText(msgInfo.getPartyMessage().getContent());
+            String text = new SimpleDateFormat("M/d H:mm").format(msgInfo.getPartyMessage().getTime());
             holder.tvMsgTime.setText(text);
-            // 抓user頭像
-//            String url = Common.URL_SERVER + "";
-//            int id = party.getId();
-//            partyImageTask = new CoverImageTask(url, id, imageSize, holder.ivMyParty);
-//            partyImageTask.execute();
+
+            imageSize = getResources().getDisplayMetrics().widthPixels / 4;
+            url = Common.URL_SERVER + "/UserServlet";
+            msgImagetask = new ImageTask(url, msgInfo.getPartyMessage().getUserId(), imageSize, holder.ivMsg);
+            msgImagetask.execute();
 
         }
 
@@ -646,5 +700,23 @@ public class PartyDetailFragment extends Fragment {
             getMsgListTask.cancel(true);
             getMsgListTask = null;
         }
+        if (coverImageTask != null) {
+            coverImageTask.cancel(true);
+            coverImageTask = null;
+        }
+        if (ownerImagetask != null) {
+            ownerImagetask.cancel(true);
+            ownerImagetask = null;
+        }
+        if (msgImagetask != null) {
+            msgImagetask.cancel(true);
+            msgImagetask = null;
+        }
+    }
+
+    public void reLoadFragment()
+    {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
     }
 }

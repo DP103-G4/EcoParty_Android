@@ -70,6 +70,9 @@
 
 
     <string name="textNoLogin">請先登入！</string>
+    <string name="textPieceDetail">活動花絮</string>
+    <string name="textNoPartyImgs">沒有活動圖片</string>
+    <string name="textNoPartyPiece">沒有花絮貼文</string>
 
     <string-array name="itemGuest">
         <item>登入/註冊</item>
