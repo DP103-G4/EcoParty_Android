@@ -238,7 +238,7 @@ public class PartyDetailFragment extends Fragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("partyId", party.getId());
-
+                bundle.putInt("ownerId", party.getOwnerId());
                 Navigation.findNavController(v).navigate(R.id.action_partyDetailFragment_to_locationFragment, bundle);
             }
         });

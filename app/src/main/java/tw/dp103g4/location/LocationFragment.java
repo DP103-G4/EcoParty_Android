@@ -3,6 +3,7 @@ package tw.dp103g4.location;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,10 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -77,6 +80,7 @@ public class LocationFragment extends Fragment {
     private SharedPreferences pref;
     private int memId;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +111,7 @@ public class LocationFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
@@ -130,6 +134,9 @@ public class LocationFragment extends Fragment {
             return;
         }
         final int partyId = bundle.getInt("partyId");
+        final int ownerId = bundle.getInt("ownerId");
+        System.out.println("ownerId" + ownerId);
+        System.out.println("memid" + memId);
         locations = getLocation(partyId);
         mapLocation.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -139,50 +146,70 @@ public class LocationFragment extends Fragment {
                 for (tw.dp103g4.location.Location location : locations) {
                     showMarker(location, location.getId());
                 }
+            if (ownerId == memId) {
                 map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng latLng) {
-//                        final Bundle bundle = getArguments();
-//                        if (bundle == null || bundle.getInt("partyId") == 0) {
-//                            Common.showToast(activity, R.string.textNoParticipantFound);
-//                            navController.popBackStack();
-//                            return;
-//                        }
-//                        int partyId = bundle.getInt("partyId");
-                        getLocation(partyId);
                         SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
-                        int userId = pref.getInt("id", 0);
+                        LayoutInflater layoutInflater = LayoutInflater.from(activity);
+//                        text_entry is an Layout XML file containing two text field to display in alert dialog
+                        final View textEntryView = layoutInflater.inflate(R.layout.alert_custom, null);
+                        final EditText edTitle = textEntryView.findViewById(R.id.edTitle);
+                        final EditText edContent = textEntryView.findViewById(R.id.edContent);
+                        final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+                        int userId = memId;
                         int id = getId();
                         double latitude = latLng.latitude;
                         double longitude = latLng.longitude;
-                        String name = "aaa";
-                        // 取得地址當作說明文字
-                        String content = "bbb";
-                        tw.dp103g4.location.Location location = new tw.dp103g4.location.Location(
+                        String name = "";
+                        String content = "";
+                        final tw.dp103g4.location.Location location = new tw.dp103g4.location.Location(
                                 id, partyId, userId, latitude, longitude, name, content);
-                        location.setId(addMarker(location));
-                        locations.add(location);
+                        System.out.println("abc" + name + content);
+
+                        alert.setTitle("定位訊息")
+                                .setView(textEntryView)
+                                .setPositiveButton("確定",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                location.setName(edTitle.getText().toString());
+                                                location.setContent(edContent.getText().toString());
+                                                System.out.println("a1111" + location.getName());
+                                                location.setId(addMarker(location));
+                                                locations.add(location);
+                                                /* User clicked OK so do some stuff */
+                                            }
+                                        })
+                                .setNegativeButton("取消",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog,
+                                                                int whichButton) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                        alert.show();
+                        getLocation(partyId);
                     }
                 });
-
-
+            }
                 // 長按訊息視窗就移除該標記
                 map.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
                     @Override
                     public void onInfoWindowLongClick(Marker marker) {
-                            int count = deleteMarker((Integer) marker.getTag());
-                            if (count != 0) {
-                                marker.remove();
-                                String text = marker.getTitle() + " removed";
-                                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
-                            }
-
+                        int count = deleteMarker((Integer) marker.getTag());
+                        if (count != 0) {
+                            marker.remove();
+                            String text = marker.getTitle() + " removed";
+                            Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }
         });
         checkLocationSettings();
     }
+
+
     private List<tw.dp103g4.location.Location> getLocation(int partyId) {
         List<tw.dp103g4.location.Location> locations = null;
         if (Common.networkConnected(activity)) {
@@ -205,6 +232,7 @@ public class LocationFragment extends Fragment {
         }
         return locations;
     }
+
     private void checkLocationSettings() {
         // 必須將LocationRequest設定加入檢查,先造好請求的物件
         LocationSettingsRequest.Builder builder =
@@ -247,14 +275,7 @@ public class LocationFragment extends Fragment {
     }
 
     private int addMarker(tw.dp103g4.location.Location location) {
-//        Address address = reverseGeocode(location.getLatitude(), location.getLongitude());
-//
-//        if (address == null) {
-//            Toast.makeText(activity, R.string.textLocationNotFound, Toast.LENGTH_SHORT).show();
-//            return;
-//        }
         int count = 0;
-        // 取得道路名稱當做標題
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "LocationServlet";
             JsonObject jsonObject = new JsonObject();
@@ -300,7 +321,9 @@ public class LocationFragment extends Fragment {
         }
         return count;
     }
+
     private void showMarker(tw.dp103g4.location.Location location, int id) {
+
         Marker marker = map.addMarker(new MarkerOptions()
                 .position(location.getLatLng())
                 .title(location.getName())
@@ -308,12 +331,14 @@ public class LocationFragment extends Fragment {
         marker.setTag(id);
     }
 
+
+
     private void moveMap(LatLng latLng) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
 //        target  傳進來的經緯度放這邊
                 .target(latLng)
 //                縮放
-                .zoom(17)
+                .zoom(16)
                 .build();
         CameraUpdate cameraUpdate = CameraUpdateFactory
                 .newCameraPosition(cameraPosition);
@@ -365,8 +390,8 @@ public class LocationFragment extends Fragment {
         askAccessLocationPermission();
     }
 
-    private void askAccessLocationPermission () {
-        String [] permissions = { Manifest.permission.ACCESS_FINE_LOCATION };
+    private void askAccessLocationPermission() {
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
         int result = ContextCompat.checkSelfPermission(activity, permissions[0]);
         if (result == PackageManager.PERMISSION_DENIED) {
             requestPermissions(permissions, PER_ACCESS_LOCATION);

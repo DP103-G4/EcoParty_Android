@@ -11,6 +11,11 @@ public class Location {
 	private String name;
 	private String content;
 
+	public Location(String name, String content) {
+		this.name = name;
+		this.content = content;
+	}
+
 	public Location(int id, int partyId, int userId, double latitude, double longitude, String name, String content) {
 		super();
 		this.id = id;
