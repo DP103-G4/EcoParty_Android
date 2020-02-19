@@ -3,6 +3,7 @@ package tw.dp103g4.location;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -16,7 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -146,64 +147,66 @@ public class LocationFragment extends Fragment {
                 for (tw.dp103g4.location.Location location : locations) {
                     showMarker(location, location.getId());
                 }
-            if (ownerId == memId) {
-                map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                    @Override
-                    public void onMapLongClick(LatLng latLng) {
-                        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
-                        LayoutInflater layoutInflater = LayoutInflater.from(activity);
-//                        text_entry is an Layout XML file containing two text field to display in alert dialog
-                        final View textEntryView = layoutInflater.inflate(R.layout.alert_custom, null);
-                        final EditText edTitle = textEntryView.findViewById(R.id.edTitle);
-                        final EditText edContent = textEntryView.findViewById(R.id.edContent);
-                        final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-                        int userId = memId;
-                        int id = getId();
-                        double latitude = latLng.latitude;
-                        double longitude = latLng.longitude;
-                        String name = "";
-                        String content = "";
-                        final tw.dp103g4.location.Location location = new tw.dp103g4.location.Location(
-                                id, partyId, userId, latitude, longitude, name, content);
-                        System.out.println("abc" + name + content);
+                map.setInfoWindowAdapter(new MyInfoWindowAdapter(activity));
 
-                        alert.setTitle("定位訊息")
-                                .setView(textEntryView)
-                                .setPositiveButton("確定",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int whichButton) {
-                                                location.setName(edTitle.getText().toString());
-                                                location.setContent(edContent.getText().toString());
-                                                System.out.println("a1111" + location.getName());
-                                                location.setId(addMarker(location));
-                                                locations.add(location);
-                                                /* User clicked OK so do some stuff */
-                                            }
-                                        })
-                                .setNegativeButton("取消",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog,
-                                                                int whichButton) {
-                                                dialog.dismiss();
-                                            }
-                                        });
-                        alert.show();
-                        getLocation(partyId);
-                    }
-                });
-            }
-                // 長按訊息視窗就移除該標記
-                map.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
-                    @Override
-                    public void onInfoWindowLongClick(Marker marker) {
-                        int count = deleteMarker((Integer) marker.getTag());
-                        if (count != 0) {
-                            marker.remove();
-                            String text = marker.getTitle() + " removed";
-                            Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+                if (ownerId == memId) {
+                    map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                        @Override
+                        public void onMapLongClick(LatLng latLng) {
+                            SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+                            LayoutInflater layoutInflater = LayoutInflater.from(activity);
+//                        text_entry is an Layout XML file containing two text field to display in alert dialog
+                            final View textEntryView = layoutInflater.inflate(R.layout.alert_custom, null);
+                            final EditText edTitle = textEntryView.findViewById(R.id.edTitle);
+                            final EditText edContent = textEntryView.findViewById(R.id.edContent);
+                            final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+                            int userId = memId;
+                            int id = getId();
+                            double latitude = latLng.latitude;
+                            double longitude = latLng.longitude;
+                            String name = "";
+                            String content = "";
+                            final tw.dp103g4.location.Location location = new tw.dp103g4.location.Location(
+                                    id, partyId, userId, latitude, longitude, name, content);
+                            System.out.println("abc" + name + content);
+
+                            alert.setTitle("定位訊息")
+                                    .setView(textEntryView)
+                                    .setPositiveButton("確定",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int whichButton) {
+                                                    location.setName(edTitle.getText().toString());
+                                                    location.setContent(edContent.getText().toString());
+                                                    location.setId(addMarker(location));
+                                                    locations.add(location);
+                                                    /* User clicked OK so do some stuff */
+                                                }
+                                            })
+                                    .setNegativeButton("取消",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog,
+                                                                    int whichButton) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                            alert.show();
+
                         }
-                    }
-                });
+                    });
+                }
+                // 長按訊息視窗就移除該標記
+                if (ownerId == memId) {
+                    map.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
+                        @Override
+                        public void onInfoWindowLongClick(Marker marker) {
+                            int count = deleteMarker((int) marker.getTag());
+                            Log.d(TAG, "123a " + String.valueOf(count));
+                            if (count != 0) {
+                                marker.remove();
+                            }
+                        }
+                    });
+                }
             }
         });
         checkLocationSettings();
@@ -316,7 +319,7 @@ public class LocationFragment extends Fragment {
             if (count == 0) {
                 Common.showToast(activity, R.string.textDeleteFail);
             } else {
-
+                Common.showToast(activity, R.string.textDeleteSuccess);
             }
         }
         return count;
@@ -331,7 +334,34 @@ public class LocationFragment extends Fragment {
         marker.setTag(id);
     }
 
+    private class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+        Context context;
+         MyInfoWindowAdapter(Context context) {
+            this.context = context;
+        }
 
+        @Override
+        public View getInfoWindow(Marker marker) {
+            int id = (int) marker.getTag();
+            View view = View.inflate(context, R.layout.info_window, null);
+            TextView tvTitle = view.findViewById(R.id.tvTitle);
+            TextView tvContent = view.findViewById(R.id.tvContent);
+            for (tw.dp103g4.location.Location location : locations) {
+                if (location.getId() == id) {
+                    tvTitle.setText(location.getName());
+                    tvContent.setText(location.getContent());
+                    break;
+                }
+
+            }
+            return view;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
+        }
+    }
 
     private void moveMap(LatLng latLng) {
         CameraPosition cameraPosition = new CameraPosition.Builder()

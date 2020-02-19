@@ -8,7 +8,7 @@
 
     <EditText
         android:id="@+id/edTitle"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="65dp"
         android:gravity="top"
         android:hint="@string/editTextTitle"
@@ -20,7 +20,7 @@
 
     <EditText
         android:id="@+id/edContent"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="65dp"
         android:gravity="top"
         android:hint="@string/editTextContent"
