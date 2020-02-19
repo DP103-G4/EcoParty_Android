@@ -168,13 +168,21 @@ public class FriendInsertFragment extends Fragment {
                         } else {
                             FriendShip isInvite = getIsInvite(userId, user.getId());
                             if (!isInvite.getNoInsert()) {
-                                String type = "";
+                                 String type = "";
                                 if (!isInvite.getIsInvite()) {
-                                    if(user.getId() == isInvite.getIdOne()){
-                                        insertFriend(isInvite.getIdOne(),userId);
-                                        type = "您已同意 "+user.getAccount()+" 的好友邀請";
-                                        friendShips = getFriendShips();
-                                        showFriendShips(friendShips);
+                                    if(userId == isInvite.getIdTwo()){
+                                        new AlertDialog.Builder(getActivity())
+                                                .setTitle("是否要同意 " + user.getAccount() + " 的好友邀請？")
+                                                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        insertFriend(user.getId(),userId);
+                                                        friendShips = getFriendShips();
+                                                        showFriendShips(friendShips);
+                                                    }
+                                                }).setNegativeButton("取消", null).create()
+                                                .show();
+
                                     }else{
                                     type = "已發出邀請！";}
 
@@ -182,10 +190,12 @@ public class FriendInsertFragment extends Fragment {
                                     type = user.getAccount()+" 已經是好友囉！";
 
                                 }
+                                if (!type.equals("")){
                                 new AlertDialog.Builder(getActivity())
                                         .setTitle(type)
                                         .setNegativeButton("確定", null).create()
                                         .show();
+                                }
                             } else {
                                 new AlertDialog.Builder(getActivity())
                                         .setTitle("是否要邀請 " + user.getAccount() + " 成為好友？")
