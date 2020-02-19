@@ -50,6 +50,7 @@ import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.ImageTask;
 
 import static android.content.Context.MODE_PRIVATE;
+import static tw.dp103g4.main_android.Common.chatWebSocketClient;
 
 
 public class FriendFragment extends Fragment {
@@ -460,6 +461,9 @@ public class FriendFragment extends Fragment {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ChatMsg chatMsg = new ChatMsg("isRead", userId, newestTalk.getSenderId(), "");
+                    String newMsgJson = new Gson().toJson(chatMsg);
+                    chatWebSocketClient.send(newMsgJson);
                     isRead(newestTalk.getSenderId());
                     Bundle bundle = new Bundle();
                     bundle.putInt("friendId", newestTalk.getSenderId());

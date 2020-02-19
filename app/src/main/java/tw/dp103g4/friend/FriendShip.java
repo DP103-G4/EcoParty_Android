@@ -26,10 +26,11 @@ public class FriendShip {
 		this.friendId = friendId;
 		this.account = account;
 	}
-	public FriendShip (boolean noInsert, boolean isIvite) {
+	public FriendShip (boolean noInsert, boolean isIvite, int receiver) {
 		super();
 		this.noInsert = noInsert;
 		this.isInvite = isIvite;
+		this.idTwo = receiver;
 	}
 	
 
