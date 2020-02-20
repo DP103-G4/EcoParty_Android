@@ -176,6 +176,7 @@ public class InfoLocationFragment extends Fragment {
                                                     infoLocation.setName(edTitle.getText().toString());
                                                     infoLocation.setContent(edContent.getText().toString());
                                                     infoLocation.setId(addMarker(infoLocation));
+                                                    moveMap(infoLocation.getLatLng());
                                                     infoLocations.add(infoLocation);
                                                     /* User clicked OK so do some stuff */
                                                 }
