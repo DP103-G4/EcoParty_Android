@@ -84,7 +84,11 @@
         android:id="@+id/informFragment"
         android:name="tw.dp103g4.inform.InformFragment"
         android:label="fragment_inform"
-        tools:layout="@layout/fragment_inform" />
+        tools:layout="@layout/fragment_inform" >
+        <action
+            android:id="@+id/action_informFragment_to_partyDetailFragment"
+            app:destination="@id/partyDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/partyDetailFragment"
         android:name="tw.dp103g4.partydetail.PartyDetailFragment"

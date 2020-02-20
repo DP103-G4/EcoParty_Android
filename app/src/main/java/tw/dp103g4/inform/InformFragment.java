@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -175,11 +176,19 @@ public class InformFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull final InformViewHolder holder, int position) {
             Inform inform = informs.get(position);
+            final int id = inform.getPartyId();
             holder.tvInformContent.setText(inform.getContent());
-
             if(inform.isRead()){
-                holder.itemView.setBackgroundColor(0xFFAED581);
+                holder.itemView.setBackgroundColor(0xFFFFFF);
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("partyId", id);
+                    Navigation.findNavController(v).navigate(R.id.action_informFragment_to_partyDetailFragment, bundle);
+                }
+            });
 
 
         }
