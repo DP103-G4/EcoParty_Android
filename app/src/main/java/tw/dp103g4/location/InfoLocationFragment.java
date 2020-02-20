@@ -3,7 +3,6 @@ package tw.dp103g4.location;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
@@ -17,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -147,7 +145,7 @@ public class InfoLocationFragment extends Fragment {
                 for (InfoLocation infoLocation : infoLocations) {
                     showMarker(infoLocation, infoLocation.getId());
                 }
-                map.setInfoWindowAdapter(new MyInfoWindowAdapter(activity));
+//                map.setInfoWindowAdapter(new MyInfoWindowAdapter(activity));
 
                 if (ownerId == memId) {
                     map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -334,34 +332,34 @@ public class InfoLocationFragment extends Fragment {
         marker.setTag(id);
     }
 
-    private class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
-        Context context;
-         MyInfoWindowAdapter(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        public View getInfoWindow(Marker marker) {
-            int id = (int) marker.getTag();
-            View view = View.inflate(context, R.layout.info_window, null);
-            TextView tvTitle = view.findViewById(R.id.tvTitle);
-            TextView tvContent = view.findViewById(R.id.tvContent);
-            for (InfoLocation infoLocation : infoLocations) {
-                if (infoLocation.getId() == id) {
-                    tvTitle.setText(infoLocation.getName());
-                    tvContent.setText(infoLocation.getContent());
-                    break;
-                }
-
-            }
-            return view;
-        }
-
-        @Override
-        public View getInfoContents(Marker marker) {
-            return null;
-        }
-    }
+//    private class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+//        Context context;
+//         MyInfoWindowAdapter(Context context) {
+//            this.context = context;
+//        }
+//
+//        @Override
+//        public View getInfoWindow(Marker marker) {
+//            int id = (int) marker.getTag();
+//            View view = View.inflate(context, R.layout.info_window, null);
+//            TextView tvTitle = view.findViewById(R.id.tvTitle);
+//            TextView tvContent = view.findViewById(R.id.tvContent);
+//            for (InfoLocation infoLocation : infoLocations) {
+//                if (infoLocation.getId() == id) {
+//                    tvTitle.setText(infoLocation.getName());
+//                    tvContent.setText(infoLocation.getContent());
+//                    break;
+//                }
+//
+//            }
+//            return view;
+//        }
+//
+//        @Override
+//        public View getInfoContents(Marker marker) {
+//            return null;
+//        }
+//    }
 
     private void moveMap(LatLng latLng) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
