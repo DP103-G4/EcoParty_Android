@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="tw.dp103g4.location.LocationFragment">
+    tools:context="tw.dp103g4.location.InfoLocationFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

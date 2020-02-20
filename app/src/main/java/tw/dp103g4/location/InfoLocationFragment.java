@@ -64,7 +64,7 @@ import tw.dp103g4.task.CommonTask;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class LocationFragment extends Fragment {
+public class InfoLocationFragment extends Fragment {
     private static final int REQ_CHECK_SETTINGS = 101;
     private static final int PER_ACCESS_LOCATION = 202;
     private static final String TAG = "TAG_LocationFragment";
@@ -72,7 +72,7 @@ public class LocationFragment extends Fragment {
     private MapView mapLocation;
     private GoogleMap map;
     private Location lastLocation;
-    private List<tw.dp103g4.location.Location> locations;
+    private List<InfoLocation> infoLocations;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -138,14 +138,14 @@ public class LocationFragment extends Fragment {
         final int ownerId = bundle.getInt("ownerId");
         System.out.println("ownerId" + ownerId);
         System.out.println("memid" + memId);
-        locations = getLocation(partyId);
+        infoLocations = getInfoLocation(partyId);
         mapLocation.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
                 moveMap(new LatLng(24.9677449899, 121.191698313));
-                for (tw.dp103g4.location.Location location : locations) {
-                    showMarker(location, location.getId());
+                for (InfoLocation infoLocation : infoLocations) {
+                    showMarker(infoLocation, infoLocation.getId());
                 }
                 map.setInfoWindowAdapter(new MyInfoWindowAdapter(activity));
 
@@ -166,7 +166,7 @@ public class LocationFragment extends Fragment {
                             double longitude = latLng.longitude;
                             String name = "";
                             String content = "";
-                            final tw.dp103g4.location.Location location = new tw.dp103g4.location.Location(
+                            final InfoLocation infoLocation = new InfoLocation(
                                     id, partyId, userId, latitude, longitude, name, content);
                             System.out.println("abc" + name + content);
 
@@ -175,10 +175,10 @@ public class LocationFragment extends Fragment {
                                     .setPositiveButton("確定",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                                    location.setName(edTitle.getText().toString());
-                                                    location.setContent(edContent.getText().toString());
-                                                    location.setId(addMarker(location));
-                                                    locations.add(location);
+                                                    infoLocation.setName(edTitle.getText().toString());
+                                                    infoLocation.setContent(edContent.getText().toString());
+                                                    infoLocation.setId(addMarker(infoLocation));
+                                                    infoLocations.add(infoLocation);
                                                     /* User clicked OK so do some stuff */
                                                 }
                                             })
@@ -213,10 +213,10 @@ public class LocationFragment extends Fragment {
     }
 
 
-    private List<tw.dp103g4.location.Location> getLocation(int partyId) {
-        List<tw.dp103g4.location.Location> locations = null;
+    private List<InfoLocation> getInfoLocation(int partyId) {
+        List<InfoLocation> infoLocations = null;
         if (Common.networkConnected(activity)) {
-            String url = Common.URL_SERVER + "LocationServlet";
+            String url = Common.URL_SERVER + "InfoLocationServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getAll");
             jsonObject.addProperty("partyId", partyId);
@@ -224,16 +224,16 @@ public class LocationFragment extends Fragment {
             locationGetAllTask = new CommonTask(url, jsonOut);
             try {
                 String jsonIn = locationGetAllTask.execute().get();
-                Type listType = new TypeToken<List<tw.dp103g4.location.Location>>() {
+                Type listType = new TypeToken<List<InfoLocation>>() {
                 }.getType();
-                locations = new Gson().fromJson(jsonIn, listType);
+                infoLocations = new Gson().fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
         } else {
             Common.showToast(activity, R.string.textNoNetwork);
         }
-        return locations;
+        return infoLocations;
     }
 
     private void checkLocationSettings() {
@@ -277,14 +277,14 @@ public class LocationFragment extends Fragment {
         });
     }
 
-    private int addMarker(tw.dp103g4.location.Location location) {
+    private int addMarker(InfoLocation infoLocation) {
         int count = 0;
         if (Common.networkConnected(activity)) {
-            String url = Common.URL_SERVER + "LocationServlet";
+            String url = Common.URL_SERVER + "InfoLocationServlet";
             JsonObject jsonObject = new JsonObject();
 //                    告訴server端 要做新增動作
             jsonObject.addProperty("action", "locationInsert");
-            jsonObject.addProperty("location", new Gson().toJson(location));
+            jsonObject.addProperty("location", new Gson().toJson(infoLocation));
             try {
                 String result = new CommonTask(url, jsonObject.toString()).execute().get();
                 count = Integer.valueOf(result);
@@ -297,14 +297,14 @@ public class LocationFragment extends Fragment {
                 Common.showToast(getActivity(), R.string.textInsertSuccess);
             }
         }
-        showMarker(location, count);
+        showMarker(infoLocation, count);
         return count;
     }
 
     private int deleteMarker(int id) {
         int count = 0;
         if (Common.networkConnected(activity)) {
-            String url = Common.URL_SERVER + "LocationServlet";
+            String url = Common.URL_SERVER + "InfoLocationServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "locationDelete");
             jsonObject.addProperty("id", id);
@@ -325,12 +325,12 @@ public class LocationFragment extends Fragment {
         return count;
     }
 
-    private void showMarker(tw.dp103g4.location.Location location, int id) {
+    private void showMarker(InfoLocation infoLocation, int id) {
 
         Marker marker = map.addMarker(new MarkerOptions()
-                .position(location.getLatLng())
-                .title(location.getName())
-                .snippet(location.getContent()));
+                .position(infoLocation.getLatLng())
+                .title(infoLocation.getName())
+                .snippet(infoLocation.getContent()));
         marker.setTag(id);
     }
 
@@ -346,10 +346,10 @@ public class LocationFragment extends Fragment {
             View view = View.inflate(context, R.layout.info_window, null);
             TextView tvTitle = view.findViewById(R.id.tvTitle);
             TextView tvContent = view.findViewById(R.id.tvContent);
-            for (tw.dp103g4.location.Location location : locations) {
-                if (location.getId() == id) {
-                    tvTitle.setText(location.getName());
-                    tvContent.setText(location.getContent());
+            for (InfoLocation infoLocation : infoLocations) {
+                if (infoLocation.getId() == id) {
+                    tvTitle.setText(infoLocation.getName());
+                    tvContent.setText(infoLocation.getContent());
                     break;
                 }
 

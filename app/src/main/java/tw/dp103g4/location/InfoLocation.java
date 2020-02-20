@@ -2,7 +2,7 @@ package tw.dp103g4.location;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class Location {
+public class InfoLocation {
 	private int id;
 	private int partyId;
 	private int userId;
@@ -11,12 +11,12 @@ public class Location {
 	private String name;
 	private String content;
 
-	public Location(String name, String content) {
+	public InfoLocation(String name, String content) {
 		this.name = name;
 		this.content = content;
 	}
 
-	public Location(int id, int partyId, int userId, double latitude, double longitude, String name, String content) {
+	public InfoLocation(int id, int partyId, int userId, double latitude, double longitude, String name, String content) {
 		super();
 		this.id = id;
 		this.partyId = partyId;
@@ -31,7 +31,7 @@ public class Location {
 		return new LatLng(latitude, longitude);
 	}
 
-	public Location(int id) {
+	public InfoLocation(int id) {
 		super();
 		this.id = id;
 	}

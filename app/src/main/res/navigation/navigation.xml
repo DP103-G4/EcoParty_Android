@@ -159,7 +159,7 @@
         tools:layout="@layout/fragment_friend_insert" />
     <fragment
         android:id="@+id/locationFragment"
-        android:name="tw.dp103g4.location.LocationFragment"
+        android:name="tw.dp103g4.location.InfoLocationFragment"
         android:label="fragment_location"
         tools:layout="@layout/fragment_location" />
     <fragment
