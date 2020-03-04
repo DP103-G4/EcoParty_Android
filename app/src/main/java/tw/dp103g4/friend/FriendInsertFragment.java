@@ -179,6 +179,7 @@ public class FriendInsertFragment extends Fragment {
                                                         insertFriend(user.getId(),userId);
                                                         friendShips = getFriendShips();
                                                         showFriendShips(friendShips);
+
                                                     }
                                                 }).setNegativeButton("取消", null).create()
                                                 .show();
