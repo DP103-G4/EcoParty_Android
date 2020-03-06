@@ -11,6 +11,10 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
+    <style name="AppTheme.AppBarOverlay.ForInform" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <item name="android:textSize">24sp</item>
+    </style>
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
     <style name="toolbar_blue_theme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorControlNormal">#5EDCA6</item>

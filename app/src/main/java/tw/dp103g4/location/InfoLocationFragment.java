@@ -3,6 +3,8 @@ package tw.dp103g4.location;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -12,12 +14,15 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -60,7 +65,7 @@ import tw.dp103g4.task.CommonTask;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class LocationFragment extends Fragment {
+public class InfoLocationFragment extends Fragment {
     private static final int REQ_CHECK_SETTINGS = 101;
     private static final int PER_ACCESS_LOCATION = 202;
     private static final String TAG = "TAG_LocationFragment";
@@ -68,7 +73,7 @@ public class LocationFragment extends Fragment {
     private MapView mapLocation;
     private GoogleMap map;
     private Location lastLocation;
-    private List<tw.dp103g4.location.Location> locations;
+    private List<InfoLocation> infoLocations;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -76,6 +81,7 @@ public class LocationFragment extends Fragment {
     private CommonTask locationGetAllTask;
     private SharedPreferences pref;
     private int memId;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,7 +113,7 @@ public class LocationFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
@@ -117,12 +123,14 @@ public class LocationFragment extends Fragment {
         mapLocation.onStart();
         final NavController navController = Navigation.findNavController(view);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.location_menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 navController.popBackStack();
             }
         });
+
         final Bundle bundle = getArguments();
         if (bundle == null || bundle.getInt("partyId") == 0) {
             Common.showToast(activity, R.string.textNoParticipantFound);
@@ -130,63 +138,101 @@ public class LocationFragment extends Fragment {
             return;
         }
         final int partyId = bundle.getInt("partyId");
-        locations = getLocation(partyId);
+        final int ownerId = bundle.getInt("ownerId");
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                infoLocations = getInfoLocation(partyId);
+                for (InfoLocation infoLocation : infoLocations) {
+                    showMarker(infoLocation, infoLocation.getId());
+                }
+
+                return false;
+            }
+        });
+        System.out.println("ownerId" + ownerId);
+        System.out.println("memid" + memId);
+        infoLocations = getInfoLocation(partyId);
         mapLocation.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
                 moveMap(new LatLng(24.9677449899, 121.191698313));
-                for (tw.dp103g4.location.Location location : locations) {
-                    showMarker(location, location.getId());
+                for (InfoLocation infoLocation : infoLocations) {
+                    showMarker(infoLocation, infoLocation.getId());
                 }
-                map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-                    @Override
-                    public void onMapLongClick(LatLng latLng) {
-//                        final Bundle bundle = getArguments();
-//                        if (bundle == null || bundle.getInt("partyId") == 0) {
-//                            Common.showToast(activity, R.string.textNoParticipantFound);
-//                            navController.popBackStack();
-//                            return;
-//                        }
-//                        int partyId = bundle.getInt("partyId");
-                        getLocation(partyId);
-                        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
-                        int userId = pref.getInt("id", 0);
-                        int id = getId();
-                        double latitude = latLng.latitude;
-                        double longitude = latLng.longitude;
-                        String name = "aaa";
-                        // 取得地址當作說明文字
-                        String content = "bbb";
-                        tw.dp103g4.location.Location location = new tw.dp103g4.location.Location(
-                                id, partyId, userId, latitude, longitude, name, content);
-                        location.setId(addMarker(location));
-                        locations.add(location);
-                    }
-                });
+                map.setInfoWindowAdapter(new MyInfoWindowAdapter(activity));
 
+                if (ownerId == memId) {
+                    map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                        @Override
+                        public void onMapLongClick(LatLng latLng) {
+                            SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+                            LayoutInflater layoutInflater = LayoutInflater.from(activity);
+//                        text_entry is an Layout XML file containing two text field to display in alert dialog
+                            final View textEntryView = layoutInflater.inflate(R.layout.alert_custom, null);
+                            final EditText edTitle = textEntryView.findViewById(R.id.edTitle);
+                            final EditText edContent = textEntryView.findViewById(R.id.edContent);
+                            final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+                            int userId = memId;
+                            int id = getId();
+                            double latitude = latLng.latitude;
+                            double longitude = latLng.longitude;
+                            String name = "";
+                            String content = "";
+                            final InfoLocation infoLocation = new InfoLocation(
+                                    id, partyId, userId, latitude, longitude, name, content);
+                            System.out.println("abc" + name + content);
 
+                            alert.setTitle("定位訊息")
+                                    .setView(textEntryView)
+                                    .setPositiveButton("確定",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int whichButton) {
+                                                    infoLocation.setName(edTitle.getText().toString());
+                                                    infoLocation.setContent(edContent.getText().toString());
+                                                    infoLocation.setId(addMarker(infoLocation));
+                                                    moveMap(infoLocation.getLatLng());
+                                                    infoLocations.add(infoLocation);
+                                                    /* User clicked OK so do some stuff */
+                                                }
+                                            })
+                                    .setNegativeButton("取消",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog,
+                                                                    int whichButton) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                            alert.show();
+
+                        }
+                    });
+                }
                 // 長按訊息視窗就移除該標記
-                map.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
-                    @Override
-                    public void onInfoWindowLongClick(Marker marker) {
-                            int count = deleteMarker((Integer) marker.getTag());
+                if (ownerId == memId) {
+                    map.setOnInfoWindowLongClickListener(new GoogleMap.OnInfoWindowLongClickListener() {
+                        @Override
+                        public void onInfoWindowLongClick(Marker marker) {
+                            int count = deleteMarker((int) marker.getTag());
+                            Log.d(TAG, "123a " + String.valueOf(count));
                             if (count != 0) {
                                 marker.remove();
-                                String text = marker.getTitle() + " removed";
-                                Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
                             }
-
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
         checkLocationSettings();
     }
-    private List<tw.dp103g4.location.Location> getLocation(int partyId) {
-        List<tw.dp103g4.location.Location> locations = null;
+
+
+    private List<InfoLocation> getInfoLocation(int partyId) {
+        List<InfoLocation> infoLocations = null;
         if (Common.networkConnected(activity)) {
-            String url = Common.URL_SERVER + "LocationServlet";
+            String url = Common.URL_SERVER + "InfoLocationServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "getAll");
             jsonObject.addProperty("partyId", partyId);
@@ -194,17 +240,18 @@ public class LocationFragment extends Fragment {
             locationGetAllTask = new CommonTask(url, jsonOut);
             try {
                 String jsonIn = locationGetAllTask.execute().get();
-                Type listType = new TypeToken<List<tw.dp103g4.location.Location>>() {
+                Type listType = new TypeToken<List<InfoLocation>>() {
                 }.getType();
-                locations = new Gson().fromJson(jsonIn, listType);
+                infoLocations = new Gson().fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
         } else {
             Common.showToast(activity, R.string.textNoNetwork);
         }
-        return locations;
+        return infoLocations;
     }
+
     private void checkLocationSettings() {
         // 必須將LocationRequest設定加入檢查,先造好請求的物件
         LocationSettingsRequest.Builder builder =
@@ -246,21 +293,14 @@ public class LocationFragment extends Fragment {
         });
     }
 
-    private int addMarker(tw.dp103g4.location.Location location) {
-//        Address address = reverseGeocode(location.getLatitude(), location.getLongitude());
-//
-//        if (address == null) {
-//            Toast.makeText(activity, R.string.textLocationNotFound, Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+    private int addMarker(InfoLocation infoLocation) {
         int count = 0;
-        // 取得道路名稱當做標題
         if (Common.networkConnected(activity)) {
-            String url = Common.URL_SERVER + "LocationServlet";
+            String url = Common.URL_SERVER + "InfoLocationServlet";
             JsonObject jsonObject = new JsonObject();
 //                    告訴server端 要做新增動作
             jsonObject.addProperty("action", "locationInsert");
-            jsonObject.addProperty("location", new Gson().toJson(location));
+            jsonObject.addProperty("location", new Gson().toJson(infoLocation));
             try {
                 String result = new CommonTask(url, jsonObject.toString()).execute().get();
                 count = Integer.valueOf(result);
@@ -273,14 +313,15 @@ public class LocationFragment extends Fragment {
                 Common.showToast(getActivity(), R.string.textInsertSuccess);
             }
         }
-        showMarker(location, count);
+        Log.d("TAG_makerId", String.valueOf(count));
+        showMarker(infoLocation, count);
         return count;
     }
 
     private int deleteMarker(int id) {
         int count = 0;
         if (Common.networkConnected(activity)) {
-            String url = Common.URL_SERVER + "LocationServlet";
+            String url = Common.URL_SERVER + "InfoLocationServlet";
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("action", "locationDelete");
             jsonObject.addProperty("id", id);
@@ -295,17 +336,48 @@ public class LocationFragment extends Fragment {
             if (count == 0) {
                 Common.showToast(activity, R.string.textDeleteFail);
             } else {
-
+                Common.showToast(activity, R.string.textDeleteSuccess);
             }
         }
         return count;
     }
-    private void showMarker(tw.dp103g4.location.Location location, int id) {
+
+    private void showMarker(InfoLocation infoLocation, int id) {
+
         Marker marker = map.addMarker(new MarkerOptions()
-                .position(location.getLatLng())
-                .title(location.getName())
-                .snippet(location.getContent()));
+                .position(infoLocation.getLatLng())
+                .title(infoLocation.getName())
+                .snippet(infoLocation.getContent()));
         marker.setTag(id);
+    }
+
+    private class MyInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+        Context context;
+         MyInfoWindowAdapter(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            int id = (int) marker.getTag();
+            View view = View.inflate(context, R.layout.info_window, null);
+            TextView tvTitle = view.findViewById(R.id.tvTitle);
+            TextView tvContent = view.findViewById(R.id.tvContent);
+            for (InfoLocation infoLocation : infoLocations) {
+                if (infoLocation.getId() == id) {
+                    tvTitle.setText(infoLocation.getName());
+                    tvContent.setText(infoLocation.getContent());
+                    break;
+                }
+
+            }
+            return view;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
+        }
     }
 
     private void moveMap(LatLng latLng) {
@@ -313,7 +385,7 @@ public class LocationFragment extends Fragment {
 //        target  傳進來的經緯度放這邊
                 .target(latLng)
 //                縮放
-                .zoom(17)
+                .zoom(16)
                 .build();
         CameraUpdate cameraUpdate = CameraUpdateFactory
                 .newCameraPosition(cameraPosition);
@@ -365,8 +437,8 @@ public class LocationFragment extends Fragment {
         askAccessLocationPermission();
     }
 
-    private void askAccessLocationPermission () {
-        String [] permissions = { Manifest.permission.ACCESS_FINE_LOCATION };
+    private void askAccessLocationPermission() {
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
         int result = ContextCompat.checkSelfPermission(activity, permissions[0]);
         if (result == PackageManager.PERMISSION_DENIED) {
             requestPermissions(permissions, PER_ACCESS_LOCATION);

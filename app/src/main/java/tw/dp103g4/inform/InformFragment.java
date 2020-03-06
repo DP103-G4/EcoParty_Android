@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,8 +14,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,13 +69,14 @@ public class InformFragment extends Fragment {
         pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         receiverId = pref.getInt("id", 0);
         rvInform = view.findViewById(R.id.rvInform);
-        btInformIsRead = view.findViewById(R.id.btInformIsRead);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.inform_menu);
         rvInform.setLayoutManager(new LinearLayoutManager(activity));
         informs = getInforms(receiverId);
         showInform(informs);
-        btInformIsRead.setOnClickListener(new View.OnClickListener() {
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onMenuItemClick(MenuItem item) {
                 if (Common.networkConnected(activity)) {
                     String url = Common.URL_SERVER + "InformServlet";
                     JsonObject jsonObject = new JsonObject();
@@ -95,12 +99,10 @@ public class InformFragment extends Fragment {
                         showInform(informs);
                     }
                 }
+                return false;
             }
         });
-
     }
-
-
 
     private void showInform(List<Inform> informs) {
         if (informs == null || informs.isEmpty()) {
@@ -175,11 +177,19 @@ public class InformFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull final InformViewHolder holder, int position) {
             Inform inform = informs.get(position);
+            final int id = inform.getPartyId();
             holder.tvInformContent.setText(inform.getContent());
-
             if(inform.isRead()){
-                holder.itemView.setBackgroundColor(0xFFAED581);
+                holder.itemView.setBackgroundColor(0xFFFFFF);
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("partyId", id);
+                    Navigation.findNavController(v).navigate(R.id.action_informFragment_to_partyDetailFragment, bundle);
+                }
+            });
 
 
         }

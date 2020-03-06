@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="tw.dp103g4.partydetail.PartyDetailFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:gravity="right"
             app:contentInsetStartWithNavigation="0dp"
             app:navigationIcon="?attr/homeAsUpIndicator">
 
@@ -34,455 +36,427 @@
                 android:textStyle="bold" />
 
         </androidx.appcompat.widget.Toolbar>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/inputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout2">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+
+        <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/inputLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="-16dp"
+            tools:layout_editor_absoluteY="-16dp">
 
-
-            <ScrollView
-                android:id="@+id/scrollView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:layout_editor_absoluteX="-16dp"
-                tools:layout_editor_absoluteY="-16dp">
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/PartyImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/pictureHeight"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/cover" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize">
+
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/marginSize"
+                        android:padding="@dimen/paddingSize"
+                        android:textSize="@dimen/textSize1"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="活動標題" />
+
+                    <Button
+                        android:id="@+id/btPartyEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/buttonHeight"
+                        android:layout_marginTop="4dp"
+                        android:text="編輯"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:visibility="visible" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize">
+
+                    <TextView
+                        android:id="@+id/tvTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/marginSize"
+                        android:paddingLeft="@dimen/paddingSize"
+                        android:textSize="@dimen/textSize4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="週六, 12月20日 10:00 ~ 14:00 " />
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/marginSize"
+                        android:paddingLeft="@dimen/paddingSize"
+                        android:text="報名截止"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTime" />
+
+                    <TextView
+                        android:id="@+id/tvPostEndTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/marginSize"
+                        android:textSize="@dimen/textSize4"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textView12"
+                        app:layout_constraintTop_toBottomOf="@+id/tvTime"
+                        tools:text="週六, 12月19日 14:00" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize">
 
-
-                        <ImageView
-                            android:id="@+id/PartyImg"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/pictureHeight"
-                            android:scaleType="centerCrop"
-                            tools:src="@drawable/cover" />
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/marginSize">
-
-                            <TextView
-                                android:id="@+id/tvName"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/marginSize"
-                                android:padding="@dimen/paddingSize"
-                                android:textSize="@dimen/textSize1"
-                                android:textStyle="bold"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="活動標題" />
-
-                            <ImageButton
-                                android:id="@+id/btPartyEdit"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:layout_gravity="right"
-                                android:layout_marginEnd="15dp"
-                                android:alpha="0.4"
-                                android:background="@android:color/transparent"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/gear"
-                                android:visibility="gone"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:visibility="visible" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/marginSize">
-
-                            <TextView
-                                android:id="@+id/tvTime"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/marginSize"
-                                android:paddingLeft="@dimen/paddingSize"
-                                android:textSize="@dimen/textSize4"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="週六, 12月20日 10:00 ~ 14:00 " />
-
-                            <TextView
-                                android:id="@+id/textView12"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/marginSize"
-                                android:paddingLeft="@dimen/paddingSize"
-                                android:text="報名截止"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/tvTime" />
-
-                            <TextView
-                                android:id="@+id/tvPostEndTime"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/marginSize"
-                                android:textSize="@dimen/textSize4"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toEndOf="@+id/textView12"
-                                app:layout_constraintTop_toBottomOf="@+id/tvTime"
-                                tools:text="週六, 12月19日 14:00" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/marginSize">
-
-                            <Button
-                                android:id="@+id/btLike"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/buttonHeight"
-                                android:layout_margin="@dimen/marginSize"
-                                android:layout_weight="1"
-                                android:drawableLeft="@drawable/like"
-                                android:drawablePadding="-10dp"
-                                android:paddingLeft="20dp"
-                                android:text="收藏"
-                                android:visibility="gone" />
-
-                            <Button
-                                android:id="@+id/btIn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/buttonHeight"
-                                android:layout_margin="@dimen/marginSize"
-                                android:layout_weight="1"
-                                android:drawableStart="@drawable/in"
-                                android:drawablePadding="-10dp"
-                                android:paddingLeft="20dp"
-                                android:text="參加"
-                                android:visibility="gone"
-                                tools:visibility="visible" />
-
-                            <Button
-                                android:id="@+id/btStart"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/buttonHeight"
-                                android:layout_margin="@dimen/marginSize"
-                                android:layout_weight="1"
-                                android:drawableLeft="@drawable/start"
-                                android:drawablePadding="-10dp"
-                                android:includeFontPadding="false"
-                                android:paddingLeft="20dp"
-                                android:text="進行中"
-                                android:visibility="gone"
-                                tools:visibility="visible" />
-
-                            <Button
-                                android:id="@+id/btShare"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/buttonHeight"
-                                android:layout_margin="@dimen/marginSize"
-                                android:layout_weight="1"
-                                android:drawableLeft="@drawable/share"
-                                android:drawablePadding="-10dp"
-                                android:paddingLeft="20dp"
-                                android:text="分享"
-                                android:visibility="gone"
-                                tools:visibility="visible" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/marginSize"
-                            android:orientation="horizontal">
-
-                            <Button
-                                android:id="@+id/btRollCall"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/buttonHeight"
-                                android:layout_margin="@dimen/marginSize"
-                                android:layout_weight="1"
-                                android:text="點名系統"
-                                android:visibility="gone" />
-
-                            <Button
-                                android:id="@+id/btQR"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/buttonHeight"
-                                android:layout_margin="@dimen/marginSize"
-                                android:layout_weight="1"
-                                android:text="QRcode 報到"
-                                android:visibility="gone" />
-
-                            <Button
-                                android:id="@+id/btMap"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/buttonHeight"
-                                android:layout_margin="@dimen/marginSize"
-                                android:layout_weight="1"
-                                android:text="活動地圖"
-                                android:visibility="gone" />
-
-                            <Button
-                                android:id="@+id/btICC"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/buttonHeight"
-                                android:layout_margin="@dimen/marginSize"
-                                android:layout_weight="1"
-                                android:text="ICC表格"
-                                android:visibility="gone" />
-                        </LinearLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/marginSize"
-                            android:paddingLeft="@dimen/paddingSize">
-
-                            <androidx.cardview.widget.CardView
-                                android:id="@+id/userImg"
-                                android:layout_width="@dimen/userSize"
-                                android:layout_height="@dimen/userSize"
-                                android:paddingLeft="@dimen/paddingSize"
-                                app:cardCornerRadius="@dimen/userSizeRadius"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <ImageView
-                                    android:id="@+id/ivOwner"
-                                    android:layout_width="@dimen/userSize"
-                                    android:layout_height="@dimen/userSize"
-                                    app:srcCompat="@drawable/mary"
-                                    tools:srcCompat="@tools:sample/avatars" />
-                            </androidx.cardview.widget.CardView>
-
-                            <TextView
-                                android:id="@+id/tvOwner"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/paddingSize"
-                                android:textSize="@dimen/textSize3"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toEndOf="@id/userImg"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="王小明" />
-
-                            <TextView
-                                android:id="@+id/textView14"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/marginSize"
-                                android:text="主辦的活動"
-                                android:textSize="@dimen/textSize3"
-                                app:layout_constraintBottom_toBottomOf="@+id/tvOwner"
-                                app:layout_constraintStart_toEndOf="@+id/tvOwner"
-                                app:layout_constraintTop_toTopOf="@+id/tvOwner" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/participantLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <Button
+                        android:id="@+id/btLike"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/buttonHeight"
                         android:layout_margin="@dimen/marginSize"
-                        android:focusableInTouchMode="false"
-                        android:paddingLeft="@dimen/paddingSize">
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/like"
+                        android:drawablePadding="-10dp"
+                        android:paddingLeft="20dp"
+                        android:text="收藏"
+                        android:visibility="gone" />
 
-                        <ImageView
-                            android:id="@+id/ivParticipant"
-                            android:layout_width="@dimen/iconSize"
-                            android:layout_height="@dimen/iconSize"
-                            android:layout_marginStart="10dp"
-                            android:src="@drawable/participant"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tvParticipant"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:textSize="@dimen/textSize3"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/ivParticipant"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="12" />
-
-                        <TextView
-                            android:id="@+id/textView13"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/marginSize"
-                            android:text="人會參加"
-                            android:textSize="@dimen/textSize3"
-                            app:layout_constraintBottom_toBottomOf="@+id/tvParticipant"
-                            app:layout_constraintStart_toEndOf="@+id/tvParticipant"
-                            app:layout_constraintTop_toTopOf="@+id/tvParticipant" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/marginSize"
-                            android:paddingLeft="@dimen/paddingSize">
-
-                            <ImageView
-                                android:id="@+id/ivLocation"
-                                android:layout_width="@dimen/iconSize"
-                                android:layout_height="@dimen/iconSize"
-                                android:layout_marginStart="10dp"
-                                android:src="@drawable/location"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/tvLocation"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="20dp"
-                                android:textSize="@dimen/textSize3"
-                                app:layout_constraintStart_toEndOf="@+id/ivLocation"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:text="中央海灘" />
-
-                            <TextView
-                                android:id="@+id/tvAddress"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/textSize3"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="@+id/tvLocation"
-                                app:layout_constraintTop_toBottomOf="@+id/tvLocation"
-                                app:layout_constraintVertical_bias="1.0"
-                                tools:text="中央路123號" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/gray1" />
-
-                    <TextView
-                        android:id="@+id/tvContent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    <Button
+                        android:id="@+id/btIn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/buttonHeight"
                         android:layout_margin="@dimen/marginSize"
-                        android:padding="15dp"
-                        android:text="TextView" />
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/in"
+                        android:drawablePadding="-10dp"
+                        android:paddingLeft="20dp"
+                        android:text="參加"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
-                    <View
-                        android:id="@+id/view5"
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="@color/gray1" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                    <Button
+                        android:id="@+id/btStart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/buttonHeight"
                         android:layout_margin="@dimen/marginSize"
-                        android:paddingLeft="@dimen/paddingSize">
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/start"
+                        android:drawablePadding="-10dp"
+                        android:includeFontPadding="false"
+                        android:paddingLeft="20dp"
+                        android:text="進行中"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
-                        <TextView
-                            android:id="@+id/textView5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:text="留言"
-                            android:textSize="@dimen/textSize3"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView2"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <Button
+                        android:id="@+id/btShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/buttonHeight"
+                        android:layout_margin="@dimen/marginSize"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/share"
+                        android:drawablePadding="-10dp"
+                        android:paddingLeft="20dp"
+                        android:text="分享"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
-                        <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="@dimen/iconSize"
-                            android:layout_height="@dimen/iconSize"
-                            android:layout_marginStart="10dp"
-                            android:src="@drawable/message"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvMessage"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                    </androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
 
-            </ScrollView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize"
+                    android:orientation="horizontal">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/inputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/buttonHeight"
-            android:background="@android:color/background_light"
-            android:padding="@dimen/marginSize"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+                    <Button
+                        android:id="@+id/btRollCall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/buttonHeight"
+                        android:layout_margin="@dimen/marginSize"
+                        android:layout_weight="1"
+                        android:text="點名系統"
+                        android:visibility="gone" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                app:cardBackgroundColor="@color/gray1"
-                app:cardCornerRadius="@dimen/cornerRadius"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/ibSend"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                    <Button
+                        android:id="@+id/btQR"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/buttonHeight"
+                        android:layout_margin="@dimen/marginSize"
+                        android:layout_weight="1"
+                        android:text="QRcode 報到"
+                        android:visibility="gone" />
 
-                <EditText
-                    android:id="@+id/etInput"
+                    <Button
+                        android:id="@+id/btMap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/buttonHeight"
+                        android:layout_margin="@dimen/marginSize"
+                        android:layout_weight="1"
+                        android:text="活動地圖"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btICC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/buttonHeight"
+                        android:layout_margin="@dimen/marginSize"
+                        android:layout_weight="1"
+                        android:text="ICC表格"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize"
+                    android:paddingLeft="@dimen/paddingSize">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/userImg"
+                        android:layout_width="@dimen/userSize"
+                        android:layout_height="@dimen/userSize"
+                        android:paddingLeft="@dimen/paddingSize"
+                        app:cardCornerRadius="@dimen/userSizeRadius"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/ivOwner"
+                            android:layout_width="@dimen/userSize"
+                            android:layout_height="@dimen/userSize"
+                            app:srcCompat="@drawable/mary"
+                            tools:srcCompat="@tools:sample/avatars" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/tvOwner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/paddingSize"
+                        android:textSize="@dimen/textSize3"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/userImg"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="王小明" />
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/marginSize"
+                        android:text="主辦的活動"
+                        android:textSize="@dimen/textSize3"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvOwner"
+                        app:layout_constraintStart_toEndOf="@+id/tvOwner"
+                        app:layout_constraintTop_toTopOf="@+id/tvOwner" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/participantLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize"
+                    android:paddingLeft="@dimen/paddingSize">
+
+                    <ImageView
+                        android:id="@+id/ivParticipant"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"
+                        android:src="@drawable/participant"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvParticipant"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/paddingSize"
+                        android:textSize="@dimen/textSize3"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ivParticipant"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="12" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/marginSize"
+                        android:text="人會參加"
+                        android:textSize="@dimen/textSize3"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvParticipant"
+                        app:layout_constraintStart_toEndOf="@+id/tvParticipant"
+                        app:layout_constraintTop_toTopOf="@+id/tvParticipant" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize"
+                    android:paddingLeft="@dimen/paddingSize">
+
+                    <ImageView
+                        android:id="@+id/ivLocation"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"
+                        android:src="@drawable/location"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/paddingSize"
+                        android:textSize="@dimen/textSize3"
+                        app:layout_constraintStart_toEndOf="@+id/ivLocation"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="中央海灘" />
+
+                    <TextView
+                        android:id="@+id/tvlocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/textSize3"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tvLocation"
+                        app:layout_constraintTop_toBottomOf="@+id/tvLocation"
+                        app:layout_constraintVertical_bias="1.0"
+                        tools:text="中央路123號" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/tvContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/marginSize"
+                    android:padding="@dimen/paddingSize"
+                    android:text="TextView" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:autoText="true"
-                    android:background="@null"
-                    android:ems="10"
-                    android:hint="留言"
-                    android:inputType="textPersonName"
-                    android:padding="@dimen/paddingSize"
-                    android:textSize="@dimen/textSize4"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.cardview.widget.CardView>
+                    android:layout_margin="@dimen/marginSize"
+                    android:paddingLeft="@dimen/paddingSize">
 
-            <ImageButton
-                android:id="@+id/ibSend"
-                android:layout_width="@dimen/buttonHeight"
-                android:layout_height="@dimen/buttonHeight"
-                android:background="@android:color/transparent"
-                android:src="@drawable/send"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/paddingSize"
+                        android:text="留言"
+                        android:textSize="@dimen/textSize3"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imageView2"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="@dimen/iconSize"
+                        android:layout_height="@dimen/iconSize"
+                        android:src="@drawable/message"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/marginSize">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+        </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/inputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/buttonHeight"
+        android:background="@android:color/background_light"
+        android:padding="@dimen/marginSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-</LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="@color/gray1"
+            app:cardCornerRadius="@dimen/cornerRadius"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ibSend"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/etInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autoText="false"
+                android:background="@null"
+                android:ems="10"
+                android:hint="留言"
+                android:inputType="textPersonName"
+                android:padding="@dimen/paddingSize"
+                android:textSize="@dimen/textSize4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.cardview.widget.CardView>
+
+        <ImageButton
+            android:id="@+id/ibSend"
+            android:layout_width="@dimen/buttonHeight"
+            android:layout_height="@dimen/buttonHeight"
+            android:background="@android:color/transparent"
+            android:src="@drawable/send"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
