@@ -57,6 +57,10 @@ public class PartyListFragment extends Fragment {
     private NewsImageTask newsImageTask;
     private FloatingActionButton floatingActionButton;
     private ImageTask getUserImageTask;
+    Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .create();
+
     //Socket
 //    private int userId = 2;
     //------
@@ -172,7 +176,6 @@ public class PartyListFragment extends Fragment {
                 String jsonIn = partyGetAllTask.execute().get();
                 Type listType = new TypeToken<List<Party>>() {
                 }.getType();
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 partyStart = gson.fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
@@ -195,7 +198,7 @@ public class PartyListFragment extends Fragment {
                 String jsonIn = newsGetAllTask.execute().get();
                 Type listType = new TypeToken<List<News>>() {
                 }.getType();
-                news = new Gson().fromJson(jsonIn, listType);
+                news = gson.fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -231,7 +234,6 @@ public class PartyListFragment extends Fragment {
                 String jsonIn = partyGetAllTask.execute().get();
                 Type listType = new TypeToken<List<Party>>() {
                 }.getType();
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 parties = gson.fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
