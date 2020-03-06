@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#5EDCA6</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorA">#FC7474</color>
     <color name="colorB">#969696</color>
-    <color name="colorIsCheck">#578FC3</color>
+    <color name="colorIsCheck">#4AA179</color>
     <color name="colorNoCheck">#737373</color>
 
     <color name="blue1">#7DBEFF</color>
-    <color name="blue2">#578FC3</color>
+    <color name="blue2">#5EDCA6</color>
     <color name="gray1">#E4E4E4</color>
 
-    <color name="colorEcoBlue">#578FC3</color>
+    <color name="colorEcoBlue">#5EDCA6</color>
     <color name="colorEcoBlue2">#7DBEFF</color>
     <color name="colorEcoRed">#FC7474</color>
     <color name="colorEcoGray">#707070</color>

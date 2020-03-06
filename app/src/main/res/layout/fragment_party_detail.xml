@@ -85,13 +85,17 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="活動標題" />
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/btPartyEdit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/buttonHeight"
-                        android:layout_marginTop="4dp"
-                        android:text="編輯"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_margin="10dp"
+                        android:alpha="0.5"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/gear"
                         android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:visibility="visible" />
@@ -353,7 +357,7 @@
                         tools:text="中央海灘" />
 
                     <TextView
-                        android:id="@+id/tvlocation"
+                        android:id="@+id/tvAddress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/textSize3"

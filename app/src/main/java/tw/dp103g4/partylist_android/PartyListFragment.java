@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -47,6 +48,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class PartyListFragment extends Fragment {
     private static final String TAG = "TAG_PartyList";
     private Activity activity;
+    private NavController navController;
     private BottomNavigationView bottomNavigationView;
 
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -80,6 +82,7 @@ public class PartyListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
         bottomNavigationView= activity.findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.VISIBLE);
         floatingActionButton = view.findViewById(R.id.btAdd);
@@ -100,9 +103,6 @@ public class PartyListFragment extends Fragment {
         showParties(parties);
         news = getNews();
         showNews(news);
-        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(rvNews);
-        pagerSnapHelper.attachToRecyclerView(rvPartyStart);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -122,7 +122,7 @@ public class PartyListFragment extends Fragment {
                     Common.showToast(getActivity(), R.string.textNoLogin);
                     return;
                 }
-                Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_partyInsertFragment);
+                navController.navigate(R.id.action_partyFragment_to_partyInsertFragment);
             }
         });
 
@@ -326,7 +326,7 @@ public class PartyListFragment extends Fragment {
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("partyId", id);
-                    Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_partyDetailFragment, bundle);
+                    navController.navigate(R.id.action_partyFragment_to_partyDetailFragment, bundle);
                 }
             });
 
@@ -379,7 +379,7 @@ public class PartyListFragment extends Fragment {
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("newsDetail", newsDetail);
-                    Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_newsFragment, bundle);
+                    navController.navigate(R.id.action_partyFragment_to_newsFragment, bundle);
                 }
             });
         }
@@ -434,7 +434,7 @@ public class PartyListFragment extends Fragment {
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("partyId", mPartyStart.getId());
-                    Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_partyDetailFragment, bundle);
+                    navController.navigate(R.id.action_partyFragment_to_partyDetailFragment, bundle);
                 }
             });
         }

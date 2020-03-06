@@ -17,6 +17,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -41,6 +42,8 @@ public class MyPartyDetailFragment extends Fragment {
     private FragmentActivity activity;
     private CommonTask partyGetAllTask;
     private CoverImageTask partyImageTask;
+    private BottomNavigationView bottomNavigationView;
+
 
     public MyPartyDetailFragment() {
         // Required empty public constructor
@@ -69,6 +72,8 @@ public class MyPartyDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bottomNavigationView = activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.GONE);
         SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         final int userId = pref.getInt("id", 0);
         rvMyParty = view.findViewById(R.id.rvMyParty);
