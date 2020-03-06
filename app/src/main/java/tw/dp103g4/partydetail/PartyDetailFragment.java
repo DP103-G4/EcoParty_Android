@@ -23,7 +23,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
@@ -38,7 +37,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -58,15 +56,12 @@ import java.util.List;
 import qrcode.Contents;
 import qrcode.QRCodeEncoder;
 import tw.dp103g4.R;
-import tw.dp103g4.friend.FriendMsgFragment;
 import tw.dp103g4.main_android.Common;
-import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.CoverImageTask;
 import tw.dp103g4.task.ImageTask;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 
@@ -230,7 +225,7 @@ public class PartyDetailFragment extends Fragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("partyId", partyInfo.getParty().getId());
-
+                bundle.putInt("ownerId", partyInfo.getParty().getOwnerId());
                 navController.navigate(R.id.action_partyDetailFragment_to_locationFragment, bundle);
             }
         });
