@@ -116,7 +116,7 @@ public class PartyDetailFragment extends Fragment {
         tvOwner = view.findViewById(R.id.tvOwner);
         tvParticipant = view.findViewById(R.id.tvParticipant);
         tvLocation = view.findViewById(R.id.tvLocation);
-        tvAddress = view.findViewById(R.id.tvAddress);
+        tvAddress = view.findViewById(R.id.tvlocation);
         tvContent = view.findViewById(R.id.tvContent);
         rvMessage = view.findViewById(R.id.rvMessage);
         ivCover = view.findViewById(R.id.PartyImg);

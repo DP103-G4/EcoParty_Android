@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
@@ -67,13 +69,14 @@ public class InformFragment extends Fragment {
         pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         receiverId = pref.getInt("id", 0);
         rvInform = view.findViewById(R.id.rvInform);
-        btInformIsRead = view.findViewById(R.id.btInformIsRead);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.inform_menu);
         rvInform.setLayoutManager(new LinearLayoutManager(activity));
         informs = getInforms(receiverId);
         showInform(informs);
-        btInformIsRead.setOnClickListener(new View.OnClickListener() {
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onMenuItemClick(MenuItem item) {
                 if (Common.networkConnected(activity)) {
                     String url = Common.URL_SERVER + "InformServlet";
                     JsonObject jsonObject = new JsonObject();
@@ -96,12 +99,10 @@ public class InformFragment extends Fragment {
                         showInform(informs);
                     }
                 }
+                return false;
             }
         });
-
     }
-
-
 
     private void showInform(List<Inform> informs) {
         if (informs == null || informs.isEmpty()) {

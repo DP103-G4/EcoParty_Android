@@ -353,7 +353,7 @@
                         tools:text="中央海灘" />
 
                     <TextView
-                        android:id="@+id/tvAddress"
+                        android:id="@+id/tvlocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/textSize3"

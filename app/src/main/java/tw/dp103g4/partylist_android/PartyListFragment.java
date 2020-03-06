@@ -59,6 +59,8 @@ public class PartyListFragment extends Fragment {
     private NewsImageTask newsImageTask;
     private FloatingActionButton floatingActionButton;
     private ImageTask getUserImageTask;
+    private SearchView mSearchView;
+
     //Socket
 //    private int userId = 2;
     //------
@@ -80,8 +82,6 @@ public class PartyListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         bottomNavigationView= activity.findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.VISIBLE);
-
-
         floatingActionButton = view.findViewById(R.id.btAdd);
         SearchView searchView = view.findViewById(R.id.searchView);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -92,10 +92,8 @@ public class PartyListFragment extends Fragment {
 
         rvNews = view.findViewById(R.id.rvNews);
         rvNews.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
-
         SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         final int userId = pref.getInt("id", 0);
-
         partyStart = getPartyStart(userId);
         showPartyStart(partyStart);
         parties = getParties();
@@ -205,7 +203,8 @@ public class PartyListFragment extends Fragment {
                 String jsonIn = newsGetAllTask.execute().get();
                 Type listType = new TypeToken<List<News>>() {
                 }.getType();
-                news = new Gson().fromJson(jsonIn, listType);
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                news = gson.fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -286,14 +285,14 @@ public class PartyListFragment extends Fragment {
 
         private class PartyViewHolder extends RecyclerView.ViewHolder {
             ImageView ivParty, ivUser;
-            TextView tvTitle, tvAddress, tvTime;
+            TextView tvTitle, tvlocation, tvTime;
 
             public PartyViewHolder(View itemView) {
                 super(itemView);
                 ivParty = itemView.findViewById(R.id.ivParty);
                 ivUser = itemView.findViewById(R.id.ivUser);
                 tvTitle = itemView.findViewById(R.id.tvTitle);
-                tvAddress = itemView.findViewById(R.id.tvAddress);
+                tvlocation = itemView.findViewById(R.id.tvlocation);
                 tvTime = itemView.findViewById(R.id.tvTime);
             }
         }
@@ -318,7 +317,7 @@ public class PartyListFragment extends Fragment {
             partyImageTask = new CoverImageTask(url, id, imageSize, holder.ivParty);
             partyImageTask.execute();
             holder.tvTitle.setText(party.getName());
-            holder.tvAddress.setText(party.getAddress());
+            holder.tvlocation.setText(party.getLocation());
             holder.tvTime.setText(new SimpleDateFormat("E M月d日").format(party.getStartTime()));
             //bundle活動詳情
 
