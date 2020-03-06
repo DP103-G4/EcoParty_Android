@@ -22,6 +22,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -276,6 +277,8 @@ public class PieceDetailFragment extends Fragment {
             ImageView ivPieceUser;
             ImageButton ibPieceMenu;
             RecyclerView rvPieceImg;
+            CardView countImg;
+            TextView tvCountImg;
 
             public PieceInfoViewHolder(View itemView) {
                 super(itemView);
@@ -286,9 +289,8 @@ public class PieceDetailFragment extends Fragment {
                 ivPieceUser = itemView.findViewById(R.id.ivPieceUser);
                 rvPieceImg = itemView.findViewById(R.id.rvPieceImg);
                 ibPieceMenu = itemView.findViewById(R.id.ibPieceMenu);
-
-                rvPieceImg.setLayoutManager(new LinearLayoutManager(activity));
-                rvPieceImg.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
+                countImg = itemView.findViewById(R.id.countImg);
+                tvCountImg = itemView.findViewById(R.id.tvCountImg);
 
             }
         }
@@ -301,8 +303,8 @@ public class PieceDetailFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull PieceInfoViewHolder holder, int position) {
-            List<PieceImg> pieceImgs;
+        public void onBindViewHolder(@NonNull final PieceInfoViewHolder holder, int position) {
+            final List<PieceImg> pieceImgs;
 
             final PieceInfo pieceInfo = pieceInfoList.get(position);
 
@@ -322,6 +324,35 @@ public class PieceDetailFragment extends Fragment {
             if (pieceImgs == null || pieceImgs.isEmpty()) {
                 Common.showToast(activity, "沒有花絮圖片");
             }
+
+            if (pieceImgs.size() > 1) {
+                holder.countImg.setVisibility(View.VISIBLE);
+                holder.tvCountImg.setVisibility(View.VISIBLE);
+                holder.tvCountImg.setText(String.valueOf(1) + "/" + pieceImgs.size());
+
+                final LinearLayoutManager linearLayoutManager  = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
+                holder.rvPieceImg.setLayoutManager(linearLayoutManager);
+
+                holder.rvPieceImg.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+                    @Override
+                    public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+                        if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                            //Dragging
+                        } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            int index = linearLayoutManager.findFirstVisibleItemPosition();
+                            holder.tvCountImg.setText(String.valueOf(index+1) + "/" + pieceImgs.size());
+                        }
+                    }
+
+                });
+
+            } else {
+                holder.countImg.setVisibility(View.GONE);
+                holder.tvCountImg.setVisibility(View.GONE);
+            }
+
 
             PieceImgAdapter pieceImgAdapter = (PieceImgAdapter) holder.rvPieceImg.getAdapter();
             if (pieceImgAdapter == null) {

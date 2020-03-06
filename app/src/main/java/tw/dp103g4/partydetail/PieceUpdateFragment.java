@@ -27,6 +27,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -60,6 +61,9 @@ public class PieceUpdateFragment extends Fragment {
     private TextView tvPartyName;
     private Button btPieceInsertOK, btPieceInsertRe, btUploadImg;
     private EditText etContent;
+    private CardView countImg;
+    private TextView tvCountImg;
+    private LinearLayoutManager linearLayoutManager;
     private ImageTask pieceImgTask;
     private final int REQ_PICK_IMAGES = 101;
     private Bundle bundle;
@@ -104,6 +108,10 @@ public class PieceUpdateFragment extends Fragment {
         TextView tvTitle = view.findViewById(R.id.title);
         tvTitle.setText("修改活動");
 
+        countImg = view.findViewById(R.id.countImg);
+        tvCountImg = view.findViewById(R.id.tvCountImg);
+
+
         tvPartyName = view.findViewById(R.id.tvPartyName);
         rvInsertImg = view.findViewById(R.id.rvInsertImg);
         btPieceInsertOK = view.findViewById(R.id.btPieceInsertOK);
@@ -111,7 +119,9 @@ public class PieceUpdateFragment extends Fragment {
         etContent = view.findViewById(R.id.etPieceContent);
         btUploadImg = view.findViewById(R.id.btUploadImg);
 
-        rvInsertImg.setLayoutManager(new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false));
+        linearLayoutManager  = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
+        rvInsertImg.setLayoutManager(linearLayoutManager);
+
         if (pagerSnapHelper == null)
             pagerSnapHelper = new PagerSnapHelper();
         if (rvInsertImg.getOnFlingListener() == null)
@@ -312,7 +322,32 @@ public class PieceUpdateFragment extends Fragment {
 
     }
 
-    private void showImgs(List<String> imgs) {
+    private void showImgs(final List<String> imgs) {
+        if (imgs.size() > 1) {
+            countImg.setVisibility(View.VISIBLE);
+            tvCountImg.setVisibility(View.VISIBLE);
+            tvCountImg.setText(String.valueOf(1) + "/" + imgs.size());
+
+            rvInsertImg.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                        //Dragging
+                    } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        int position = linearLayoutManager.findFirstVisibleItemPosition();
+                        tvCountImg.setText(String.valueOf(position+1) + "/" + imgs.size());
+                    }
+                }
+
+            });
+
+        } else {
+            countImg.setVisibility(View.GONE);
+            tvCountImg.setVisibility(View.GONE);
+        }
+
         ImgAdapter imgAdapter = (ImgAdapter) rvInsertImg.getAdapter();
         if (imgAdapter == null) {
             rvInsertImg.setAdapter(new ImgAdapter(activity, imgs));

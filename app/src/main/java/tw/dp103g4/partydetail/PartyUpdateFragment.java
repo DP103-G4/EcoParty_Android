@@ -58,12 +58,11 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class PartyUpdateFragment extends Fragment {
     private Activity activity;
-    private ConstraintLayout layoutCover;
     private ImageView ivCover;
     private EditText etName, etLoction, etAddress,etContent;
     private TextView tvStartDate, tvStartTime, tvEndDate, tvEndTime, tvPostEndDate, tvPostEndTime,
             tvUpper, tvLower, tvDistance;
-    private Button btPartyOK, btPartyRe;
+    private Button btPartyOK, btPartyRe, btUploadImg;
     private ScrollView scrollView;
     private SeekBar sbUpper, sbLower, sbDistance;
     private byte[] image;
@@ -112,7 +111,6 @@ public class PartyUpdateFragment extends Fragment {
         tvTitle.setText("修改活動");
 
         ivCover = view.findViewById(R.id.PartyImg);
-        layoutCover = view.findViewById(R.id.layoutCover);
         etName = view.findViewById(R.id.etName);
         etLoction = view.findViewById(R.id.etLoction);
         etAddress = view.findViewById(R.id.etAddress);
@@ -175,7 +173,7 @@ public class PartyUpdateFragment extends Fragment {
         tvPostEndDate.setText(sdfDate.format(party.getPostEndTime()));
         tvPostEndTime.setText(sdfTime.format(party.getPostEndTime()));
 
-        layoutCover.setOnClickListener(new View.OnClickListener() {
+        btUploadImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 上傳圖片

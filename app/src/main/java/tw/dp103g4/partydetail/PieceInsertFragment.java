@@ -30,6 +30,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -61,12 +62,15 @@ public class PieceInsertFragment extends Fragment {
     private TextView tvPartyName;
     private Button btPieceInsertOK, btPieceInsertRe, btUploadImg;
     private EditText etContent;
+    private CardView countImg;
+    private TextView tvCountImg;
     private final int REQ_PICK_IMAGES = 101;
     private Bundle bundle;
     private int partyId;
     private PartyInfo partyInfo;
     private List<String> imagesBase64;
     private PagerSnapHelper pagerSnapHelper;
+    private LinearLayoutManager linearLayoutManager;
     Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
@@ -100,6 +104,9 @@ public class PieceInsertFragment extends Fragment {
             }
         });
 
+        countImg = view.findViewById(R.id.countImg);
+        tvCountImg = view.findViewById(R.id.tvCountImg);
+
         tvPartyName = view.findViewById(R.id.tvPartyName);
         rvInsertImg = view.findViewById(R.id.rvInsertImg);
         btPieceInsertOK = view.findViewById(R.id.btPieceInsertOK);
@@ -121,7 +128,9 @@ public class PieceInsertFragment extends Fragment {
         partyInfo = getPartyInfo(partyId, userId);
         tvPartyName.setText(partyInfo.getParty().getName());
 
-        rvInsertImg.setLayoutManager(new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false));
+        linearLayoutManager  = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
+        rvInsertImg.setLayoutManager(linearLayoutManager);
+
         if (pagerSnapHelper == null)
             pagerSnapHelper = new PagerSnapHelper();
         if (rvInsertImg.getOnFlingListener() == null)
@@ -281,7 +290,32 @@ public class PieceInsertFragment extends Fragment {
 
     }
 
-    private void showImgs(List<String> imgs) {
+    private void showImgs(final List<String> imgs) {
+        if (imgs.size() > 1) {
+            countImg.setVisibility(View.VISIBLE);
+            tvCountImg.setVisibility(View.VISIBLE);
+            tvCountImg.setText(String.valueOf(1) + "/" + imgs.size());
+
+            rvInsertImg.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                        //Dragging
+                    } else if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        int position = linearLayoutManager.findFirstVisibleItemPosition();
+                        tvCountImg.setText(String.valueOf(position+1) + "/" + imgs.size());
+                    }
+                }
+
+            });
+
+        } else {
+            countImg.setVisibility(View.GONE);
+            tvCountImg.setVisibility(View.GONE);
+        }
+
         ImgAdapter imgAdapter = (ImgAdapter) rvInsertImg.getAdapter();
         if (imgAdapter == null) {
             rvInsertImg.setAdapter(new ImgAdapter(activity, imgs));
@@ -289,6 +323,7 @@ public class PieceInsertFragment extends Fragment {
             imgAdapter.setImgs(imgs);
             imgAdapter.notifyDataSetChanged();
         }
+
     }
 
     private PartyInfo getPartyInfo(int id, int userId) {
