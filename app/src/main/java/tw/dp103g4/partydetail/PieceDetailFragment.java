@@ -325,13 +325,13 @@ public class PieceDetailFragment extends Fragment {
                 Common.showToast(activity, "沒有花絮圖片");
             }
 
+            final LinearLayoutManager linearLayoutManager  = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
+            holder.rvPieceImg.setLayoutManager(linearLayoutManager);
+
             if (pieceImgs.size() > 1) {
                 holder.countImg.setVisibility(View.VISIBLE);
                 holder.tvCountImg.setVisibility(View.VISIBLE);
                 holder.tvCountImg.setText(String.valueOf(1) + "/" + pieceImgs.size());
-
-                final LinearLayoutManager linearLayoutManager  = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
-                holder.rvPieceImg.setLayoutManager(linearLayoutManager);
 
                 holder.rvPieceImg.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
