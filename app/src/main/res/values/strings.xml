@@ -76,6 +76,7 @@
     <string name="editTextTitle">請輸入標題</string>
     <string name="editTextContent">請輸入內容</string>
     <string name="textRestart">刷新</string>
+    <string name="textNewsDate">NewsDate</string>
 
     <string-array name="itemGuest">
         <item>登入/註冊</item>

@@ -80,7 +80,7 @@ public class InformFragment extends Fragment {
                 if (Common.networkConnected(activity)) {
                     String url = Common.URL_SERVER + "InformServlet";
                     JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("action", "setRead");
+                    jsonObject.addProperty("action", "setAllRead");
                     jsonObject.addProperty("receiverId", receiverId);
                     int count = 0;
                     try {
@@ -176,7 +176,7 @@ public class InformFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull final InformViewHolder holder, int position) {
-            Inform inform = informs.get(position);
+            final Inform inform = informs.get(position);
             final int id = inform.getPartyId();
             holder.tvInformContent.setText(inform.getContent());
             if(inform.isRead()){
@@ -185,6 +185,24 @@ public class InformFragment extends Fragment {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (Common.networkConnected(activity)) {
+                        String url = Common.URL_SERVER + "InformServlet";
+                        JsonObject jsonObject = new JsonObject();
+                        jsonObject.addProperty("action", "setRead");
+                        jsonObject.addProperty("id", inform.getId());
+                        int count = 0;
+                        try {
+                            String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                            count = Integer.valueOf(result);
+                        } catch (Exception e) {
+                            Log.e(TAG, e.toString());
+                        }
+                        if (count == 0) {
+                            Common.showToast(activity, R.string.textIsReadFail);
+                        } else {
+                            informs.get(id).setRead(true);
+                        }
+                    }
                     Bundle bundle = new Bundle();
                     bundle.putInt("partyId", id);
                     Navigation.findNavController(v).navigate(R.id.action_informFragment_to_partyDetailFragment, bundle);
