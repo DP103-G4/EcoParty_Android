@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".partydetail.PieceInsertFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="?attr/homeAsUpIndicator">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="?actionBarSize"
+                android:padding="@dimen/appbar_padding"
+                android:text="新增花絮"
+                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btPieceInsertOK"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:text="完成"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btPieceInsertRe"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:text="重置"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvPartyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:text="TextView"
+                android:textSize="@dimen/textSize1" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvInsertImg"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="horizontal">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/btUploadImg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_upload_img"
+                android:text="上傳花絮照片"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/textSize3" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/marginSize"
+                android:text="花絮留言" />
+
+            <EditText
+                android:id="@+id/etPieceContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/marginSize"
+                android:background="@drawable/edit_bg"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:minLines="10"
+                android:padding="@dimen/paddingSize"
+                android:singleLine="false" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

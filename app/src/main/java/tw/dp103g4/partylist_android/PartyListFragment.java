@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -49,7 +48,6 @@ public class PartyListFragment extends Fragment {
     private Activity activity;
     private BottomNavigationView bottomNavigationView;
 
-    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView rvParty, rvNews, rvPartyStart;
     private List<Party> parties, partyStart;
     private List<News> news;
@@ -84,7 +82,6 @@ public class PartyListFragment extends Fragment {
 
         floatingActionButton = view.findViewById(R.id.btAdd);
         SearchView searchView = view.findViewById(R.id.searchView);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         rvPartyStart = view.findViewById(R.id.rvPartyStart);
         rvPartyStart.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
         rvParty = view.findViewById(R.id.rvParty);
@@ -92,6 +89,11 @@ public class PartyListFragment extends Fragment {
 
         rvNews = view.findViewById(R.id.rvNews);
         rvNews.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
+
+        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(rvNews);
+        pagerSnapHelper.attachToRecyclerView(rvPartyStart);
+
 
         SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         final int userId = pref.getInt("id", 0);
@@ -103,20 +105,7 @@ public class PartyListFragment extends Fragment {
         news = getNews();
         System.out.print("hello : "+news.size());
         showNews(news);
-        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(rvNews);
-        pagerSnapHelper.attachToRecyclerView(rvPartyStart);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                parties = getParties();
-                partyStart = getPartyStart(userId);
-                swipeRefreshLayout.setRefreshing(true);
-                showParties(parties);
-                showPartyStart(partyStart);
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -257,20 +246,20 @@ public class PartyListFragment extends Fragment {
         if (parties == null || parties.isEmpty()) {
             Common.showToast(activity, R.string.textNoPartiesFound);
         }
-        PartyAdapter partyAdapter = (PartyAdapter) rvParty.getAdapter();
+        PieceImgAdapter partyAdapter = (PieceImgAdapter) rvParty.getAdapter();
         if (partyAdapter == null) {
-            rvParty.setAdapter(new PartyAdapter(activity, parties));
+            rvParty.setAdapter(new PieceImgAdapter(activity, parties));
         } else {
             partyAdapter.setParties(parties);
             partyAdapter.notifyDataSetChanged();
         }
     }
 
-    private class PartyAdapter extends RecyclerView.Adapter<PartyAdapter.PartyViewHolder> {
+    private class PieceImgAdapter extends RecyclerView.Adapter<PieceImgAdapter.PartyViewHolder> {
         private List<Party> parties;
         private LayoutInflater layoutInflater;
 
-        PartyAdapter(Context context, List<Party> parties) {
+        PieceImgAdapter(Context context, List<Party> parties) {
             layoutInflater = LayoutInflater.from(context);
             this.parties = parties;
             imageSize = getResources().getDisplayMetrics().widthPixels / 3;

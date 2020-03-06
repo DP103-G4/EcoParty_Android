@@ -14,6 +14,8 @@ import androidx.navigation.Navigation;
 import androidx.viewpager.widget.ViewPager;
 
 import tw.dp103g4.R;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import tw.dp103g4.main_android.MainActivity;
@@ -21,6 +23,7 @@ import tw.dp103g4.tablayout.TabsPagerAdapter;
 
 public class MyPartyFragment extends Fragment {
     private MainActivity activity;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +42,7 @@ public class MyPartyFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        activity.getBottomNavigationView().setVisibility(View.GONE);
+
         TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(activity, getChildFragmentManager());
 
         ViewPager viewPager = view.findViewById(R.id.view_pager);
@@ -62,6 +65,5 @@ public class MyPartyFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        activity.getBottomNavigationView().setVisibility(View.VISIBLE);
     }
 }

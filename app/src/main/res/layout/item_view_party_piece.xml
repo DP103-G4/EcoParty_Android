@@ -3,15 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/ibPieceMenu"
+            android:layout_width="18dp"
+            android:layout_height="35dp"
+            android:alpha="0.4"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/menu" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/userImg"
@@ -42,30 +55,73 @@
             app:layout_constraintTop_toTopOf="@+id/userImg"
             tools:text="王小明" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPieceImg"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pictureHeight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/rvPieceImg">
+
         <TextView
             android:id="@+id/tvPieceTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/marginSize"
-            android:layout_marginStart="12dp"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"
             android:textSize="@dimen/textSize5"
-            app:layout_constraintBottom_toBottomOf="@+id/tvPieceName"
-            app:layout_constraintStart_toEndOf="@+id/tvPieceName"
-            app:layout_constraintTop_toTopOf="@+id/tvPieceName"
-            tools:text="00:00" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
+            tools:text="2019/1/1" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvPieceName2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:padding="5dp"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/textSize4"
+                tools:text="小明" />
+
+            <TextView
+                android:id="@+id/tvPieceContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:padding="5dp"
+                android:singleLine="false"
+                android:text="TextView"
+                android:textSize="@dimen/textSize4" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/tvPieceContent"
+    <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/paddingSize"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
+        android:layout_height="2dp"
+        android:background="@color/gray1"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout5"
+        tools:layout_editor_absoluteX="0dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

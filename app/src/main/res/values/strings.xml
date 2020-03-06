@@ -38,7 +38,7 @@
     <string name="textDeleteFail">delete fail</string>
     <string name="textDeleteSuccess">delete success</string>
     <string name="textNoTalkFound">no talk found</string>
-    <string name="textQRcord">QRcord</string>
+    <string name="textQRcord">QRcode</string>
     <string name="textNoTalksFound">no talks found</string>
     <string name="textIsRead">已讀</string>
     <string name="textNoFriendBundle">no friend bundle</string>
@@ -73,6 +73,9 @@
     <string name="textPieceDetail">活動花絮</string>
     <string name="textNoPartyImgs">沒有活動圖片</string>
     <string name="textNoPartyPiece">沒有花絮貼文</string>
+    <string name="textPicFailed">上傳圖片失敗</string>
+    <string name="textNoPic">沒有圖片</string>
+    <string name="textRollCallFailed">點名失敗</string>
 
     <string-array name="itemGuest">
         <item>登入/註冊</item>

@@ -20,7 +20,7 @@ import tw.dp103g4.R;
 
 public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
     private final static String TAG = "TAG_ImageTask";
-    private String url, account;
+    private String url;
     private int imageSize, id;
 
     private WeakReference<ImageView> imageViewWeakReference;
@@ -42,7 +42,7 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
     protected Bitmap doInBackground(Object... params) {
         JsonObject jsonObject = new JsonObject();
         //property:對應Servelet,value:這裡的變數
-        jsonObject.addProperty("action", "getUserImage");
+        jsonObject.addProperty("action", "getImage");
         jsonObject.addProperty("id", id);
         jsonObject.addProperty("imageSize", imageSize);
         return getRemoteImage(url, jsonObject.toString());

@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -62,8 +63,9 @@ public class PartyUpdateFragment extends Fragment {
     private EditText etName, etLoction, etAddress,etContent;
     private TextView tvStartDate, tvStartTime, tvEndDate, tvEndTime, tvPostEndDate, tvPostEndTime,
             tvUpper, tvLower, tvDistance;
+    private Button btPartyOK, btPartyRe;
+    private ScrollView scrollView;
     private SeekBar sbUpper, sbLower, sbDistance;
-    private Button btOk, btCancel;
     private byte[] image;
     private CoverImageTask partyImageTask;
     private Party party;
@@ -90,7 +92,7 @@ public class PartyUpdateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_party_update, container, false);
+        return inflater.inflate(R.layout.fragment_party_insert, container, false);
     }
 
     @Override
@@ -105,6 +107,10 @@ public class PartyUpdateFragment extends Fragment {
                 navController.popBackStack();
             }
         });
+
+        TextView tvTitle = view.findViewById(R.id.title);
+        tvTitle.setText("修改活動");
+
         ivCover = view.findViewById(R.id.PartyImg);
         layoutCover = view.findViewById(R.id.layoutCover);
         etName = view.findViewById(R.id.etName);
@@ -120,11 +126,17 @@ public class PartyUpdateFragment extends Fragment {
         tvUpper = view.findViewById(R.id.tvUpper);
         tvLower = view.findViewById(R.id.tvLower);
         tvDistance = view.findViewById(R.id.tvDistance);
-        btOk = view.findViewById(R.id.btOk);
-        btCancel = view.findViewById(R.id.btCancel);
+        btPartyOK = view.findViewById(R.id.btPartyOK);
+        btPartyRe = view.findViewById(R.id.btPartyRe);
         sbUpper = view.findViewById(R.id.sbUpper);
         sbLower = view.findViewById(R.id.sbLower);
         sbDistance = view.findViewById(R.id.sbDistance);
+
+        scrollView = view.findViewById(R.id.scrollview);
+
+
+        btPartyOK.setWidth(40);
+        btPartyOK.setText("完成");
 
         final Bundle bundle = getArguments();
         if (bundle == null || bundle.getSerializable("party") == null) {
@@ -135,10 +147,10 @@ public class PartyUpdateFragment extends Fragment {
 
         SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         final int userId = pref.getInt("id", 0);
-        String url = Common.URL_SERVER + "PartyServlet";
+        final String url = Common.URL_SERVER + "PartyServlet";
 
         final int id = party.getId();
-        int imageSize = getResources().getDisplayMetrics().widthPixels;
+        final int imageSize = getResources().getDisplayMetrics().widthPixels;
         partyImageTask = new CoverImageTask(url, id, imageSize, ivCover);
         partyImageTask.execute();
 
@@ -153,7 +165,7 @@ public class PartyUpdateFragment extends Fragment {
         sbLower.setProgress(party.getCountLowerLimit());
         sbDistance.setProgress(party.getDistance());
 
-        final SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY/MM/dd");
+        final SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
         final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
 
         tvStartDate.setText(sdfDate.format(party.getStartTime()));
@@ -320,15 +332,26 @@ public class PartyUpdateFragment extends Fragment {
             }
         });
 
-        btOk.setOnClickListener(new View.OnClickListener() {
+        btPartyOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 送出
+                if (image == null) {
+                    Common.showToast(activity, "請上傳圖片");
+                    return;
+                }
+
                 if (etName.getText().toString().isEmpty()
                         || etLoction.getText().toString().isEmpty()
                         || etAddress.getText().toString().isEmpty()
                         || etContent.getText().toString().isEmpty()) {
                     Common.showToast(activity, "輸入不可為空!");
+                    return;
+                }
+
+                int maxContent = 500;
+                if (etContent.getText().toString().length() > maxContent) {
+                    Common.showToast(activity, "輸入超過上限");
                     return;
                 }
 
@@ -396,15 +419,33 @@ public class PartyUpdateFragment extends Fragment {
 
 
 
-        btCancel.setOnClickListener(new View.OnClickListener() {
+        btPartyRe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 重置
-                ivCover.setImageResource(R.drawable.no_image);
-                etName.setText("");
-                etLoction.setText("");
-                etAddress.setText("");
-                etContent.setText("");
+                partyImageTask = new CoverImageTask(url, id, imageSize, ivCover);
+                partyImageTask.execute();
+
+                etName.setText(party.getName());
+                etLoction.setText(party.getLocation());
+                etAddress.setText(party.getAddress());
+                etContent.setText(party.getContent());
+                tvUpper.setText(String.valueOf(party.getCountUpperLimit()));
+                tvLower.setText(String.valueOf(party.getCountLowerLimit()));
+                tvDistance.setText(String.valueOf(party.getDistance()));
+                sbUpper.setProgress(party.getCountUpperLimit());
+                sbLower.setProgress(party.getCountLowerLimit());
+                sbDistance.setProgress(party.getDistance());
+
+
+                tvStartDate.setText(sdfDate.format(party.getStartTime()));
+                tvStartTime.setText(sdfTime.format(party.getStartTime()));
+                tvEndDate.setText(sdfDate.format(party.getEndTime()));
+                tvEndTime.setText(sdfTime.format(party.getEndTime()));
+                tvPostEndDate.setText(sdfDate.format(party.getPostEndTime()));
+                tvPostEndTime.setText(sdfTime.format(party.getPostEndTime()));
+
+                scrollView.fullScroll(scrollView.FOCUS_UP);
 
             }
         });
@@ -416,15 +457,11 @@ public class PartyUpdateFragment extends Fragment {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQ_PICK_PICTURE:
-                    crop(intent.getData());
-                    break;
-                case REQ_CROP_PICTURE:
                     Uri uri = intent.getData();
                     Bitmap bitmap = null;
                     if (uri != null) {
                         try {
-                            bitmap = BitmapFactory.decodeStream(
-                                    activity.getContentResolver().openInputStream(uri));
+                            bitmap = BitmapFactory.decodeStream(activity.getContentResolver().openInputStream(uri));
                             ivCover.setImageBitmap(bitmap);
                             ByteArrayOutputStream out = new ByteArrayOutputStream();
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
@@ -443,38 +480,6 @@ public class PartyUpdateFragment extends Fragment {
         }
     }
 
-    private void crop(Uri sourceImageUri) {
-        File file = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        file = new File(file, "picture_cropped.jpg");
-        Uri uri = Uri.fromFile(file);
-        // 開啟截圖功能
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        // 授權讓截圖程式可以讀取資料
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        // 設定圖片來源與類型
-        intent.setDataAndType(sourceImageUri, "image/*");
-        // 設定要截圖
-        intent.putExtra("crop", "true");
-        // 設定截圖框大小，0代表user任意調整大小
-        intent.putExtra("aspectX", 0);
-        intent.putExtra("aspectY", 0);
-        // 設定圖片輸出寬高，0代表維持原尺寸
-        intent.putExtra("outputX", 0);
-        intent.putExtra("outputY", 0);
-        // 是否保持原圖比例
-        intent.putExtra("scale", true);
-        // 設定截圖後圖片位置
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        // 設定是否要回傳值
-        intent.putExtra("return-data", true);
-        if (intent.resolveActivity(activity.getPackageManager()) != null) {
-            // 開啟截圖activity
-            startActivityForResult(intent, REQ_CROP_PICTURE);
-        } else {
-            Toast.makeText(activity, R.string.textNoImageCropAppFound,
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public void onStop() {

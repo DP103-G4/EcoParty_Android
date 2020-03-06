@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -20,6 +22,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -41,9 +44,11 @@ import com.google.gson.JsonObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.main_android.MainActivity;
@@ -56,18 +61,22 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class PartyInsertFragment extends Fragment {
     private MainActivity activity;
-    private ConstraintLayout layoutCover;
     private ImageView ivCover;
     private EditText etName, etLoction, etAddress,etContent;
     private TextView tvStartDate, tvStartTime, tvEndDate, tvEndTime, tvPostEndDate, tvPostEndTime,
             tvUpper, tvLower, tvDistance;
+    private Button btPartyOk, btPartyRe;
+    private Button btUploadCover;
+    private ScrollView scrollView;
     private SeekBar sbUpper, sbLower, sbDistance;
-    private Button btOk, btCancel;
     private byte[] image;
     private Party party;
     private static final int REQ_PICK_PICTURE = 1;
-    private static final int REQ_CROP_PICTURE = 2;
     private Calendar calendar = Calendar.getInstance();
+    private Bundle bundle;
+    private Bitmap bitmap;
+    private SimpleDateFormat sdfDate, sdfTime;
+    private String nowDateString, nowTimeString;
     Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
@@ -104,7 +113,7 @@ public class PartyInsertFragment extends Fragment {
             }
         });
         ivCover = view.findViewById(R.id.PartyImg);
-        layoutCover = view.findViewById(R.id.layoutCover);
+        btUploadCover = view.findViewById(R.id.btUploadCover);
         etName = view.findViewById(R.id.etName);
         etLoction = view.findViewById(R.id.etLoction);
         etAddress = view.findViewById(R.id.etAddress);
@@ -118,20 +127,22 @@ public class PartyInsertFragment extends Fragment {
         tvUpper = view.findViewById(R.id.tvUpper);
         tvLower = view.findViewById(R.id.tvLower);
         tvDistance = view.findViewById(R.id.tvDistance);
-        btOk = view.findViewById(R.id.btOk);
-        btCancel = view.findViewById(R.id.btCancel);
+        btPartyOk = view.findViewById(R.id.btPartyOK);
+        btPartyRe = view.findViewById(R.id.btPartyRe);
         sbUpper = view.findViewById(R.id.sbUpper);
         sbLower = view.findViewById(R.id.sbLower);
         sbDistance = view.findViewById(R.id.sbDistance);
+
+        scrollView = view.findViewById(R.id.scrollview);
 
         SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         final int userId = pref.getInt("id", 0);
 
 
-        final SimpleDateFormat sdfDate = new SimpleDateFormat("YYYY/MM/dd");
-        final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
-        String nowDateString = sdfDate.format(new Date());
-        String nowTimeString = sdfTime.format(new Date());
+        sdfDate = new SimpleDateFormat("yyyy/MM/dd");
+        sdfTime = new SimpleDateFormat("HH:mm");
+        nowDateString = sdfDate.format(new Date());
+        nowTimeString = sdfTime.format(new Date());
 
         tvStartDate.setText(nowDateString);
         tvStartTime.setText(nowTimeString);
@@ -140,7 +151,7 @@ public class PartyInsertFragment extends Fragment {
         tvPostEndDate.setText(nowDateString);
         tvPostEndTime.setText(nowTimeString);
 
-        layoutCover.setOnClickListener(new View.OnClickListener() {
+        btUploadCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 上傳圖片
@@ -297,15 +308,26 @@ public class PartyInsertFragment extends Fragment {
             }
         });
 
-        btOk.setOnClickListener(new View.OnClickListener() {
+        btPartyOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 送出
+                if (image == null) {
+                    Common.showToast(activity, "請上傳圖片");
+                    return;
+                }
+
                 if (etName.getText().toString().isEmpty()
                         || etLoction.getText().toString().isEmpty()
                         || etAddress.getText().toString().isEmpty()
                         || etContent.getText().toString().isEmpty()) {
                     Common.showToast(activity, "輸入不可為空!");
+                    return;
+                }
+
+                int maxContent = 500;
+                if (etContent.getText().toString().length() > maxContent) {
+                    Common.showToast(activity, "輸入超過上限");
                     return;
                 }
 
@@ -331,41 +353,19 @@ public class PartyInsertFragment extends Fragment {
 
                     party = new Party(userId, etName.getText().toString(), startTime, endTime, new Date(), postEndTime,
                             etLoction.getText().toString(), etAddress.getText().toString(), -181, -181, etContent.getText().toString(),
-                            sbUpper.getProgress(), sbLower.getProgress(), 0, 1, sbDistance.getProgress());
-
+                            sbUpper.getProgress(), sbLower.getProgress(), 0, 0, sbDistance.getProgress());
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                if (Common.networkConnected(activity)) {
-                    String url = Common.URL_SERVER + "PartyServlet";
-
-                    JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("action", "partyInsert");
-                    jsonObject.addProperty("party", gson.toJson(party));
-                    // 有圖才上傳
-                    if (image != null) {
-                        jsonObject.addProperty("imageBase64", Base64.encodeToString(image, Base64.DEFAULT));
-                    }
-
-                    int count = 0;
-                    try {
-                        String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                        count = Integer.valueOf(result.trim());
-                    } catch (Exception e) {
-                        Log.e(TAG, e.toString());
-                    }
-
-                    if (count == 0) {
-                        Common.showToast(getActivity(), R.string.textInsertFail);
-                    } else {
-                        Common.showToast(getActivity(), R.string.textInsertSuccess);
-                        navController.popBackStack();
-                    }
-
+                if (party != null) {
+                    bundle = new Bundle();
+                    bundle.putSerializable("party", party);
+                    bundle.putByteArray("cover", image);
+                    navController.navigate(R.id.action_partyInsertFragment_to_reviewImgInsertFragment, bundle);
                 } else {
-                    Common.showToast(getActivity(), R.string.textNoNetwork);
+                    Common.showToast(getActivity(), "活動創建失敗");
                 }
             }
         });
@@ -373,15 +373,24 @@ public class PartyInsertFragment extends Fragment {
 
 
 
-        btCancel.setOnClickListener(new View.OnClickListener() {
+        btPartyRe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 重置
-                ivCover.setImageResource(R.drawable.no_image);
+                nowDateString = sdfDate.format(new Date());
+                nowTimeString = sdfTime.format(new Date());
+                tvStartDate.setText(nowDateString);
+                tvStartTime.setText(nowTimeString);
+                tvEndDate.setText(nowDateString);
+                tvEndTime.setText(nowTimeString);
+                tvPostEndDate.setText(nowDateString);
+                tvPostEndTime.setText(nowTimeString);
+                ivCover.setImageResource(R.drawable.upload_img);
                 etName.setText("");
                 etLoction.setText("");
                 etAddress.setText("");
                 etContent.setText("");
+                scrollView.fullScroll(scrollView.FOCUS_UP);
 
             }
         });
@@ -393,11 +402,8 @@ public class PartyInsertFragment extends Fragment {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQ_PICK_PICTURE:
-                    crop(intent.getData());
-                    break;
-                case REQ_CROP_PICTURE:
                     Uri uri = intent.getData();
-                    Bitmap bitmap = null;
+                    bitmap = null;
                     if (uri != null) {
                         try {
                             bitmap = BitmapFactory.decodeStream(
@@ -416,42 +422,11 @@ public class PartyInsertFragment extends Fragment {
                         ivCover.setImageResource(R.drawable.no_image);
                     }
                     break;
+
             }
         }
     }
 
-    private void crop(Uri sourceImageUri) {
-        File file = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        file = new File(file, "picture_cropped.jpg");
-        Uri uri = Uri.fromFile(file);
-        // 開啟截圖功能
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        // 授權讓截圖程式可以讀取資料
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        // 設定圖片來源與類型
-        intent.setDataAndType(sourceImageUri, "image/*");
-        // 設定要截圖
-        intent.putExtra("crop", "true");
-        // 設定截圖框大小，0代表user任意調整大小
-        intent.putExtra("aspectX", 0);
-        intent.putExtra("aspectY", 0);
-        // 設定圖片輸出寬高，0代表維持原尺寸
-        intent.putExtra("outputX", 0);
-        intent.putExtra("outputY", 0);
-        // 是否保持原圖比例
-        intent.putExtra("scale", true);
-        // 設定截圖後圖片位置
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        // 設定是否要回傳值
-        intent.putExtra("return-data", true);
-        if (intent.resolveActivity(activity.getPackageManager()) != null) {
-            // 開啟截圖activity
-            startActivityForResult(intent, REQ_CROP_PICTURE);
-        } else {
-            Toast.makeText(activity, R.string.textNoImageCropAppFound,
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public void onStop() {

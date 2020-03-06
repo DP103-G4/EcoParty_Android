@@ -3,8 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#7DBEFF</item>
-        <item name="colorPrimaryDark">#7DBEFF</item>
+        <item name="colorPrimary">#5EDCA6</item>
+        <item name="colorPrimaryDark">#5EDCA6</item>
         <item name="colorAccent">@color/colorIsCheck</item>
         <item name="toolbarNavigationButtonStyle">@style/ToolbarNavigationButtonStyle</item>
     </style>
@@ -13,7 +13,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
     <style name="toolbar_blue_theme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="colorControlNormal">#7DBEFF</item>
+        <item name="colorControlNormal">#5EDCA6</item>
         <item name="android:actionBarSize">46dp</item>
     </style>
 
