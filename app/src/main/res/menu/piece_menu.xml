@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/pieceWarn"
+        android:title="檢舉花絮" />
+    <item
+        android:id="@+id/pieceUpdate"
+        android:title="修改花絮" />
+    <item
+        android:id="@+id/pieceDelete"
+        android:title="刪除花絮" />
+
+</menu>

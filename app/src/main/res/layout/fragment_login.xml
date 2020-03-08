@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,13 +7,45 @@
     tools:context="tw.dp103g4.user.LoginFragment">
 
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="?attr/homeAsUpIndicator">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="?actionBarSize"
+                android:padding="@dimen/appbar_padding"
+                android:text="登入/註冊"
+                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
     <LinearLayout
 
         android:id="@+id/linearLayoutV1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout2">
 
 
         <TextView
@@ -46,7 +78,7 @@
                 android:layout_margin="50dp"
                 android:ems="10"
                 android:hint="請輸入會員帳號"
-                android:inputType="textPersonName"
+                android:inputType="textPassword"
                 android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,28 +107,28 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
 
-<!--            <RadioGroup-->
-<!--                android:id="@+id/rb1"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="1"-->
-<!--                android:orientation="horizontal">-->
+            <!--            <RadioGroup-->
+            <!--                android:id="@+id/rb1"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:orientation="horizontal">-->
 
-<!--                <RadioButton-->
-<!--                    android:id="@+id/rbUser"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:text="User" />-->
+            <!--                <RadioButton-->
+            <!--                    android:id="@+id/rbUser"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:text="User" />-->
 
-<!--                <RadioButton-->
-<!--                    android:id="@+id/rbAdmin"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:text="Admin" />-->
+            <!--                <RadioButton-->
+            <!--                    android:id="@+id/rbAdmin"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    android:text="Admin" />-->
 
-<!--            </RadioGroup>-->
+            <!--            </RadioGroup>-->
 
         </LinearLayout>
 
@@ -126,114 +158,114 @@
         </LinearLayout>
 
         <!--        <TextView-->
-<!--            android:id="@+id/tvForgot"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="10dp"-->
-<!--            android:layout_marginRight="10dp"-->
-<!--            android:gravity="right"-->
-<!--            android:text="Forgot Password?"-->
-<!--            android:textColor="@color/design_default_color_primary"-->
-<!--            android:textSize="18sp" />-->
+        <!--            android:id="@+id/tvForgot"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="10dp"-->
+        <!--            android:layout_marginRight="10dp"-->
+        <!--            android:gravity="right"-->
+        <!--            android:text="Forgot Password?"-->
+        <!--            android:textColor="@color/design_default_color_primary"-->
+        <!--            android:textSize="18sp" />-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/tvOr"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:layout_marginBottom="30dp"-->
-<!--            android:gravity="center_horizontal"-->
-<!--            android:text="-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; or -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;"-->
-<!--            android:textSize="20dp" />-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/tvOr"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="30dp"-->
+        <!--            android:layout_marginBottom="30dp"-->
+        <!--            android:gravity="center_horizontal"-->
+        <!--            android:text="-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45; or -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;"-->
+        <!--            android:textSize="20dp" />-->
 
-<!--        <LinearLayout-->
-<!--            android:id="@+id/linearLayoutH5"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:paddingLeft="10dp"-->
-<!--            android:paddingRight="10dp">-->
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/linearLayoutH5"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:paddingLeft="10dp"-->
+        <!--            android:paddingRight="10dp">-->
 
-<!--            <Button-->
-<!--                android:id="@+id/btGoogle"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="Google" />-->
+        <!--            <Button-->
+        <!--                android:id="@+id/btGoogle"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="Google" />-->
 
-<!--            <Button-->
-<!--                android:id="@+id/btFB"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:text="Facebook" />-->
-<!--        </LinearLayout>-->
+        <!--            <Button-->
+        <!--                android:id="@+id/btFB"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:text="Facebook" />-->
+        <!--        </LinearLayout>-->
 
     </LinearLayout>
 
-<!--    <TextView-->
-<!--        android:id="@+id/tvAccount"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="20sp"-->
-<!--        android:text="@string/tvAccount"-->
-<!--        android:textSize="18sp" />-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvAccount"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_margin="20sp"-->
+    <!--        android:text="@string/tvAccount"-->
+    <!--        android:textSize="18sp" />-->
 
-<!--    <EditText-->
-<!--        android:id="@+id/etAccount"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginLeft="20sp"-->
-<!--        android:layout_marginTop="40sp"-->
-<!--        android:ems="10"-->
-<!--        android:hint="@string/tvAccount"-->
-<!--        android:inputType="textPersonName" />-->
+    <!--    <EditText-->
+    <!--        android:id="@+id/etAccount"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginLeft="20sp"-->
+    <!--        android:layout_marginTop="40sp"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/tvAccount"-->
+    <!--        android:inputType="textPersonName" />-->
 
-<!--    <TextView-->
-<!--        android:id="@+id/tvPassword"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginLeft="20sp"-->
-<!--        android:layout_marginTop="100sp"-->
-<!--        android:text="@string/tvPassword"-->
-<!--        android:textSize="18sp" />-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/tvPassword"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginLeft="20sp"-->
+    <!--        android:layout_marginTop="100sp"-->
+    <!--        android:text="@string/tvPassword"-->
+    <!--        android:textSize="18sp" />-->
 
-<!--    <EditText-->
-<!--        android:id="@+id/etPassword"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginLeft="20sp"-->
-<!--        android:layout_marginTop="120sp"-->
-<!--        android:ems="10"-->
-<!--        android:hint="@string/tvPassword"-->
-<!--        android:inputType="textPersonName" />-->
+    <!--    <EditText-->
+    <!--        android:id="@+id/etPassword"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginLeft="20sp"-->
+    <!--        android:layout_marginTop="120sp"-->
+    <!--        android:ems="10"-->
+    <!--        android:hint="@string/tvPassword"-->
+    <!--        android:inputType="textPersonName" />-->
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical">-->
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:orientation="vertical">-->
 
-<!--    </LinearLayout>-->
+    <!--    </LinearLayout>-->
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_marginTop="200dp"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:padding="16dp">-->
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_marginTop="200dp"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        android:padding="16dp">-->
 
-<!--        <Button-->
-<!--            android:id="@+id/btRegister"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="Register" />-->
+    <!--        <Button-->
+    <!--            android:id="@+id/btRegister"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:text="Register" />-->
 
-<!--        <Button-->
-<!--            android:id="@+id/btLogin"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:text="Login" />-->
-<!--    </LinearLayout>-->
-</FrameLayout>
+    <!--        <Button-->
+    <!--            android:id="@+id/btLogin"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_weight="1"-->
+    <!--            android:text="Login" />-->
+    <!--    </LinearLayout>-->
+</androidx.constraintlayout.widget.ConstraintLayout>

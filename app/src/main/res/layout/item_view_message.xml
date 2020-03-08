@@ -4,69 +4,100 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="@dimen/marginSize">
+    android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/userImg"
-        android:layout_width="@dimen/userSize"
-        android:layout_height="@dimen/userSize"
-        android:paddingLeft="@dimen/paddingSize"
-        app:cardCornerRadius="@dimen/userSizeRadius"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/marginSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvMsgTime">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/ivMsg"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/userImg"
             android:layout_width="@dimen/userSize"
             android:layout_height="@dimen/userSize"
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="@dimen/paddingSize"
+            app:cardCornerRadius="@dimen/userSizeRadius"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/mary"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintTop_toTopOf="parent">
 
-    </androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/ivMsg"
+                android:layout_width="@dimen/userSize"
+                android:layout_height="@dimen/userSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/tvMsgName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/marginSize"
-        android:textSize="@dimen/textSize4"
-        app:layout_constraintStart_toEndOf="@+id/userImg"
-        app:layout_constraintTop_toTopOf="@+id/userImg"
-        tools:text="小明" />
+        </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/tvMsgTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/marginSize"
-        android:textSize="@dimen/textSize5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/msgCard"
-        tools:text="2019/1/1" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/msgCard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/marginSize"
-        android:elevation="4dp"
-        app:cardBackgroundColor="@color/gray1"
-        app:cardCornerRadius="@dimen/cornerRadius"
-        app:layout_constraintStart_toStartOf="@+id/tvMsgName"
-        app:layout_constraintTop_toBottomOf="@+id/tvMsgName">
-
-        <TextView
-            android:id="@+id/tvMessage"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/msgCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:maxEms="10"
-            android:text="TextView"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/textSize4" />
-    </androidx.cardview.widget.CardView>
+            android:layout_margin="@dimen/marginSize"
+            android:layout_marginStart="5dp"
+            android:elevation="4dp"
+            app:cardBackgroundColor="#E4E4E4"
+            app:cardCornerRadius="@dimen/cornerRadius"
+            app:layout_constraintStart_toEndOf="@+id/userImg"
+            app:layout_constraintTop_toTopOf="@+id/userImg">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/tvMsgName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/textSize4"
+                    tools:text="小明" />
+
+                <TextView
+                    android:id="@+id/tvMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:maxWidth="270dp"
+                    android:text="TextView"
+                    android:textSize="@dimen/textSize4" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <ImageButton
+            android:id="@+id/ibMsgMenu"
+            android:layout_width="18dp"
+            android:layout_height="35dp"
+            android:alpha="0.4"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/menu" />
+
+        <TextView
+            android:id="@+id/tvMsgTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/marginSize"
+            android:textSize="@dimen/textSize5"
+            app:layout_constraintStart_toEndOf="@+id/userImg"
+            app:layout_constraintTop_toBottomOf="@+id/msgCard"
+            tools:text="2019/1/1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

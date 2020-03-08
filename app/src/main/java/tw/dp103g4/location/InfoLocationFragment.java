@@ -14,6 +14,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -122,12 +123,14 @@ public class InfoLocationFragment extends Fragment {
         mapLocation.onStart();
         final NavController navController = Navigation.findNavController(view);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.location_menu);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 navController.popBackStack();
             }
         });
+
         final Bundle bundle = getArguments();
         if (bundle == null || bundle.getInt("partyId") == 0) {
             Common.showToast(activity, R.string.textNoParticipantFound);
@@ -136,6 +139,18 @@ public class InfoLocationFragment extends Fragment {
         }
         final int partyId = bundle.getInt("partyId");
         final int ownerId = bundle.getInt("ownerId");
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                infoLocations = getInfoLocation(partyId);
+                for (InfoLocation infoLocation : infoLocations) {
+                    showMarker(infoLocation, infoLocation.getId());
+                }
+
+                return false;
+            }
+        });
         System.out.println("ownerId" + ownerId);
         System.out.println("memid" + memId);
         infoLocations = getInfoLocation(partyId);

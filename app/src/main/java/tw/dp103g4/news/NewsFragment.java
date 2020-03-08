@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import java.text.SimpleDateFormat;
+
 import tw.dp103g4.R;
 
 import tw.dp103g4.main_android.Common;
@@ -27,7 +29,7 @@ import tw.dp103g4.task.NewsImageTask;
 public class NewsFragment extends Fragment {
     private static final String TAG = "TAG_NewsFragment";
     private ImageView ivNews;
-    private TextView tvNewsTitle, tvNewsContent;
+    private TextView tvNewsTitle, tvNewsContent, tvNewsDate;
     private MainActivity activity;
     private News news;
     private ScrollView scrollView;
@@ -58,6 +60,7 @@ public class NewsFragment extends Fragment {
         });
         ivNews = view.findViewById(R.id.ivNews);
         tvNewsTitle = view.findViewById(R.id.tvNewsTitle);
+        tvNewsDate = view.findViewById(R.id.tvNewsDate);
         tvNewsContent = view.findViewById(R.id.tvNewsContent);
         scrollView = view.findViewById(R.id.scrollView);
         scrollView.post(new Runnable() {
@@ -94,6 +97,8 @@ public class NewsFragment extends Fragment {
             }
             tvNewsTitle.setText(news.getTitle());
             tvNewsContent.setText(news.getContent());
+            String newsDateString = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(news.getTime());
+            tvNewsDate.setText(newsDateString);
         }
     }
 

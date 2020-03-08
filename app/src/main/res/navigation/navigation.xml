@@ -103,12 +103,25 @@
         <action
             android:id="@+id/action_partyDetailFragment_to_partyUpdateFragment"
             app:destination="@id/partyUpdateFragment" />
+        <action
+            android:id="@+id/action_partyDetailFragment_to_pieceCreateFragment"
+            app:destination="@id/pieceCreateFragment" />
+        <action
+            android:id="@+id/action_partyDetailFragment_to_iccListFragment"
+            app:destination="@id/iccListFragment" />
+        <action
+            android:id="@+id/action_partyDetailFragment_to_iccDetailFragment"
+            app:destination="@id/iccDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/partyInsertFragment"
         android:name="tw.dp103g4.partydetail.PartyInsertFragment"
         android:label="fragment_party_insert"
-        tools:layout="@layout/fragment_party_insert" />
+        tools:layout="@layout/fragment_party_insert" >
+    <action
+        android:id="@+id/action_partyInsertFragment_to_reviewImgInsertFragment"
+        app:destination="@id/reviewImgInsertFragment" />
+    </fragment>
     <fragment
         android:id="@+id/friendFragment"
         android:name="tw.dp103g4.friend.FriendFragment"
@@ -189,10 +202,51 @@
         android:id="@+id/pieceDetailFragment"
         android:name="tw.dp103g4.partydetail.PieceDetailFragment"
         android:label="fragment_piece_detail"
-        tools:layout="@layout/fragment_piece_detail" />
+        tools:layout="@layout/fragment_piece_detail" >
+        <action
+            android:id="@+id/action_pieceDetailFragment_to_pieceInsertFragment"
+            app:destination="@id/pieceInsertFragment" />
+        <action
+            android:id="@+id/action_pieceDetailFragment_to_pieceUpdateFragment"
+            app:destination="@+id/pieceUpdateFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myPartyDetailFragment"
         android:name="tw.dp103g4.tablayout.MyPartyDetailFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" />
+    <fragment
+        android:id="@+id/pieceInsertFragment"
+        android:name="tw.dp103g4.partydetail.PieceInsertFragment"
+        android:label="fragment_piece_insert"
+        tools:layout="@layout/fragment_piece_insert" />
+    <fragment
+        android:id="@+id/pieceCreateFragment"
+        android:name="tw.dp103g4.partydetail.PieceCreateFragment"
+        android:label="fragment_piece_create"
+        tools:layout="@layout/fragment_piece_create" />
+    <fragment
+        android:id="@+id/pieceUpdateFragment"
+        android:name="tw.dp103g4.partydetail.PieceUpdateFragment"
+        android:label="fragment_piece_update"
+        tools:layout="@layout/fragment_piece_update" />
+    <fragment
+        android:id="@+id/iccListFragment"
+        android:name="tw.dp103g4.partydetail.IccListFragment"
+        android:label="fragment_icc_list"
+        tools:layout="@layout/fragment_icc_list" >
+        <action
+            android:id="@+id/action_iccListFragment_to_iccDetailFragment"
+            app:destination="@id/iccDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/iccDetailFragment"
+        android:name="tw.dp103g4.partydetail.IccDetailFragment"
+        android:label="fragment_icc_detail"
+        tools:layout="@layout/fragment_icc_detail" />
+    <fragment
+        android:id="@+id/reviewImgInsertFragment"
+        android:name="tw.dp103g4.partydetail.ReviewImgInsertFragment"
+        android:label="fragment_review_img_insert"
+        tools:layout="@layout/fragment_review_img_insert" />
 </navigation>

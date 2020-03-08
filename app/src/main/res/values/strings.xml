@@ -9,7 +9,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="textNoNetwork">no network connection available</string>
     <string name="textNoPartiesFound">no parties found</string>
-    <string name="textPartyName">請輸入活動名稱</string>
+    <string name="textPartyName">Please enter party name</string>
     <string name="textNewsTitle">NewsTitle</string>
     <string name="textNewsContent">NewsContent</string>
     <string name="textNoNewsFound">News is not found</string>
@@ -73,8 +73,13 @@
     <string name="textPieceDetail">活動花絮</string>
     <string name="textNoPartyImgs">沒有活動圖片</string>
     <string name="textNoPartyPiece">沒有花絮貼文</string>
+    <string name="textPicFailed">上傳圖片失敗</string>
+    <string name="textNoPic">沒有圖片</string>
+    <string name="textRollCallFailed">點名失敗</string>
     <string name="editTextTitle">請輸入標題</string>
     <string name="editTextContent">請輸入內容</string>
+    <string name="textRestart">刷新</string>
+    <string name="textNewsDate">NewsDate</string>
 
     <string-array name="itemGuest">
         <item>登入/註冊</item>

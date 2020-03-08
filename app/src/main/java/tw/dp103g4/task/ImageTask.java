@@ -20,7 +20,7 @@ import tw.dp103g4.R;
 
 public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
     private final static String TAG = "TAG_ImageTask";
-    private String url, account;
+    private String url;
     private int imageSize, id;
 
     private WeakReference<ImageView> imageViewWeakReference;

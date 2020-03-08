@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -47,6 +48,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class PartyListFragment extends Fragment {
     private static final String TAG = "TAG_PartyList";
     private Activity activity;
+    private NavController navController;
     private BottomNavigationView bottomNavigationView;
 
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -59,6 +61,8 @@ public class PartyListFragment extends Fragment {
     private NewsImageTask newsImageTask;
     private FloatingActionButton floatingActionButton;
     private ImageTask getUserImageTask;
+    private SearchView mSearchView;
+
     //Socket
 //    private int userId = 2;
     //------
@@ -78,10 +82,9 @@ public class PartyListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
         bottomNavigationView= activity.findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.VISIBLE);
-
-
         floatingActionButton = view.findViewById(R.id.btAdd);
         SearchView searchView = view.findViewById(R.id.searchView);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -92,19 +95,14 @@ public class PartyListFragment extends Fragment {
 
         rvNews = view.findViewById(R.id.rvNews);
         rvNews.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
-
         SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         final int userId = pref.getInt("id", 0);
-
         partyStart = getPartyStart(userId);
         showPartyStart(partyStart);
         parties = getParties();
         showParties(parties);
         news = getNews();
         showNews(news);
-        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
-        pagerSnapHelper.attachToRecyclerView(rvNews);
-        pagerSnapHelper.attachToRecyclerView(rvPartyStart);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -124,7 +122,7 @@ public class PartyListFragment extends Fragment {
                     Common.showToast(getActivity(), R.string.textNoLogin);
                     return;
                 }
-                Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_partyInsertFragment);
+                navController.navigate(R.id.action_partyFragment_to_partyInsertFragment);
             }
         });
 
@@ -205,9 +203,8 @@ public class PartyListFragment extends Fragment {
                 String jsonIn = newsGetAllTask.execute().get();
                 Type listType = new TypeToken<List<News>>() {
                 }.getType();
-                news = new GsonBuilder()
-                        .setDateFormat("yyyy-MM-dd HH:mm:ss")
-                        .create().fromJson(jsonIn, listType);
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                news = gson.fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -288,14 +285,14 @@ public class PartyListFragment extends Fragment {
 
         private class PartyViewHolder extends RecyclerView.ViewHolder {
             ImageView ivParty, ivUser;
-            TextView tvTitle, tvAddress, tvTime;
+            TextView tvTitle, tvlocation, tvTime;
 
             public PartyViewHolder(View itemView) {
                 super(itemView);
                 ivParty = itemView.findViewById(R.id.ivParty);
                 ivUser = itemView.findViewById(R.id.ivUser);
                 tvTitle = itemView.findViewById(R.id.tvTitle);
-                tvAddress = itemView.findViewById(R.id.tvAddress);
+                tvlocation = itemView.findViewById(R.id.tvlocation);
                 tvTime = itemView.findViewById(R.id.tvTime);
             }
         }
@@ -320,7 +317,7 @@ public class PartyListFragment extends Fragment {
             partyImageTask = new CoverImageTask(url, id, imageSize, holder.ivParty);
             partyImageTask.execute();
             holder.tvTitle.setText(party.getName());
-            holder.tvAddress.setText(party.getAddress());
+            holder.tvlocation.setText(party.getLocation());
             holder.tvTime.setText(new SimpleDateFormat("E M月d日").format(party.getStartTime()));
             //bundle活動詳情
 
@@ -329,7 +326,7 @@ public class PartyListFragment extends Fragment {
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("partyId", id);
-                    Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_partyDetailFragment, bundle);
+                    navController.navigate(R.id.action_partyFragment_to_partyDetailFragment, bundle);
                 }
             });
 
@@ -382,7 +379,7 @@ public class PartyListFragment extends Fragment {
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("newsDetail", newsDetail);
-                    Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_newsFragment, bundle);
+                    navController.navigate(R.id.action_partyFragment_to_newsFragment, bundle);
                 }
             });
         }
@@ -437,7 +434,7 @@ public class PartyListFragment extends Fragment {
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("partyId", mPartyStart.getId());
-                    Navigation.findNavController(v).navigate(R.id.action_partyFragment_to_partyDetailFragment, bundle);
+                    navController.navigate(R.id.action_partyFragment_to_partyDetailFragment, bundle);
                 }
             });
         }

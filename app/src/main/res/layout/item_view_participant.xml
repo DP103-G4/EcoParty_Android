@@ -1,50 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/marginSize">
+    android:layout_marginStart="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginBottom="5dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp"
+    app:contentPadding="4dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/userImg"
-        android:layout_width="@dimen/userSize"
-        android:layout_height="@dimen/userSize"
-        android:paddingLeft="@dimen/paddingSize"
-        app:cardCornerRadius="@dimen/userSizeRadius"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/ivParticipant"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/marginSize">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/userImg"
             android:layout_width="@dimen/userSize"
             android:layout_height="@dimen/userSize"
+            android:paddingLeft="@dimen/paddingSize"
+            app:cardCornerRadius="@dimen/userSizeRadius"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/mary" />
-    </androidx.cardview.widget.CardView>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivParticipant"
+                android:layout_width="@dimen/userSize"
+                android:layout_height="@dimen/userSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.cardview.widget.CardView>
 
 
-    <TextView
-        android:id="@+id/tvParticipantName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/paddingSize"
-        android:textSize="@dimen/textSize4"
-        app:layout_constraintStart_toEndOf="@+id/userImg"
-        app:layout_constraintTop_toTopOf="@+id/userImg"
-        tools:text="123" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-    <TextView
-        android:id="@+id/tvCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/marginSize"
-        app:layout_constraintStart_toStartOf="@+id/tvParticipantName"
-        app:layout_constraintTop_toBottomOf="@+id/tvParticipantName"
-        tools:text="1" />
+            <TextView
+                android:id="@+id/tvCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="1" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="位" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/cbArrival"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/buttonHeight"
+            android:layout_margin="@dimen/marginSize"
+            android:text="已報到"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@+id/userImg"
+            app:layout_constraintTop_toTopOf="@+id/userImg">
+
+            <ImageView
+                android:id="@+id/ivStaff"
+                android:layout_width="11dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="4dp"
+                app:srcCompat="@drawable/user" />
+
+            <TextView
+                android:id="@+id/tvParticipantName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/textSize4"
+                tools:text="123" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
