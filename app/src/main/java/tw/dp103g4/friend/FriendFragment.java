@@ -84,7 +84,7 @@ public class FriendFragment extends Fragment {
         broadcastManager = LocalBroadcastManager.getInstance(activity);
         registerMsg();
         Common.connectServer(activity, userId);
-        userId = 2;
+        userId = 3;
 
     }
 
