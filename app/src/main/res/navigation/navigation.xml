@@ -125,7 +125,11 @@
         android:id="@+id/friendMsgFragment"
         android:name="tw.dp103g4.friend.FriendMsgFragment"
         android:label="fragment_friend_msg"
-        tools:layout="@layout/fragment_friend_msg" />
+        tools:layout="@layout/fragment_friend_msg" >
+        <action
+            android:id="@+id/action_friendMsgFragment_to_partyDetailFragment"
+            app:destination="@id/partyDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="tw.dp103g4.user.LoginFragment"
