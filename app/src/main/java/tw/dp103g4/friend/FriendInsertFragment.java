@@ -152,10 +152,10 @@ public class FriendInsertFragment extends Fragment {
                 }else {
                     if (Common.networkConnected(activity)) {
                         String url = Common.URL_SERVER + "UserServlet";
-                        String userAccound = etSearch.getText().toString();
+                        String userAccount = etSearch.getText().toString();
                         JsonObject jsonObject = new JsonObject();
                         jsonObject.addProperty("action", "searchUser");
-                        jsonObject.addProperty("account", userAccound);
+                        jsonObject.addProperty("account", userAccount);
                         String jsonOut = jsonObject.toString();
                         insertFriendTask = new CommonTask(url, jsonOut);
                         try {
@@ -172,12 +172,9 @@ public class FriendInsertFragment extends Fragment {
                             if (user == null) {
                                 type = "無法找到該用戶!";
                             } else {
-                                type = "無法將自己的帳號加為好友歐！";
+                                type = "無法將自己的帳號加入好友歐！";
                             }
-                            new AlertDialog.Builder(getActivity())
-                                    .setTitle(type)
-                                    .setNegativeButton("確定", null).create()
-                                    .show();
+                            IsFriendDialog(type);
 //                        Common.showToast(getActivity(), R.string.textSearchUserFail);
                         } else {
                             FriendShip isInvite = getIsInvite(userId, user.getId());
@@ -185,20 +182,20 @@ public class FriendInsertFragment extends Fragment {
                                  String type = "";
                                 if (!isInvite.getIsInvite()) {
                                     if(userId == isInvite.getIdTwo()){
-                                        String titleStr = "是否要同意 " + user.getAccount() + " 的好友邀請？";
+                                        String titleStr = "是否要同意『" + user.getAccount() + "』的好友邀請？";
                                         FriendAlertDialog(titleStr,user.getId(),true);
                                     }else{
-                                    type = "已發出邀請！";}
+                                    type = "已經對『"+user.getAccount()+"』發出邀請囉！";}
 
                                 } else {
-                                    type = user.getAccount()+" 已經是好友囉！";
+                                    type = "『"+user.getAccount()+"』已經是好友囉！";
 
                                 }
                                 if (!type.equals("")){
                                 IsFriendDialog(type);
                                 }
                             } else {
-                                String titleStr = "是否要邀請 " + user.getAccount() + " 成為好友？";
+                                String titleStr = "是否要邀請『" + user.getAccount() + "』成為好友？";
                                 FriendAlertDialog(titleStr,user.getId(),false);
                             }
                             Common.showToast(getActivity(), R.string.textSearchUserSuccess);
@@ -528,26 +525,38 @@ public class FriendInsertFragment extends Fragment {
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
-            FriendShip isInvite = getIsInvite(userId, user.getId());
-            if (!isInvite.getNoInsert()) {
+            if (user == null || userId == user.getId()) {
                 String type = "";
-                if (!isInvite.getIsInvite()) {
-                    if(userId == isInvite.getIdTwo()){
-                        String titleStr = "是否要同意 " + user.getAccount() + " 的好友邀請？";
-                        FriendAlertDialog(titleStr,user.getId(),true);
-                    }else{
-                        type = "已發出邀請！";}
-
+                if (user == null) {
+                    type = "無法找到該用戶!";
                 } else {
-                    type = user.getAccount()+" 已經是好友囉！";
-
+                    type = "無法將自己的帳號加入好友歐！";
                 }
-                if (!type.equals("")){
-                    IsFriendDialog(type);
-                }
+                IsFriendDialog(type);
+//                Common.showToast(getActivity(), R.string.textSearchUserFail);
             } else {
-                String titleStr = "是否要邀請 " + user.getAccount() + " 成為好友？";
-                FriendAlertDialog(titleStr,user.getId(),false);
+                FriendShip isInvite = getIsInvite(userId, user.getId());
+                if (!isInvite.getNoInsert()) {
+                    String type = "";
+                    if (!isInvite.getIsInvite()) {
+                        if (userId == isInvite.getIdTwo()) {
+                            String titleStr = "是否要同意『" + user.getName() + "』的好友邀請？";
+                            FriendAlertDialog(titleStr, user.getId(), true);
+                        } else {
+                            type = "已經對『"+user.getName()+"』發出邀請囉！";
+                        }
+
+                    } else {
+                        type = "『"+user.getName() + "』已經是好友囉！";
+
+                    }
+                    if (!type.equals("")) {
+                        IsFriendDialog(type);
+                    }
+                } else {
+                    String titleStr = "是否要邀請『" + user.getName() + "』成為好友？";
+                    FriendAlertDialog(titleStr, user.getId(), false);
+                }
             }
         } else {
             Log.d(TAG,"SQL掃描失敗");
