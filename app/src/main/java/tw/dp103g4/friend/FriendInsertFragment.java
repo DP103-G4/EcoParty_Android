@@ -97,7 +97,7 @@ public class FriendInsertFragment extends Fragment {
         broadcastManager = LocalBroadcastManager.getInstance(activity);
         registerMsg();
         Common.connectServer(activity, userId);
-        userId = 3;
+//        userId = 2;
 
     }
 
