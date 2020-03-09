@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,6 +73,8 @@ public class InformFragment extends Fragment {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.inform_menu);
         rvInform.setLayoutManager(new LinearLayoutManager(activity));
+//        添加分隔線
+        rvInform.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL));
         informs = getInforms(receiverId);
         showInform(informs);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {

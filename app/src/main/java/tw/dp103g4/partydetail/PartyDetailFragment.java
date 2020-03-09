@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,10 +24,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +40,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -52,16 +56,20 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import qrcode.Contents;
 import qrcode.QRCodeEncoder;
 import tw.dp103g4.R;
+import tw.dp103g4.friend.FriendMsgFragment;
 import tw.dp103g4.main_android.Common;
+import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.CoverImageTask;
 import tw.dp103g4.task.ImageTask;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 
@@ -82,13 +90,15 @@ public class PartyDetailFragment extends Fragment {
     private int imageSize;
     private String url;
     private ScrollView scrollView;
-    private ConstraintLayout participantLayout;
+    private ConstraintLayout participantLayout, directLayout, msgLayout;
     private byte[] image;
     private static final int REQ_PICK_PICTURE = 1;
     private final int review = 0, post = 1, close = 2, start = 3, end = 4, delete = 5;
     private Bundle bundle;
     private int partyId, userId;
     private PartyInfo partyInfo;
+    private TextView tvLeftCount;
+    private LinearLayout leftCount;
 
     Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -154,7 +164,13 @@ public class PartyDetailFragment extends Fragment {
         etInput = view.findViewById(R.id.etInput);
         rvMessage = view.findViewById(R.id.rvMessage);
         participantLayout = view.findViewById(R.id.participantLayout);
+        directLayout = view.findViewById(R.id.directLayout);
+        msgLayout = view.findViewById(R.id.msgLaout);
         btEdit = view.findViewById(R.id.btPartyEdit);
+        leftCount = view.findViewById(R.id.leftCount);
+        tvLeftCount = view.findViewById(R.id.tvLeftCount);
+
+
         rvMessage.setLayoutManager(new LinearLayoutManager(activity));
 
 
@@ -170,6 +186,13 @@ public class PartyDetailFragment extends Fragment {
 
         partyInfo = getPartyInfo(partyId, userId);
         showPartyDetail(partyInfo);
+
+        btShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
         btQR.setOnClickListener(new View.OnClickListener() {
@@ -210,6 +233,7 @@ public class PartyDetailFragment extends Fragment {
 
                 } else if (partyInfo.getIsStaff()) {
                     Bundle bundle = new Bundle();
+                    bundle.putInt("userId", userId);
                     bundle.putInt("partyId", partyInfo.getParty().getId());
                     navController.navigate(R.id.action_partyDetailFragment_to_iccDetailFragment, bundle);
 
@@ -226,6 +250,7 @@ public class PartyDetailFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("partyId", partyInfo.getParty().getId());
                 bundle.putInt("ownerId", partyInfo.getParty().getOwnerId());
+
                 navController.navigate(R.id.action_partyDetailFragment_to_locationFragment, bundle);
             }
         });
@@ -385,9 +410,10 @@ public class PartyDetailFragment extends Fragment {
                             return;
                         }
 
+                        int left = partyInfo.getParty().getCountUpperLimit() - partyInfo.getParty().getCountCurrent();
                         final NumberPicker numberPicker = new NumberPicker(activity);
                         numberPicker.setMinValue(1);
-                        numberPicker.setMaxValue(50);
+                        numberPicker.setMaxValue(left);
                         numberPicker.setWrapSelectorWheel(false);
 
                         new AlertDialog.Builder(activity)
@@ -411,7 +437,7 @@ public class PartyDetailFragment extends Fragment {
                                             System.out.println(jsonOut);
                                             count = Integer.valueOf(result.trim());
 
-                                            if (count == 0) {
+                                            if (count == -1) {
 //                                Common.showToast(getActivity(), R.string.textInsertFail);
                                             } else {
 //                                Common.showToast(getActivity(), R.string.textInsertSuccess);
@@ -449,7 +475,7 @@ public class PartyDetailFragment extends Fragment {
                             System.out.println(jsonOut);
                             count = Integer.valueOf(result.trim());
 
-                            if (count == 0) {
+                            if (count == -1) {
 //                                Common.showToast(getActivity(), R.string.textDeleteFail);
                             } else {
 //                                Common.showToast(getActivity(), R.string.textDeleteSuccess);
@@ -488,13 +514,39 @@ public class PartyDetailFragment extends Fragment {
             }
         });
 
+        directLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (partyInfo.getParty().getLongitude() != -181 &&
+                    partyInfo.getParty().getLatitude() != -181) {
+
+                    double toLat = partyInfo.getParty().getLatitude();
+                    double toLng = partyInfo.getParty().getLongitude();
+
+                    direct(toLat, toLng);
+                }
+            }
+        });
+
+        msgLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                msgList = getMsgList(partyId);
+                showMsgList(msgList);
+
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                });
+            }
+        });
+
         ibSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PartyMessage message = null;
-                Gson gson = new GsonBuilder()
-                        .setDateFormat("yyyy-MM-dd HH:mm:ss")
-                        .create();
 
                 if (Common.networkConnected(activity)) {
                     if (userId == 0) {
@@ -812,6 +864,7 @@ public class PartyDetailFragment extends Fragment {
             btMap.setVisibility(View.GONE);
             btICC.setVisibility(View.GONE);
             btQR.setVisibility(View.GONE);
+            leftCount.setVisibility(View.GONE);
 
 
             if (partyInfo.getParty().getOwnerId() == userId) {
@@ -828,6 +881,9 @@ public class PartyDetailFragment extends Fragment {
             if (partyInfo.getParty().getState() == post) {
                 btStart.setText("發布中");
                 btStart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.start, 0, 0, 0);
+                int left = partyInfo.getParty().getCountUpperLimit() - partyInfo.getParty().getCountCurrent();
+                tvLeftCount.setText(String.valueOf(left));
+                leftCount.setVisibility(View.VISIBLE);
 
             } else if (partyInfo.getParty().getState() == close) {
                 btStart.setText("已截止");
@@ -934,6 +990,16 @@ public class PartyDetailFragment extends Fragment {
 
             }
         }
+    }
+
+    private void direct(double toLat, double toLng) {
+        String uriStr = String.format(Locale.US,
+                "https://www.google.com/maps/dir/?api=1" +
+                        "&destination=%f,%f&travelmode=driving", toLat, toLng);
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uriStr));
+        intent.setClassName("com.google.android.apps.maps",
+                "com.google.android.maps.MapsActivity");
+        startActivity(intent);
     }
 
     @Override

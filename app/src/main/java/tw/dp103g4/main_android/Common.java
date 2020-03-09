@@ -24,6 +24,10 @@ public class Common {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCE_MEMBER, Context.MODE_PRIVATE);
         return pref.getInt("id", 0);
     }
+    public static String getUserName(Context context) {
+        SharedPreferences pref = context.getSharedPreferences(PREFERENCE_MEMBER, Context.MODE_PRIVATE);
+        return pref.getString("name", "");
+    }
     public static String URI_SERVER = "ws://10.0.2.2:8080/EcoParty/SocketServer/";
 //    public static String URI_SERVER = "ws://192.168.1.206:8080/EcoParty/SocketServer/";
     public static ChatWebSocketClient chatWebSocketClient;

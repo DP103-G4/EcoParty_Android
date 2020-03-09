@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -62,6 +63,9 @@ public class PartyListFragment extends Fragment {
     private FloatingActionButton floatingActionButton;
     private ImageTask getUserImageTask;
     private SearchView mSearchView;
+    Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .create();
 
     //Socket
 //    private int userId = 2;
@@ -89,12 +93,20 @@ public class PartyListFragment extends Fragment {
         SearchView searchView = view.findViewById(R.id.searchView);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         rvPartyStart = view.findViewById(R.id.rvPartyStart);
-        rvPartyStart.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
+        rvPartyStart.setLayoutManager(new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false));
+
         rvParty = view.findViewById(R.id.rvParty);
         rvParty.setLayoutManager(new GridLayoutManager(activity, 2));
 
         rvNews = view.findViewById(R.id.rvNews);
         rvNews.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
+
+        PagerSnapHelper pagerSnapHelper1 = new PagerSnapHelper();
+        PagerSnapHelper pagerSnapHelper2 = new PagerSnapHelper();
+
+        pagerSnapHelper1.attachToRecyclerView(rvNews);
+        pagerSnapHelper2.attachToRecyclerView(rvPartyStart);
+
         SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         final int userId = pref.getInt("id", 0);
         partyStart = getPartyStart(userId);
@@ -180,7 +192,6 @@ public class PartyListFragment extends Fragment {
                 String jsonIn = partyGetAllTask.execute().get();
                 Type listType = new TypeToken<List<Party>>() {
                 }.getType();
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 partyStart = gson.fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
@@ -203,7 +214,6 @@ public class PartyListFragment extends Fragment {
                 String jsonIn = newsGetAllTask.execute().get();
                 Type listType = new TypeToken<List<News>>() {
                 }.getType();
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 news = gson.fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
@@ -240,7 +250,6 @@ public class PartyListFragment extends Fragment {
                 String jsonIn = partyGetAllTask.execute().get();
                 Type listType = new TypeToken<List<Party>>() {
                 }.getType();
-                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
                 parties = gson.fromJson(jsonIn, listType);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
