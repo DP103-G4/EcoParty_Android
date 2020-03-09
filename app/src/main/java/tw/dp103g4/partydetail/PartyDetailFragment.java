@@ -190,7 +190,9 @@ public class PartyDetailFragment extends Fragment {
         btShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                bundle = new Bundle();
+                bundle.putInt("partyId", partyId);
+                navController.navigate(R.id.action_partyDetailFragment_to_shareFragment, bundle);
             }
         });
 

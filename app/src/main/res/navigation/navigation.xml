@@ -112,6 +112,9 @@
         <action
             android:id="@+id/action_partyDetailFragment_to_iccDetailFragment"
             app:destination="@id/iccDetailFragment" />
+        <action
+            android:id="@+id/action_partyDetailFragment_to_shareFragment"
+            app:destination="@id/shareFragment" />
     </fragment>
     <fragment
         android:id="@+id/partyInsertFragment"
@@ -245,4 +248,9 @@
         android:name="tw.dp103g4.partydetail.ReviewImgInsertFragment"
         android:label="fragment_review_img_insert"
         tools:layout="@layout/fragment_review_img_insert" />
+    <fragment
+        android:id="@+id/shareFragment"
+        android:name="tw.dp103g4.partydetail.ShareFragment"
+        android:label="fragment_share"
+        tools:layout="@layout/fragment_share" />
 </navigation>
