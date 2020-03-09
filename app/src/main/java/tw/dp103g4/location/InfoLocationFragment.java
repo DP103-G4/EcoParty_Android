@@ -139,18 +139,22 @@ public class InfoLocationFragment extends Fragment {
         }
         final int partyId = bundle.getInt("partyId");
         final int ownerId = bundle.getInt("ownerId");
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
 
-                infoLocations = getInfoLocation(partyId);
-                for (InfoLocation infoLocation : infoLocations) {
-                    showMarker(infoLocation, infoLocation.getId());
+            toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+
+                    infoLocations = getInfoLocation(partyId);
+//                    先清空Marker
+                    map.clear();
+                    for (InfoLocation infoLocation : infoLocations) {
+                        showMarker(infoLocation, infoLocation.getId());
+                    }
+
+                    return false;
                 }
+            });
 
-                return false;
-            }
-        });
         System.out.println("ownerId" + ownerId);
         System.out.println("memid" + memId);
         infoLocations = getInfoLocation(partyId);

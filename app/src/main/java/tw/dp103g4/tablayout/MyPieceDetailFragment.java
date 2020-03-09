@@ -162,7 +162,7 @@ public class MyPieceDetailFragment extends Fragment {
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("partyId", id);
-                    Navigation.findNavController(v).navigate(R.id.action_myPartyFragment_to_partyDetailFragment, bundle);
+                    Navigation.findNavController(v).navigate(R.id.action_myPartyFragment_to_pieceDetailFragment, bundle);
                 }
             });
         }
