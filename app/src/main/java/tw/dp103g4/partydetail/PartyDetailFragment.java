@@ -187,6 +187,13 @@ public class PartyDetailFragment extends Fragment {
         partyInfo = getPartyInfo(partyId, userId);
         showPartyDetail(partyInfo);
 
+        btShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
         btQR.setOnClickListener(new View.OnClickListener() {
             @Override

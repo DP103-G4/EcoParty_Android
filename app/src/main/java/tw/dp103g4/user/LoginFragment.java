@@ -14,9 +14,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -39,6 +42,9 @@ public class LoginFragment extends Fragment {
     private List<User> users;
     private String account, password;
 
+    private BottomNavigationView bottomNavigationView;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +61,21 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        bottomNavigationView = activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.GONE);
+
+        final NavController navController = Navigation.findNavController(view);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController.popBackStack();
+            }
+        });
+
+
+
 //        tvForgot = view.findViewById(R.id.tvForgot);
         etAccount = view.findViewById(R.id.etAccount);
         etPassword = view.findViewById(R.id.etPassword);

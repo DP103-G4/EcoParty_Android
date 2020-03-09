@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.lang.reflect.Array;
 
 import tw.dp103g4.R;
@@ -35,6 +37,9 @@ public class UserFragment extends Fragment {
     private SharedPreferences pref;
     private int memId;
     private String userName;
+    private BottomNavigationView bottomNavigationView;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,8 +55,9 @@ public class UserFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        bottomNavigationView= activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
 
-        activity.getBottomNavigationView().setVisibility(View.GONE);
         pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         memId = Common.getUserId(activity);
         userName = Common.getUserName(activity);
