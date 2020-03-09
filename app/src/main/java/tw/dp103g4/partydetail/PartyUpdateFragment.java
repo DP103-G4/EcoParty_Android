@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -29,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -43,9 +46,11 @@ import com.google.gson.JsonObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
@@ -62,7 +67,10 @@ public class PartyUpdateFragment extends Fragment {
     private EditText etName, etLoction, etAddress,etContent;
     private TextView tvStartDate, tvStartTime, tvEndDate, tvEndTime, tvPostEndDate, tvPostEndTime,
             tvUpper, tvLower, tvDistance;
-    private Button btPartyOK, btPartyRe, btUploadImg;
+    private Button btPartyOK, btPartyRe, btUploadCover;
+    private ImageView geoSuccess;
+    private ImageButton btGeocode;
+    private double longitude, latitude;
     private ScrollView scrollView;
     private SeekBar sbUpper, sbLower, sbDistance;
     private byte[] image;
@@ -129,12 +137,15 @@ public class PartyUpdateFragment extends Fragment {
         sbUpper = view.findViewById(R.id.sbUpper);
         sbLower = view.findViewById(R.id.sbLower);
         sbDistance = view.findViewById(R.id.sbDistance);
+        btUploadCover = view.findViewById(R.id.btUploadCover);
+        btGeocode = view.findViewById(R.id.btGeocode);
+        geoSuccess = view.findViewById(R.id.geoSuccess);
 
         scrollView = view.findViewById(R.id.scrollview);
 
 
-        btPartyOK.setWidth(40);
         btPartyOK.setText("完成");
+        btPartyOK.getLayoutParams().width = 120;
 
         final Bundle bundle = getArguments();
         if (bundle == null || bundle.getSerializable("party") == null) {
@@ -149,6 +160,9 @@ public class PartyUpdateFragment extends Fragment {
 
         final int id = party.getId();
         final int imageSize = getResources().getDisplayMetrics().widthPixels;
+        final SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
+        final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
+
         partyImageTask = new CoverImageTask(url, id, imageSize, ivCover);
         partyImageTask.execute();
 
@@ -163,9 +177,6 @@ public class PartyUpdateFragment extends Fragment {
         sbLower.setProgress(party.getCountLowerLimit());
         sbDistance.setProgress(party.getDistance());
 
-        final SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy/MM/dd");
-        final SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
-
         tvStartDate.setText(sdfDate.format(party.getStartTime()));
         tvStartTime.setText(sdfTime.format(party.getStartTime()));
         tvEndDate.setText(sdfDate.format(party.getEndTime()));
@@ -173,7 +184,63 @@ public class PartyUpdateFragment extends Fragment {
         tvPostEndDate.setText(sdfDate.format(party.getPostEndTime()));
         tvPostEndTime.setText(sdfTime.format(party.getPostEndTime()));
 
-        btUploadImg.setOnClickListener(new View.OnClickListener() {
+        longitude = party.getLongitude();
+        latitude = party.getLatitude();
+
+        if (longitude != -181) {
+            geoSuccess.setVisibility(View.VISIBLE);
+        } else {
+            geoSuccess.setVisibility(View.GONE);
+        }
+
+        btGeocode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String locationName = etAddress.getText().toString().trim();
+
+                if (locationName.isEmpty()) {
+                    locationName = etLoction.getText().toString().trim();
+                    if (!locationName.isEmpty()) {
+                        // geocode
+                        Address address = geocode(locationName);
+                        if (address == null) {
+                            longitude = -181;
+                            latitude = -181;
+                            geoSuccess.setVisibility(View.GONE);
+
+                        } else {
+                            longitude = address.getLongitude();
+                            latitude = address.getLatitude();
+                            geoSuccess.setVisibility(View.VISIBLE);
+
+                            Address addressReverse = reverseGeocode(latitude, longitude);
+                            StringBuilder sb = new StringBuilder();
+                            if (addressReverse != null) {
+                                for (int i = 0; i <= addressReverse.getMaxAddressLineIndex(); i++) {
+                                    sb.append(addressReverse.getAddressLine(i)).append("\n");
+                                }
+                            }
+                            etAddress.setText(sb);
+
+                        }
+                    }
+                } else {
+                    // geocode
+                    Address address = geocode(locationName);
+                    if (address == null) {
+                        longitude = -181;
+                        latitude = -181;
+                        geoSuccess.setVisibility(View.GONE);
+                    } else {
+                        longitude = address.getLongitude();
+                        latitude = address.getLatitude();
+                        geoSuccess.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+
+        btUploadCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 上傳圖片
@@ -334,10 +401,6 @@ public class PartyUpdateFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // 送出
-                if (image == null) {
-                    Common.showToast(activity, "請上傳圖片");
-                    return;
-                }
 
                 if (etName.getText().toString().isEmpty()
                         || etLoction.getText().toString().isEmpty()
@@ -374,8 +437,8 @@ public class PartyUpdateFragment extends Fragment {
                     }
 
                     party = new Party(party.getId(), userId, etName.getText().toString(), startTime, endTime, new Date(), postEndTime,
-                            etLoction.getText().toString(), etAddress.getText().toString(), -181, -181, etContent.getText().toString(),
-                            sbUpper.getProgress(), sbLower.getProgress(), 0, 1, sbDistance.getProgress());
+                            etLoction.getText().toString(), etAddress.getText().toString(), longitude, latitude, etContent.getText().toString(),
+                            sbUpper.getProgress(), sbLower.getProgress(), party.getCountCurrent(), party.getState(), sbDistance.getProgress());
 
 
                 } catch (Exception e) {
@@ -435,7 +498,6 @@ public class PartyUpdateFragment extends Fragment {
                 sbLower.setProgress(party.getCountLowerLimit());
                 sbDistance.setProgress(party.getDistance());
 
-
                 tvStartDate.setText(sdfDate.format(party.getStartTime()));
                 tvStartTime.setText(sdfTime.format(party.getStartTime()));
                 tvEndDate.setText(sdfDate.format(party.getEndTime()));
@@ -443,10 +505,52 @@ public class PartyUpdateFragment extends Fragment {
                 tvPostEndDate.setText(sdfDate.format(party.getPostEndTime()));
                 tvPostEndTime.setText(sdfTime.format(party.getPostEndTime()));
 
+                longitude = party.getLongitude();
+                latitude = party.getLatitude();
+
+                if (longitude != -181) {
+                    geoSuccess.setVisibility(View.VISIBLE);
+                } else {
+                    geoSuccess.setVisibility(View.GONE);
+                }
+
                 scrollView.fullScroll(scrollView.FOCUS_UP);
 
             }
         });
+    }
+
+
+    private Address geocode(String locationName) {
+        Geocoder geocoder = new Geocoder(activity);
+        List<Address> addressList = null;
+        try {
+            addressList = geocoder.getFromLocationName(locationName, 1);
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+
+        if (addressList == null || addressList.isEmpty()) {
+            return null;
+        } else {
+            return addressList.get(0);
+        }
+    }
+
+    private Address reverseGeocode(double latitude, double longitude) {
+        Geocoder geocoder = new Geocoder(activity);
+        List<Address> addressList = null;
+        try {
+            addressList = geocoder.getFromLocation(latitude, longitude, 1);
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        }
+
+        if (addressList == null || addressList.isEmpty()) {
+            return null;
+        } else {
+            return addressList.get(0);
+        }
     }
 
     @Override

@@ -86,7 +86,7 @@
     </string-array>
 
     <string-array name="itemUser">
-        <item>嗨</item>
+        <item>嗨,</item>
         <item>編輯會員資料</item>
         <item>修改密碼</item>
         <item>我的活動</item>

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,12 +14,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -41,9 +38,6 @@ public class LoginFragment extends Fragment {
     private CommonTask userLoginTask, userGetIdTask;
     private List<User> users;
     private String account, password;
-    private BottomNavigationView bottomNavigationView;
-
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,27 +55,12 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        bottomNavigationView = activity.findViewById(R.id.navigation);
-        bottomNavigationView.setVisibility(View.GONE);
-
-        final NavController navController = Navigation.findNavController(view);
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.popBackStack();
-            }
-        });
-
-
 //        tvForgot = view.findViewById(R.id.tvForgot);
         etAccount = view.findViewById(R.id.etAccount);
         etPassword = view.findViewById(R.id.etPassword);
         tvMsg = view.findViewById(R.id.tvLoginMsg);
 
-
-                btRegister = view.findViewById(R.id.btRegister);
+        btRegister = view.findViewById(R.id.btRegister);
         btLogin = view.findViewById(R.id.btLogin);
 
         //去註冊頁面
@@ -125,14 +104,17 @@ public class LoginFragment extends Fragment {
                     //  偏好設定檔
                     SharedPreferences pref = activity
                             .getSharedPreferences(Common.PREFERENCE_MEMBER, Context.MODE_PRIVATE);
+                    User user = getUserByAccount(account);
                     pref.edit().putString("account", account)
                             .putString("password", password)
-                            .putInt("id", getUserIdByAccount(account)).apply();
+                            .putInt("id", user.getId()).putString("name", user.getName()).apply();
                     Navigation.findNavController(v).popBackStack(R.id.partyFragment, false);
 
 
                 } else {            //登入失敗
-                    Common.showToast(getActivity(), "登入失敗");
+                    tvMsg.setText("登入失敗");
+                    return;
+//                    Common.showToast(getActivity(), "登入失敗");
                 }
 
                 //帳密空白
@@ -155,33 +137,30 @@ public class LoginFragment extends Fragment {
 
     }
 
-    private int getUserIdByAccount(String account) {
+    private User getUserByAccount(String account) {
         //確認網路連線
-        int id = 0;
+        User user = null;
         if (Common.networkConnected(activity)) {
             String url = Common.URL_SERVER + "UserServlet";
             JsonObject jsonObject = new JsonObject();
 
-            jsonObject.addProperty("action", "getUserIdByAccount");
+            jsonObject.addProperty("action", "getUserByAccount");
             jsonObject.addProperty("account", account);
             String jsonOut = jsonObject.toString();
             userGetIdTask = new CommonTask(url, jsonOut);
             try {
                 //傳入String 回傳String 轉型int(id)
-                String result = userGetIdTask.execute().get();
-                Log.d(TAG, result);
-                id = Integer.parseInt(result);
+                String userJson = userGetIdTask.execute().get();
+                user = new Gson().fromJson(userJson, User.class);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
         } else {
             Common.showToast(activity, R.string.textNoNetwork);
         }
-        return id;
+        return user;
 
     }
-
-
 
 
 }
