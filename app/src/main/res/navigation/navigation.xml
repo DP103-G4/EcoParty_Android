@@ -49,8 +49,8 @@
             android:id="@+id/action_myPartyFragment_to_partyDetailFragment"
             app:destination="@id/partyDetailFragment" />
         <action
-            android:id="@+id/action_myPartyFragment_to_pieceFragment"
-            app:destination="@id/pieceFragment" />
+            android:id="@+id/action_myPartyFragment_to_pieceDetailFragment"
+            app:destination="@id/pieceDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/userFragment"
