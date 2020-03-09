@@ -2,13 +2,16 @@ package tw.dp103g4.friend;
 
 
 import android.accounts.Account;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,15 +33,20 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import qrcode.Contents;
+import qrcode.QRCodeEncoder;
 import tw.dp103g4.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import tw.dp103g4.main_android.Common;
@@ -47,6 +55,7 @@ import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.ImageTask;
 import tw.dp103g4.user.User;
 
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 import static tw.dp103g4.main_android.Common.chatWebSocketClient;
 
@@ -64,6 +73,11 @@ public class FriendInsertFragment extends Fragment {
     private List<FriendShip> friendShips;
     private User user = null;
     private int count = 0;
+    //Alert
+    private Dialog myDialog,friendDialog,isFriendDialog;
+    private ImageView ivAlert,ivFriendDialog;
+    private Button btQr,btEnter,btFriendDialogClose,btFriendDialogAdd,btIsFriend;
+    private TextView tvFriendDialogTitle,tvIsFriend;
 
     private SharedPreferences pref;
     private int userId;
@@ -83,7 +97,7 @@ public class FriendInsertFragment extends Fragment {
         broadcastManager = LocalBroadcastManager.getInstance(activity);
         registerMsg();
         Common.connectServer(activity, userId);
-
+//        userId = 2;
 
     }
 
@@ -171,18 +185,8 @@ public class FriendInsertFragment extends Fragment {
                                  String type = "";
                                 if (!isInvite.getIsInvite()) {
                                     if(userId == isInvite.getIdTwo()){
-                                        new AlertDialog.Builder(getActivity())
-                                                .setTitle("是否要同意 " + user.getAccount() + " 的好友邀請？")
-                                                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        insertFriend(user.getId(),userId);
-                                                        friendShips = getFriendShips();
-                                                        showFriendShips(friendShips);
-                                                    }
-                                                }).setNegativeButton("取消", null).create()
-                                                .show();
-
+                                        String titleStr = "是否要同意 " + user.getAccount() + " 的好友邀請？";
+                                        FriendAlertDialog(titleStr,user.getId(),true);
                                     }else{
                                     type = "已發出邀請！";}
 
@@ -191,46 +195,11 @@ public class FriendInsertFragment extends Fragment {
 
                                 }
                                 if (!type.equals("")){
-                                new AlertDialog.Builder(getActivity())
-                                        .setTitle(type)
-                                        .setNegativeButton("確定", null).create()
-                                        .show();
+                                IsFriendDialog(type);
                                 }
                             } else {
-                                new AlertDialog.Builder(getActivity())
-                                        .setTitle("是否要邀請 " + user.getAccount() + " 成為好友？")
-                                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if (Common.networkConnected(activity)) {
-                                                    String url = Common.URL_SERVER + "/FriendShipServlet";
-                                                    JsonObject jsonObject = new JsonObject();
-                                                    jsonObject.addProperty("action", "friendShipInsert");
-                                                    jsonObject.addProperty("idOne", userId);
-                                                    jsonObject.addProperty("idTwo", user.getId());
-                                                    int count = 0;
-                                                    try {
-                                                        insertFriendTask = new CommonTask(url, jsonObject.toString());
-                                                        String result = insertFriendTask.execute().get();
-                                                        count = Integer.valueOf(result.trim());
-                                                    } catch (Exception e) {
-                                                        Log.e(TAG, e.toString());
-                                                    }
-                                                    if (count == 0) {
-                                                        Common.showToast(activity, R.string.textFriendShipInsertFail);
-                                                    } else {
-                                                        Common.showToast(activity, R.string.textFriendShipInsertSuccess);
-                                                        //socket
-                                                        ChatMsg chatMsg = new ChatMsg("newFriend", userId, user.getId(), user.getAccount());
-                                                        String newFriendJson = new Gson().toJson(chatMsg);
-                                                        chatWebSocketClient.send(newFriendJson);
-                                                    }
-                                                } else {
-                                                    Common.showToast(activity, R.string.textNoNetwork);
-                                                }
-                                            }
-                                        }).setNegativeButton("取消", null).create()
-                                        .show();
+                                String titleStr = "是否要邀請 " + user.getAccount() + " 成為好友？";
+                                FriendAlertDialog(titleStr,user.getId(),false);
                             }
                             Common.showToast(getActivity(), R.string.textSearchUserSuccess);
                         }
@@ -244,11 +213,12 @@ public class FriendInsertFragment extends Fragment {
         btQRCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                MyCustomAlertDialog();
             }
         });
 
     }
+
 
     private class InsertFriendAdapter extends RecyclerView.Adapter<FriendInsertFragment.InsertFriendAdapter.InsertFriendViewHolder>{
         private LayoutInflater layoutInflater;
@@ -303,7 +273,7 @@ public class FriendInsertFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     int count = 0;
-                    insertFriend(friendShip.getFriendId(),userId);
+                    count = insertFriend(friendShip.getFriendId(),userId);
                     if(count!= 0){
                         friendShips.remove(friendShip);
                         InsertFriendAdapter.this.notifyDataSetChanged();
@@ -315,7 +285,7 @@ public class FriendInsertFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     int count = 0;
-                    deleteFriendShip(friendShip.getFriendId(),userId);
+                    count =  deleteFriendShip(friendShip.getFriendId(),userId);
                     if(count!= 0){
                         friendShips.remove(friendShip);
                         InsertFriendAdapter.this.notifyDataSetChanged();
@@ -475,5 +445,193 @@ public class FriendInsertFragment extends Fragment {
         // Fragment頁面切換時解除註冊，但不需要關閉WebSocket，
         // 否則回到前頁好友列表，會因為斷線而無法顯示好友
         broadcastManager.unregisterReceiver(newMsgReceiver);
+    }
+    //QRcode Alert
+    public void MyCustomAlertDialog(){
+        myDialog = new Dialog(activity);
+        myDialog.setContentView(R.layout.customdialog);
+        myDialog.setTitle("MyAlert");
+
+        btQr = (Button)myDialog.findViewById(R.id.btQr);
+        btEnter = (Button)myDialog.findViewById(R.id.btEnter);
+        ivAlert = (ImageView)myDialog.findViewById(R.id.ivAlert);
+
+        btEnter.setEnabled(true);
+        btQr.setEnabled(true);
+
+        // QR code image's length is the same as the width of the window,
+        int dimension = getResources().getDisplayMetrics().widthPixels;
+
+        // Encode with a QR Code image
+        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(String.valueOf(userId), null,
+                Contents.Type.TEXT, BarcodeFormat.QR_CODE.toString(),
+                dimension);
+        try {
+            Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
+            ivAlert.setImageBitmap(bitmap);
+
+        } catch (WriterException e) {
+            Log.e(TAG, e.toString());
+        }
+
+        btEnter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDialog.cancel();
+            }
+        });
+
+        btQr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /* 若在Activity內需要呼叫IntentIntegrator(Activity)建構式建立IntentIntegrator物件；
+                 * 而在Fragment內需要呼叫IntentIntegrator.forSupportFragment(Fragment)建立物件，
+                 * 掃瞄完畢時，Fragment.onActivityResult()才會被呼叫 */
+                // IntentIntegrator integrator = new IntentIntegrator(this);
+                IntentIntegrator integrator = IntentIntegrator.forSupportFragment(FriendInsertFragment.this);
+                // Set to true to enable saving the barcode image and sending its path in the result Intent.
+                integrator.setBarcodeImageEnabled(true);
+                // Set to false to disable beep on scan.
+                integrator.setBeepEnabled(false);
+                // Use the specified camera ID.
+                integrator.setCameraId(0);
+                // By default, the orientation is locked. Set to false to not lock.
+                integrator.setOrientationLocked(false);
+                // Set a prompt to display on the capture screen.
+                integrator.setPrompt("掃描QRCode");
+                // Initiates a scan
+                integrator.initiateScan();
+                myDialog.cancel();
+            }
+        });
+
+        myDialog.show();
+    }
+    //掃到QRcode
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (intentResult != null && intentResult.getContents() != null) {
+            String url = Common.URL_SERVER + "UserServlet";
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "searchUserById");
+            jsonObject.addProperty("id", intentResult.getContents());
+            String jsonOut = jsonObject.toString();
+            insertFriendTask = new CommonTask(url, jsonOut);
+            try {
+                String jsonIn = insertFriendTask.execute().get();
+                Type listType = new TypeToken<User>() {
+                }.getType();
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+                user = gson.fromJson(jsonIn, listType);
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+            FriendShip isInvite = getIsInvite(userId, user.getId());
+            if (!isInvite.getNoInsert()) {
+                String type = "";
+                if (!isInvite.getIsInvite()) {
+                    if(userId == isInvite.getIdTwo()){
+                        String titleStr = "是否要同意 " + user.getAccount() + " 的好友邀請？";
+                        FriendAlertDialog(titleStr,user.getId(),true);
+                    }else{
+                        type = "已發出邀請！";}
+
+                } else {
+                    type = user.getAccount()+" 已經是好友囉！";
+
+                }
+                if (!type.equals("")){
+                    IsFriendDialog(type);
+                }
+            } else {
+                String titleStr = "是否要邀請 " + user.getAccount() + " 成為好友？";
+                FriendAlertDialog(titleStr,user.getId(),false);
+            }
+        } else {
+            Log.d(TAG,"SQL掃描失敗");
+        }
+    }
+
+    public void FriendAlertDialog(String titleStr, final int dialogId, final Boolean update){
+        friendDialog = new Dialog(activity);
+        friendDialog.setContentView(R.layout.insert_friend_dialog);
+        friendDialog.setTitle("FriendAlert");
+
+        btFriendDialogAdd = friendDialog.findViewById(R.id.btFriendDailogAdd);
+        btFriendDialogClose = friendDialog.findViewById(R.id.btFriendDailogClose);
+        ivFriendDialog = friendDialog.findViewById(R.id.ivFriendDailog);
+        tvFriendDialogTitle = friendDialog.findViewById(R.id.tvFriendDialogTitle);
+
+        btFriendDialogClose.setEnabled(true);
+        btFriendDialogAdd.setEnabled(true);
+
+        tvFriendDialogTitle.setText(titleStr);
+        String url = Common.URL_SERVER + "UserServlet";
+        int imageSize = getResources().getDisplayMetrics().widthPixels / 2;
+        insertFriendImageTask = new ImageTask(url, dialogId, imageSize, ivFriendDialog);
+        insertFriendImageTask.execute();
+        btFriendDialogAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(update){
+                    insertFriend(dialogId,userId);
+                    friendShips = getFriendShips();
+                    showFriendShips(friendShips);
+                }else{
+                    String url = Common.URL_SERVER + "/FriendShipServlet";
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("action", "friendShipInsert");
+                    jsonObject.addProperty("idOne", userId);
+                    jsonObject.addProperty("idTwo", user.getId());
+                    int count = 0;
+                    try {
+                        insertFriendTask = new CommonTask(url, jsonObject.toString());
+                        String result = insertFriendTask.execute().get();
+                        count = Integer.valueOf(result.trim());
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                    }
+                    if (count == 0) {
+                        Common.showToast(activity, R.string.textFriendShipInsertFail);
+                    } else {
+                        Common.showToast(activity, R.string.textFriendShipInsertSuccess);
+                        //socket
+                        ChatMsg chatMsg = new ChatMsg("newFriend", userId, user.getId(), user.getAccount());
+                        String newFriendJson = new Gson().toJson(chatMsg);
+                        chatWebSocketClient.send(newFriendJson);
+                    }
+                }
+                friendDialog.cancel();
+            }
+        });
+
+        btFriendDialogClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                friendDialog.cancel();
+            }
+        });
+        friendDialog.show();
+    }
+
+    public void IsFriendDialog(String title){
+        isFriendDialog = new Dialog(activity);
+        isFriendDialog.setContentView(R.layout.isfriend_alert);
+        isFriendDialog.setTitle("isFriendAlert");
+
+        btIsFriend = isFriendDialog.findViewById(R.id.btIsFriend);
+        tvIsFriend = isFriendDialog.findViewById(R.id.tvIsFriend);
+        tvIsFriend.setText(title);
+        btIsFriend.setEnabled(true);
+
+        btIsFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isFriendDialog.cancel();
+            }
+        });
+        isFriendDialog.show();
     }
 }

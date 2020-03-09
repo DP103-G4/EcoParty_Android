@@ -13,7 +13,6 @@ public class User implements Serializable {
     private boolean isOver;
     private Date time;
 
-
     public User(int id, String account, String password, String email, String name, boolean isOver, Date time) {
         super();
         this.id = id;

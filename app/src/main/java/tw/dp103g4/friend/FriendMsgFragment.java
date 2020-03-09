@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextPaint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -32,6 +34,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,6 +81,7 @@ public class FriendMsgFragment extends Fragment {
         broadcastManager = LocalBroadcastManager.getInstance(activity);
         registerMsg();
         Common.connectServer(activity, userId);
+//        userId = 2;
     }
 
     @Override
@@ -118,17 +122,20 @@ public class FriendMsgFragment extends Fragment {
 
         friendId = bundle.getInt("friendId");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
-        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvMsg.setLayoutManager(linearLayoutManager);
-
+//        linearLayoutManager.setStackFromEnd(true);
+//        rvMsg.setLayoutManager(linearLayoutManager);
         talks = getTalks();
         showTalks(talks);
+        rvMsg.scrollToPosition(talks.size()-1);
+
 
         ibtMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String content = etMsg.getText().toString().trim();
-                int partyId = -1;
+                int partyId = 0;
                 if (content.equals("")) {
                     return;
                 }
@@ -138,7 +145,6 @@ public class FriendMsgFragment extends Fragment {
                     JsonObject jsonObject = new JsonObject();
                     jsonObject.addProperty("action", "talkInsert");
                     jsonObject.addProperty("talk", new Gson().toJson(talk));
-
                     int count = 0;
                     try {
                         String result = new CommonTask(url, jsonObject.toString()).execute().get();
@@ -265,10 +271,26 @@ public class FriendMsgFragment extends Fragment {
             } else {
                 holder.tvOldTime.setText("");
             }
+            if (talk.getPartyId()!= 0){
+                holder.tvMsg.setBackgroundColor(Color.parseColor("#FFFF00"));
+                TextPaint tp = holder.tvMsg.getPaint();
+                tp.setFakeBoldText(true);
+                holder.tvMsgSend.setBackgroundColor(Color.parseColor("#FFFF00"));
+                TextPaint tpS = holder.tvMsgSend.getPaint();
+                tpS.setFakeBoldText(true);
+            }else{
+                holder.tvMsg.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                TextPaint tp = holder.tvMsg.getPaint();
+                tp.setFakeBoldText(false);
+                holder.tvMsgSend.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                TextPaint tpS = holder.tvMsgSend.getPaint();
+                tpS.setFakeBoldText(false);
+            }
             if (senderId == userId) {
                 holder.receiveLayout.setVisibility(View.GONE);
                 holder.sendLayout.setVisibility(View.VISIBLE);
                 holder.tvMsgSend.setText(talk.getContent());
+
                 holder.tvTimeSend.setText(time);
                 if (talk.getIsRead()) {
                     holder.tvRead.setText(R.string.textIsRead);
@@ -281,7 +303,17 @@ public class FriendMsgFragment extends Fragment {
                 holder.tvMsg.setText(talk.getContent());
                 holder.tvTime.setText(time);
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (talk.getPartyId()!= 0){
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("partyId", talk.getPartyId());
+                        Navigation.findNavController(v).navigate(R.id.action_friendMsgFragment_to_partyDetailFragment, bundle);
 
+                    }
+                }
+            });
         }
 
     }
@@ -357,7 +389,7 @@ public class FriendMsgFragment extends Fragment {
             String message = intent.getStringExtra("message");
             ChatMsg chatMsg = new Gson().fromJson(message, ChatMsg.class);
             if (userId == chatMsg.getReceiver()) {
-                Talk newtalk = new Talk(chatMsg.getReceiver(),chatMsg.getSender(),-1,chatMsg.getMessage(),new Date());
+                Talk newtalk = new Talk(chatMsg.getReceiver(), chatMsg.getSender(), 0, chatMsg.getMessage(), new Date());
                 talks.add(newtalk);
                 for(int i = 0; i < noReadTalks.size(); i++){
                     noReadTalks.get(i).setIsRead(true);
