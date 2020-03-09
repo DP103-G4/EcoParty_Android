@@ -206,9 +206,11 @@ public class InformFragment extends Fragment {
                             informs.get(id).setRead(true);
                         }
                     }
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("partyId", id);
-                    Navigation.findNavController(v).navigate(R.id.action_informFragment_to_partyDetailFragment, bundle);
+                    if (id != 0) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("partyId", id);
+                        Navigation.findNavController(v).navigate(R.id.action_informFragment_to_partyDetailFragment, bundle);
+                    }
                 }
             });
 
