@@ -29,6 +29,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -65,6 +66,9 @@ public class UserDetailFragment extends Fragment {
     private SharedPreferences pref;
     private Uri contentUri, croppedImageUri;
 
+    private BottomNavigationView bottomNavigationView;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +99,9 @@ public class UserDetailFragment extends Fragment {
                 navController.popBackStack();
             }
         });
+
+        bottomNavigationView = activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.GONE);
 
 
         pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
