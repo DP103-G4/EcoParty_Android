@@ -45,7 +45,7 @@ public class PieceCreateFragment extends Fragment {
     private static final String TAG = "TAG_PieceCreate";
     private static final int REQ_PICK_PICTURE = 1;
     private ImageView ivAfter;
-    private Button btPieceCreate;
+    private Button btPieceOK, btPieceRe, btPieceUpload;
     private byte[] image;
     private Party party;
     private int partyId;
@@ -93,9 +93,11 @@ public class PieceCreateFragment extends Fragment {
         partyId = party.getId();
 
         ivAfter = view.findViewById(R.id.ivAfter);
-        btPieceCreate = view.findViewById(R.id.btPieceCreate);
+        btPieceUpload = view.findViewById(R.id.btPieceUpload);
+        btPieceOK = view.findViewById(R.id.btPieceOK);
+        btPieceRe = view.findViewById(R.id.btPieceRe);
 
-        ivAfter.setOnClickListener(new View.OnClickListener() {
+        btPieceUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // 上傳圖片
@@ -105,7 +107,7 @@ public class PieceCreateFragment extends Fragment {
             }
         });
 
-        btPieceCreate.setOnClickListener(new View.OnClickListener() {
+        btPieceOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Common.networkConnected(activity)) {
@@ -142,6 +144,14 @@ public class PieceCreateFragment extends Fragment {
                 } else {
                     Common.showToast(getActivity(), R.string.textNoNetwork);
                 }
+            }
+        });
+
+        btPieceRe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ivAfter.setImageResource(R.drawable.upload_img);
+                image = null;
             }
         });
 

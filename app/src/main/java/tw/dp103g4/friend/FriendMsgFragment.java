@@ -370,7 +370,6 @@ public class FriendMsgFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        activity.getBottomNavigationView().setVisibility(View.VISIBLE);
     }
 
     //wedSocket

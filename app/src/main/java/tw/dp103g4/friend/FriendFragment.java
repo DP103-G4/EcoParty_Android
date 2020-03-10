@@ -98,6 +98,8 @@ public class FriendFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        bottomNavigationView = activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
 
         SearchView searchView = view.findViewById(R.id.svFriends);
 //        searchView.setSubmitButtonEnabled(true);

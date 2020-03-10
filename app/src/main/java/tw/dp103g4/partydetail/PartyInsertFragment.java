@@ -436,6 +436,7 @@ public class PartyInsertFragment extends Fragment {
             public void onClick(View v) {
                 // 重置
                 ivCover.setImageResource(R.drawable.upload_img);
+                image = null;
 
                 nowDateString = sdfDate.format(new Date());
                 nowTimeString = sdfTime.format(new Date());

@@ -87,7 +87,7 @@ public class PartyListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        bottomNavigationView= activity.findViewById(R.id.navigation);
+        bottomNavigationView = activity.findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.VISIBLE);
         floatingActionButton = view.findViewById(R.id.btAdd);
         SearchView searchView = view.findViewById(R.id.searchView);
