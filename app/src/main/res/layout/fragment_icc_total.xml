@@ -69,14 +69,15 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="500dp">
+                android:layout_height="match_parent"
+                android:background="@android:color/white">
 
                 <TextView
                     android:id="@+id/textView19"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2016.08 修訂"
-                    android:textSize="@dimen/textSize5"
+                    android:textSize="8sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -85,6 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="臺灣國際淨灘行動記錄表"
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/textSize3"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -96,8 +98,8 @@
                     android:layout_width="76dp"
                     android:layout_height="84dp"
                     android:src="@drawable/toca_logo"
+                    app:layout_constraintBottom_toTopOf="@+id/imageView3"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView21"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
@@ -334,20 +336,1274 @@
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout12" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="234dp"
-                    android:layout_height="301dp"
-                    tools:layout_editor_absoluteX="1dp"
-                    tools:layout_editor_absoluteY="198dp">
+                    android:id="@+id/leftlayout"
+                    android:layout_width="270dp"
+                    android:layout_height="500dp"
+                    android:layout_marginStart="2dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView3">
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell21"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toEndOf="@+id/cell22"
+                        app:layout_constraintTop_toBottomOf="@+id/title55">
+
+                        <ImageView
+                            android:id="@+id/imageView234"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/person02" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout23423"
+                            android:layout_width="28dp"
+                            android:layout_height="27dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView2341"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView4563"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:text="針筒"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView123"
+                            app:layout_constraintStart_toEndOf="@+id/imageView123"
+                            app:layout_constraintTop_toTopOf="@+id/imageView123"
+                            app:layout_constraintVertical_bias="0.428" />
+
+                        <ImageView
+                            android:id="@+id/imageView123"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginStart="2dp"
+                            android:src="@drawable/icc_recycle"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout23423"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout23423"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout23423" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell22"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/title55">
+
+                        <ImageView
+                            android:id="@+id/imageView345"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/person01" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout134543"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView5742"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView113241"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="牙刷"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout134543"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout134543"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout134543" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/title55"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cell23">
+
+                        <TextView
+                            android:id="@+id/textView2342"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:text="醫療與個人衛生物品"
+                            android:textColor="@android:color/white"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell23"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toEndOf="@+id/cell20"
+                        app:layout_constraintTop_toBottomOf="@+id/cell18">
+
+                        <ImageView
+                            android:id="@+id/imageView2312"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/other03"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout24643"
+                            android:layout_width="28dp"
+                            android:layout_height="27dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView223441"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView45323"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:text="玻璃瓶"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView13453"
+                            app:layout_constraintStart_toEndOf="@+id/imageView13453"
+                            app:layout_constraintTop_toTopOf="@+id/imageView13453"
+                            app:layout_constraintVertical_bias="0.428" />
+
+                        <ImageView
+                            android:id="@+id/imageView13453"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:src="@drawable/icc_recycle"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout24643"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout24643"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout24643" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell20"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cell19">
+
+                        <ImageView
+                            android:id="@+id/imageView567"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/plastic_bag02" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout123435"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView4532"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView3452"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="食品包裝袋"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout123435"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout123435"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout123435" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell19"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/subtitle2">
+
+                        <ImageView
+                            android:id="@+id/imageView231"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/plastic_bag01" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout432"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView534"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView756"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="塑膠提袋"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout432"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout432"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout432" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/subtitle2"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc_sub"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cell13">
+
+                        <TextView
+                            android:id="@+id/textView400"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:text="塑膠袋"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell18"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toEndOf="@+id/cell19"
+                        app:layout_constraintTop_toBottomOf="@+id/cell17">
+
+                        <ImageView
+                            android:id="@+id/imageView200"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/other02" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout201"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView441"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView552"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:text="利樂包"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView40"
+                            app:layout_constraintStart_toEndOf="@+id/imageView40"
+                            app:layout_constraintTop_toTopOf="@+id/imageView40"
+                            app:layout_constraintVertical_bias="0.428" />
+
+                        <ImageView
+                            android:id="@+id/imageView40"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginStart="2dp"
+                            android:src="@drawable/icc_recycle"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout201"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout201"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout201" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell17"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toEndOf="@+id/cell13"
+                        app:layout_constraintTop_toBottomOf="@+id/subtitle1">
+
+                        <ImageView
+                            android:id="@+id/imageView170"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/other01" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout50"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView171"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView172"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:text="鐵鋁罐"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView30"
+                            app:layout_constraintStart_toEndOf="@+id/imageView30"
+                            app:layout_constraintTop_toTopOf="@+id/imageView30"
+                            app:layout_constraintVertical_bias="0.428" />
+
+                        <ImageView
+                            android:id="@+id/imageView30"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginStart="2dp"
+                            android:src="@drawable/icc_recycle"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout50"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout50"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout50" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/subtitle1"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc_sub"
+                        app:layout_constraintStart_toEndOf="@+id/constraintLayout17"
+                        app:layout_constraintTop_toBottomOf="@+id/cell16">
+
+                        <TextView
+                            android:id="@+id/textView170"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:text="其他材質"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell16"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toEndOf="@+id/cell12"
+                        app:layout_constraintTop_toBottomOf="@+id/cell15">
+
+                        <ImageView
+                            android:id="@+id/imageView20"
+                            android:layout_width="130dp"
+                            android:layout_height="60dp"
+                            android:layout_margin="3dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout160"
+                            android:src="@drawable/icc_sub03" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout160"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView160"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView161"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="免洗餐具"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout160"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout160"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout160" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell15"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toEndOf="@+id/cell11"
+                        app:layout_constraintTop_toBottomOf="@+id/cell14">
+
+                        <ImageView
+                            android:id="@+id/imageView150"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="3dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/washless02" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout40"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView151"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView152"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:text="外帶飲料杯"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+                            app:layout_constraintStart_toEndOf="@+id/imageView10"
+                            app:layout_constraintTop_toTopOf="@+id/imageView10"
+                            app:layout_constraintVertical_bias="0.428" />
+
+                        <ImageView
+                            android:id="@+id/imageView10"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginLeft="2dp"
+                            android:src="@drawable/icc_recycle"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout40"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout40"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout40" />
+
+                        <TextView
+                            android:id="@+id/textView36"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:text="含紙類/塑膠/保麗龍等材質"
+                            android:textColor="@android:color/black"
+                            android:textSize="6sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView150"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView150" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell14"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toEndOf="@+id/cell10"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout25">
+
+                        <ImageView
+                            android:id="@+id/imageView8"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/washless01" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout30"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView130"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView132"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="吸管"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout30"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout30"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout30" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout25"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc_sub"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/constraintLayout17"
+                        app:layout_constraintTop_toBottomOf="@+id/title4">
+
+                        <TextView
+                            android:id="@+id/textView120"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:text="外帶飲料免洗餐具"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell13"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cell12">
+
+                        <ImageView
+                            android:id="@+id/imageView106"
+                            android:layout_width="130dp"
+                            android:layout_height="40dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout24"
+                            android:src="@drawable/icc_sub02" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout24"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView106"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView107"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:text="非食物容器"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView108"
+                            app:layout_constraintStart_toEndOf="@+id/imageView108"
+                            app:layout_constraintTop_toTopOf="@+id/imageView108" />
+
+                        <ImageView
+                            android:id="@+id/imageView108"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginStart="2dp"
+                            android:src="@drawable/icc_recycle"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout24"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout24"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout24" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell12"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cell11">
+
+                        <ImageView
+                            android:id="@+id/imageView102"
+                            android:layout_width="130dp"
+                            android:layout_height="50dp"
+                            android:layout_margin="3dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/constraintLayout23"
+                            android:src="@drawable/icc_sub01" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout23"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView103"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView104"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:text="食物容器"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView105"
+                            app:layout_constraintStart_toEndOf="@+id/imageView105"
+                            app:layout_constraintTop_toTopOf="@+id/imageView105"
+                            app:layout_constraintVertical_bias="0.428" />
+
+                        <ImageView
+                            android:id="@+id/imageView105"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginLeft="2dp"
+                            android:src="@drawable/icc_recycle"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout23"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout23"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout23" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout17"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc_sub"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/title4">
+
+                        <TextView
+                            android:id="@+id/textView35"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:text="塑膠容器類"
+                            android:textColor="@android:color/black"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:textSize="12sp" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell11"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cell10">
+
+                        <ImageView
+                            android:id="@+id/imageView100"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/plastic02" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout21"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView101"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView102"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:text="塑膠瓶蓋"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView103"
+                            app:layout_constraintStart_toEndOf="@+id/imageView103"
+                            app:layout_constraintTop_toTopOf="@+id/imageView103"
+                            app:layout_constraintVertical_bias="0.428" />
+
+                        <ImageView
+                            android:id="@+id/imageView103"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginLeft="2dp"
+                            android:src="@drawable/icc_recycle"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout21"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout21"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout21" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell10"
+                        android:layout_width="135dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/constraintLayout17">
+
+                        <ImageView
+                            android:id="@+id/imageView93"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:scaleType="fitCenter"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/plastic01" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout20"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView94"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView96"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="2dp"
+                            android:text="寶特瓶"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                            app:layout_constraintStart_toEndOf="@+id/imageView6"
+                            app:layout_constraintTop_toTopOf="@+id/imageView6"
+                            app:layout_constraintVertical_bias="0.428" />
+
+                        <ImageView
+                            android:id="@+id/imageView6"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginLeft="2dp"
+                            android:src="@drawable/icc_recycle"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout20"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout20"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout20" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/title4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textView90"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:text="生活垃圾與遊憩行為"
+                            android:textColor="@android:color/white"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView91"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:text="被棄置於街道、下水道與河川之中，或海岸遊憩所產生之垃圾"
+                            android:textColor="@android:color/white"
+                            android:textSize="8sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView90" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/rightlayout"
-                    android:layout_width="158dp"
+                    android:layout_width="135dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
                     android:background="@android:color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/leftlayout"
                     app:layout_constraintTop_toBottomOf="@+id/imageView3">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cell7">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout16"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView80"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView81"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="種類4"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout16"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout16"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout16" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cell8">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout14"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView67"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView70"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="種類3"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout14"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout14"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout14" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cell6">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout15"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView72"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView73"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="種類2"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout15"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout15"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout15" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cell6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_icc"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/title3">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayout13"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/bg_icc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/textView62"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="99"
+                                android:textColor="@color/colorPrimaryDark"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <TextView
+                            android:id="@+id/textView65"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:text="種類1"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout13"
+                            app:layout_constraintStart_toEndOf="@+id/constraintLayout13"
+                            app:layout_constraintTop_toTopOf="@+id/constraintLayout13" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/title3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cell5">
+
+                        <TextView
+                            android:id="@+id/textView58"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:text="當地關心的廢棄物"
+                            android:textColor="@android:color/white"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView61"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:text="自行填寫並計算您所關心的廢棄物"
+                            android:textColor="@android:color/white"
+                            android:textSize="8sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView58" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cell5"
@@ -366,11 +1622,10 @@
                             android:layout_marginEnd="3dp"
                             android:layout_marginBottom="3dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/smoke01"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/fish02" />
+                            android:src="@drawable/fish03" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/constraintLayout12"
@@ -401,6 +1656,8 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:text="漁網與繩子"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout12"
                             app:layout_constraintStart_toEndOf="@+id/constraintLayout12"
                             app:layout_constraintTop_toTopOf="@+id/constraintLayout12" />
@@ -444,10 +1701,10 @@
                             android:layout_marginEnd="3dp"
                             android:layout_marginBottom="3dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/smoke01"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/smoke01" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/constraintLayout8"
@@ -473,11 +1730,13 @@
 
 
                         <TextView
-                            android:id="@+id/textView49"
+                            android:id="@+id/textView139"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:text="菸蒂"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout8"
                             app:layout_constraintStart_toEndOf="@+id/constraintLayout8"
                             app:layout_constraintTop_toTopOf="@+id/constraintLayout8" />
@@ -500,11 +1759,10 @@
                             android:layout_marginEnd="3dp"
                             android:layout_marginBottom="3dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/smoke01"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/smoke02" />
+                            android:src="@drawable/smoke02" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/constraintLayout9"
@@ -535,6 +1793,8 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:text="打火機"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout9"
                             app:layout_constraintStart_toEndOf="@+id/constraintLayout9"
                             app:layout_constraintTop_toTopOf="@+id/constraintLayout9" />
@@ -593,11 +1853,10 @@
                             android:layout_marginEnd="3dp"
                             android:layout_marginBottom="3dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/smoke01"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/fish01" />
+                            android:src="@drawable/fish01" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/constraintLayout10"
@@ -628,6 +1887,8 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:text="釣魚用具"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout10"
                             app:layout_constraintStart_toEndOf="@+id/constraintLayout10"
                             app:layout_constraintTop_toTopOf="@+id/constraintLayout10" />
@@ -651,11 +1912,10 @@
                             android:layout_marginEnd="3dp"
                             android:layout_marginBottom="3dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/smoke01"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/fish02" />
+                            android:src="@drawable/fish02" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/constraintLayout11"
@@ -686,11 +1946,12 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:text="漁業浮球"
+                            android:textColor="@android:color/black"
+                            android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout11"
                             app:layout_constraintStart_toEndOf="@+id/constraintLayout11"
                             app:layout_constraintTop_toTopOf="@+id/constraintLayout11" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
