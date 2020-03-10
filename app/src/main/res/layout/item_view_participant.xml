@@ -18,6 +18,18 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/marginSize">
 
+        <ImageButton
+            android:id="@+id/ibInMenu"
+            android:layout_width="18dp"
+            android:layout_height="35dp"
+            android:alpha="0.4"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/menu" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/userImg"
             android:layout_width="@dimen/userSize"

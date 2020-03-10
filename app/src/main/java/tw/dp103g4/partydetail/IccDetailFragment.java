@@ -102,7 +102,7 @@ public class IccDetailFragment extends Fragment {
         btIccDetailOK = view.findViewById(R.id.btIccDetailOK);
         btIccDetailRe = view.findViewById(R.id.btIccDetailRe);
 
-        rvIccDetail.setLayoutManager(new GridLayoutManager(activity, 2));
+        rvIccDetail.setLayoutManager(new GridLayoutManager(activity, 3));
 
 
         bundle = getArguments();
@@ -125,6 +125,7 @@ public class IccDetailFragment extends Fragment {
                 IccTableInfoAdapter iccTableInfoAdapter = (IccTableInfoAdapter) rvIccDetail.getAdapter();
                 if (iccTableInfoAdapter != null) {
                     iccTableInfo = iccTableInfoAdapter.getIccTableInfo();
+
 
                     if (Common.networkConnected(activity)) {
                         String url = Common.URL_SERVER + "IccTableServlet";
@@ -190,6 +191,7 @@ public class IccDetailFragment extends Fragment {
         private class IccTableInfoViewHolder extends RecyclerView.ViewHolder {
             private ImageButton ibPlus, ibMinus;
             private TextView tvPlastic, textPlastic;
+            private ImageView ivPlastic;
 
 
             public IccTableInfoViewHolder(View itemView) {
@@ -198,6 +200,7 @@ public class IccDetailFragment extends Fragment {
                 ibMinus = itemView.findViewById(R.id.ibMinus);
                 tvPlastic = itemView.findViewById(R.id.tvPlastic);
                 textPlastic = itemView.findViewById(R.id.textPlastic);
+                ivPlastic = itemView.findViewById(R.id.ivPlastic);
 
             }
         }
@@ -213,11 +216,85 @@ public class IccDetailFragment extends Fragment {
         public void onBindViewHolder(@NonNull final IccTableInfoAdapter.IccTableInfoViewHolder holder, final int position) {
             if (position >= 0 && position <= 23) {
                 holder.textPlastic.setText(iccTableInfo.getIccTable().getIccName(position));
-                if (position != 23)
+                if (position != 23) {
                     holder.tvPlastic.setText(iccTableInfo.getIccTable().getIcc(position).toString());
-                else {
+
+                    switch (position) {
+                        case 0:
+                            holder.ivPlastic.setImageResource(R.drawable.plastic01);
+                            break;
+                        case 1:
+                            holder.ivPlastic.setImageResource(R.drawable.plastic02);
+                            break;
+                        case 2:
+                            holder.ivPlastic.setImageResource(R.drawable.plastic04);
+                            break;
+                        case 3:
+                            holder.ivPlastic.setImageResource(R.drawable.plastic04);
+                            break;
+                        case 4:
+                            holder.ivPlastic.setImageResource(R.drawable.plastic_bag01);
+                            break;
+                        case 5:
+                            holder.ivPlastic.setImageResource(R.drawable.plastic_bag02);
+                            break;
+                        case 6:
+                            holder.ivPlastic.setImageResource(R.drawable.washless01);
+                            break;
+                        case 7:
+                            holder.ivPlastic.setImageResource(R.drawable.washless02);
+                            break;
+                        case 8:
+                            holder.ivPlastic.setImageResource(R.drawable.washless03);
+                            break;
+                        case 9:
+                            holder.ivPlastic.setImageResource(R.drawable.other01);
+                            break;
+                        case 10:
+                            holder.ivPlastic.setImageResource(R.drawable.other02);
+                            break;
+                        case 11:
+                            holder.ivPlastic.setImageResource(R.drawable.other03);
+                            break;
+                        case 12:
+                            holder.ivPlastic.setImageResource(R.drawable.fish01);
+                            break;
+                        case 13:
+                            holder.ivPlastic.setImageResource(R.drawable.fish02);
+                            break;
+                        case 14:
+                            holder.ivPlastic.setImageResource(R.drawable.fish03);
+                            break;
+                        case 15:
+                            holder.ivPlastic.setImageResource(R.drawable.person01);
+                            break;
+                        case 16:
+                            holder.ivPlastic.setImageResource(R.drawable.person02);
+                            break;
+                        case 17:
+                            holder.ivPlastic.setImageResource(R.drawable.smoke01);
+                            break;
+                        case 18:
+                            holder.ivPlastic.setImageResource(R.drawable.smoke02);
+                            break;
+                        case 19:
+                            holder.ivPlastic.setImageResource(R.drawable.trash);
+                            break;
+                        case 20:
+                            holder.ivPlastic.setImageResource(R.drawable.trash);
+                            break;
+                        case 21:
+                            holder.ivPlastic.setImageResource(R.drawable.trash);
+                            break;
+                        case 22:
+                            holder.ivPlastic.setImageResource(R.drawable.trash);
+                            break;
+
+                    }
+                } else {
                     double weight = (Double)iccTableInfo.getIccTable().getIcc(position);
                     holder.tvPlastic.setText(String.format("%.2f", weight));
+                    holder.ivPlastic.setImageResource(R.drawable.weight);
                 }
 
                 holder.ibPlus.setOnClickListener(new View.OnClickListener() {

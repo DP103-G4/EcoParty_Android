@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -233,8 +234,9 @@ public class IccListFragment extends Fragment {
         }
 
         private class IccTableInfoViewHolder extends RecyclerView.ViewHolder {
-            private ImageView ivIccUser;
+            private ImageView ivIccUser, ivCheck;
             private TextView tvIccName, tvIccCount, tvIccWeight;
+            private LinearLayout countLayout, weightLayout;
 
 
             public IccTableInfoViewHolder(View itemView) {
@@ -243,6 +245,9 @@ public class IccListFragment extends Fragment {
                 tvIccName = itemView.findViewById(R.id.tvIccName);
                 tvIccCount = itemView.findViewById(R.id.tvIccCount);
                 tvIccWeight = itemView.findViewById(R.id.tvIccWeight);
+                countLayout = itemView.findViewById(R.id.countLayout);
+                weightLayout = itemView.findViewById(R.id.weightLayout);
+                ivCheck = itemView.findViewById(R.id.imageView7);
 
             }
         }
@@ -263,6 +268,16 @@ public class IccListFragment extends Fragment {
             int imageSize = getResources().getDisplayMetrics().widthPixels / 4;
             ImageTask getUserImageTask = new ImageTask(url, id, imageSize, holder.ivIccUser);
             getUserImageTask.execute();
+
+            if (iccTableInfo.getCount() > 0 || iccTableInfo.getIccTable().getWeight() > 0) {
+                holder.ivCheck.setVisibility(View.VISIBLE);
+                holder.countLayout.setVisibility(View.VISIBLE);
+                holder.weightLayout.setVisibility(View.VISIBLE);
+            } else {
+                holder.ivCheck.setVisibility(View.GONE);
+                holder.countLayout.setVisibility(View.GONE);
+                holder.weightLayout.setVisibility(View.GONE);
+            }
 
             holder.tvIccName.setText(iccTableInfo.getUserName());
             holder.tvIccCount.setText(String.valueOf(iccTableInfo.getCount()));

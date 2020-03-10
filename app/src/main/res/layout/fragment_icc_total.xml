@@ -30,27 +30,9 @@
                 android:gravity="center"
                 android:minHeight="?actionBarSize"
                 android:padding="@dimen/appbar_padding"
-                android:text="成果統計"
+                android:text="ICC表格統計"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/btIccTotalOK"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="10dp"
-                android:textSize="16sp"
-                android:text="送出"/>
-
-            <TextView
-                android:id="@+id/btIccTotalRe"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="10dp"
-                android:textSize="16sp"
-                android:text="重置"/>
 
 
         </androidx.appcompat.widget.Toolbar>
@@ -117,6 +99,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
+                        android:gravity="center"
                         android:text="淨灘地點" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -126,7 +109,7 @@
                         android:background="@drawable/bg_icc">
 
                         <TextView
-                            android:id="@+id/textView33"
+                            android:id="@+id/tvIccLocation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
@@ -151,6 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="日期" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -160,7 +144,7 @@
                         android:background="@drawable/bg_icc">
 
                         <TextView
-                            android:id="@+id/textView32"
+                            android:id="@+id/tvIccDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
@@ -187,6 +171,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="長度" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -196,7 +181,7 @@
                         android:background="@drawable/bg_icc">
 
                         <TextView
-                            android:id="@+id/textView37"
+                            android:id="@+id/tvIccDistance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
@@ -221,6 +206,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="人數" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -230,7 +216,7 @@
                         android:background="@drawable/bg_icc">
 
                         <TextView
-                            android:id="@+id/textView40"
+                            android:id="@+id/tvIccUserCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
@@ -255,6 +241,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="總重" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -264,7 +251,7 @@
                         android:background="@drawable/bg_icc">
 
                         <TextView
-                            android:id="@+id/textView43"
+                            android:id="@+id/tvIccTotalWeight"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
@@ -302,6 +289,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="單位名稱或登記者" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -311,7 +299,7 @@
                         android:background="@drawable/bg_icc">
 
                         <TextView
-                            android:id="@+id/textView46"
+                            android:id="@+id/tvOwnerName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TextView"
@@ -375,10 +363,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView2341"
+                                android:id="@+id/tvIccPersonal02"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -443,10 +431,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView5742"
+                                android:id="@+id/tvIccPersonal01"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -520,10 +508,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView223441"
+                                android:id="@+id/tvIccOthers03"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -533,7 +521,7 @@
 
 
                         <TextView
-                            android:id="@+id/textView45323"
+                            android:id="@+id/textView36352"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="2dp"
@@ -587,10 +575,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView4532"
+                                android:id="@+id/tvIccPlasticBag02"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -644,10 +632,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView534"
+                                android:id="@+id/tvIccPlasticBag01"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -722,10 +710,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView441"
+                                android:id="@+id/tvIccOthers02"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -790,10 +778,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView171"
+                                android:id="@+id/tvIccOthers01"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -877,10 +865,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView160"
+                                android:id="@+id/tvIccWashless03"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -931,10 +919,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView151"
+                                android:id="@+id/tvIccWashless02"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1013,10 +1001,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView130"
+                                android:id="@+id/tvIccWashless01"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1089,10 +1077,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView106"
+                                android:id="@+id/tvIccPlastic04"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1154,10 +1142,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView103"
+                                android:id="@+id/tvIccPlastic03"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1243,10 +1231,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView101"
+                                android:id="@+id/tvIccPlastic02"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1311,10 +1299,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView94"
+                                android:id="@+id/tvIccPlastic01"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1411,10 +1399,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView80"
+                                android:id="@+id/tvIccCare04"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1429,7 +1417,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:text="種類4"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@android:color/black"
                             android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout16"
                             app:layout_constraintStart_toEndOf="@+id/constraintLayout16"
@@ -1456,10 +1444,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView67"
+                                android:id="@+id/tvIccCare03"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1474,7 +1462,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:text="種類3"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@android:color/black"
                             android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout14"
                             app:layout_constraintStart_toEndOf="@+id/constraintLayout14"
@@ -1501,10 +1489,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView72"
+                                android:id="@+id/tvIccCare02"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1519,7 +1507,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:text="種類2"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@android:color/black"
                             android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout15"
                             app:layout_constraintStart_toEndOf="@+id/constraintLayout15"
@@ -1546,10 +1534,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView62"
+                                android:id="@+id/tvIccCare01"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1564,7 +1552,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:text="種類1"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@android:color/black"
                             android:textSize="12sp"
                             app:layout_constraintBottom_toBottomOf="@+id/constraintLayout13"
                             app:layout_constraintStart_toEndOf="@+id/constraintLayout13"
@@ -1638,10 +1626,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView63"
+                                android:id="@+id/tvIccfish03"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1717,10 +1705,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView48"
+                                android:id="@+id/tvIccSmoke01"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1775,10 +1763,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView50"
+                                android:id="@+id/tvIccSmoke02"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1869,10 +1857,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView55"
+                                android:id="@+id/tvIccfish01"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -1928,10 +1916,10 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/textView59"
+                                android:id="@+id/tvIccfish02"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="99"
+                                android:text="0"
                                 android:textColor="@color/colorPrimaryDark"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"

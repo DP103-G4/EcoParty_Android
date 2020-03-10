@@ -4,6 +4,7 @@ package tw.dp103g4.partydetail;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
@@ -45,6 +47,9 @@ import tw.dp103g4.main_android.Common;
 import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.ImageTask;
+import tw.dp103g4.user.User;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class ParticipantListFragment extends Fragment {
@@ -58,7 +63,7 @@ public class ParticipantListFragment extends Fragment {
     private List<ParticipantInfo> participantInfos;
     private CommonTask getAllTask;
     private Party party;
-    private int partyId;
+    private int partyId, userId;
     private boolean isRollCall;
 
 
@@ -108,8 +113,12 @@ public class ParticipantListFragment extends Fragment {
 
         isRollCall = bundle.getBoolean("isRollCall", false);
 
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        userId = pref.getInt("id", 0);
+
         party = (Party) bundle.getSerializable("party");
         partyId = party.getId();
+
 
         if (isRollCall) {
             btQRcode.setVisibility(View.VISIBLE);
@@ -239,6 +248,7 @@ public class ParticipantListFragment extends Fragment {
             private TextView tvParticipantName;
             private TextView tvCount;
             private CheckBox cbArrival;
+            private ImageButton ibInMenu;
 
             public ParticipantInfoViewHolder(View itemView) {
                 super(itemView);
@@ -247,6 +257,7 @@ public class ParticipantListFragment extends Fragment {
                 tvCount = itemView.findViewById(R.id.tvCount);
                 cbArrival = itemView.findViewById(R.id.cbArrival);
                 ivStaff = itemView.findViewById(R.id.ivStaff);
+                ibInMenu = itemView.findViewById(R.id.ibInMenu);
 
             }
         }
@@ -268,100 +279,16 @@ public class ParticipantListFragment extends Fragment {
             ImageTask getUserImageTask = new ImageTask(url, id, imageSize, holder.ivParticipant);
             getUserImageTask.execute();
 
-            if (isRollCall) {
-                holder.cbArrival.setVisibility(View.VISIBLE);
-
-                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        PopupMenu popupMenu = new PopupMenu(activity, v, Gravity.END);
-                        popupMenu.inflate(R.menu.participant_menu);
-                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem item) {
-                                switch (item.getItemId()) {
-                                    case R.id.setStaff:
-                                        if (Common.networkConnected(activity)) {
-                                            String url = Common.URL_SERVER + "/ParticipantServlet";
-                                            JsonObject jsonObject = new JsonObject();
-                                            jsonObject.addProperty("action", "setStaff");
-                                            jsonObject.addProperty("userId", participantInfo.getParticipant().getId());
-                                            jsonObject.addProperty("partyId", participantInfo.getParticipant().getPartyId());
-                                            jsonObject.addProperty("isStaff", !participantInfo.getParticipant().isStaff());
-
-                                            String jsonOut = jsonObject.toString();
-
-                                            int count = 0;
-                                            try {
-                                                String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                                                System.out.println(jsonOut);
-                                                count = Integer.valueOf(result.trim());
-
-                                                if (count == 0) {
-                                                    Common.showToast(getActivity(), "設定工作人員失敗");
-                                                } else {
-                                                    participantInfo.getParticipant().setStaff(!participantInfo.getParticipant().isStaff());
-//                                                    showParticipantInfos(participantInfos);
-                                                    if (participantInfo.getParticipant().isStaff()) {
-                                                        holder.ivStaff.setVisibility(View.VISIBLE);
-                                                    } else {
-                                                        holder.ivStaff.setVisibility(View.GONE);
-
-                                                    }
-                                                }
-                                            } catch (Exception e) {
-                                                Log.e(TAG, e.toString());
-                                            }
-                                        } else {
-                                            Common.showToast(getActivity(), R.string.textNoNetwork);
-                                        }
-
-                                        break;
-                                    case R.id.kickOut:
-                                        if (Common.networkConnected(activity)) {
-
-                                            Participant participant = new Participant(participantInfo.getParticipant().getId(), participantInfo.getParticipant().getPartyId(), 0);
-
-                                            String url = Common.URL_SERVER + "ParticipantServlet";
-                                            JsonObject jsonObject = new JsonObject();
-                                            jsonObject.addProperty("action", "participantDelete");
-                                            jsonObject.addProperty("participant", gson.toJson(participant));
-                                            String jsonOut = jsonObject.toString();
-
-                                            int count = 0;
-                                            try {
-                                                String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                                                System.out.println(jsonOut);
-                                                count = Integer.valueOf(result.trim());
-
-                                                if (count == 0) {
-                                                    Common.showToast(getActivity(), R.string.textDeleteFail);
-                                                } else {
-                                                    participantInfos.remove(position);
-                                                    showParticipantInfos(participantInfos);
-                                                }
-                                            } catch (Exception e) {
-                                                Log.e(TAG, e.toString());
-                                            }
-                                        } else {
-                                            Common.showToast(getActivity(), R.string.textNoNetwork);
-                                        }
-
-                                        break;
-                                }
-                                return true;
-                            }
-                        });
-                        popupMenu.show();
-                        return true;
-                    }
-                });
-
-
-
+            if (!isRollCall) {
+                holder.cbArrival.setVisibility(View.GONE);
+                if (userId == party.getOwnerId())
+                    holder.ibInMenu.setVisibility(View.VISIBLE);
+                else
+                    holder.ibInMenu.setVisibility(View.GONE);
             }
             else {
-                holder.cbArrival.setVisibility(View.GONE);
+                holder.cbArrival.setVisibility(View.VISIBLE);
+                holder.ibInMenu.setVisibility(View.GONE);
             }
 
             holder.tvParticipantName.setText(participantInfo.getParticipantName());
@@ -378,6 +305,91 @@ public class ParticipantListFragment extends Fragment {
                 holder.ivStaff.setVisibility(View.VISIBLE);
             else
                 holder.ivStaff.setVisibility(View.GONE);
+
+            holder.ibInMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popupMenu = new PopupMenu(activity, v, Gravity.END);
+                    popupMenu.inflate(R.menu.participant_menu);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()) {
+                                case R.id.setStaff:
+                                    if (Common.networkConnected(activity)) {
+                                        String url = Common.URL_SERVER + "/ParticipantServlet";
+                                        JsonObject jsonObject = new JsonObject();
+                                        jsonObject.addProperty("action", "setStaff");
+                                        jsonObject.addProperty("userId", participantInfo.getParticipant().getId());
+                                        jsonObject.addProperty("partyId", participantInfo.getParticipant().getPartyId());
+                                        jsonObject.addProperty("isStaff", !participantInfo.getParticipant().isStaff());
+
+                                        String jsonOut = jsonObject.toString();
+
+                                        int count = 0;
+                                        try {
+                                            String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                                            System.out.println(jsonOut);
+                                            count = Integer.valueOf(result.trim());
+
+                                            if (count == 0) {
+                                                Common.showToast(getActivity(), "設定工作人員失敗");
+                                            } else {
+                                                participantInfo.getParticipant().setStaff(!participantInfo.getParticipant().isStaff());
+//                                                    showParticipantInfos(participantInfos);
+                                                if (participantInfo.getParticipant().isStaff()) {
+                                                    holder.ivStaff.setVisibility(View.VISIBLE);
+                                                } else {
+                                                    holder.ivStaff.setVisibility(View.GONE);
+
+                                                }
+                                            }
+                                        } catch (Exception e) {
+                                            Log.e(TAG, e.toString());
+                                        }
+                                    } else {
+                                        Common.showToast(getActivity(), R.string.textNoNetwork);
+                                    }
+
+                                    break;
+                                case R.id.kickOut:
+                                    if (Common.networkConnected(activity)) {
+
+                                        Participant participant = new Participant(participantInfo.getParticipant().getId(), participantInfo.getParticipant().getPartyId(), 0);
+
+                                        String url = Common.URL_SERVER + "ParticipantServlet";
+                                        JsonObject jsonObject = new JsonObject();
+                                        jsonObject.addProperty("action", "participantDelete");
+                                        jsonObject.addProperty("participant", gson.toJson(participant));
+                                        String jsonOut = jsonObject.toString();
+
+                                        int count = 0;
+                                        try {
+                                            String result = new CommonTask(url, jsonObject.toString()).execute().get();
+                                            System.out.println(jsonOut);
+                                            count = Integer.valueOf(result.trim());
+
+                                            if (count == 0) {
+                                                Common.showToast(getActivity(), R.string.textDeleteFail);
+                                            } else {
+                                                participantInfos.remove(position);
+                                                showParticipantInfos(participantInfos);
+                                            }
+                                        } catch (Exception e) {
+                                            Log.e(TAG, e.toString());
+                                        }
+                                    } else {
+                                        Common.showToast(getActivity(), R.string.textNoNetwork);
+                                    }
+
+                                    break;
+                            }
+                            return true;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
 
             holder.cbArrival.setOnClickListener(new View.OnClickListener() {
                 @Override

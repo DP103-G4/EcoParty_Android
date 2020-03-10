@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import tw.dp103g4.R;
 
@@ -41,6 +42,7 @@ public class PieceListFragment extends Fragment {
     private CommonTask pieceGetAllTask;
     private int imageSize;
     private AfterImageTask afterImageTask;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,10 +63,22 @@ public class PieceListFragment extends Fragment {
         bottomNavigationView= activity.findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.VISIBLE);
 
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         rvPiece = view.findViewById(R.id.rvPiece);
         rvPiece.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+
         parties = getParties();
         showParties(parties);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                parties = getParties();
+                swipeRefreshLayout.setRefreshing(true);
+                showParties(parties);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private void showParties(List<Party> parties) {
