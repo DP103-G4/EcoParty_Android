@@ -55,7 +55,7 @@ public class UserFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        bottomNavigationView= activity.findViewById(R.id.navigation);
+        bottomNavigationView = activity.findViewById(R.id.navigation);
         bottomNavigationView.setVisibility(View.VISIBLE);
 
         pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
@@ -106,6 +106,5 @@ public class UserFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        activity.getBottomNavigationView().setVisibility(View.VISIBLE);
     }
 }
