@@ -27,6 +27,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -44,6 +45,7 @@ import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
 import tw.dp103g4.main_android.MainActivity;
 import tw.dp103g4.task.CommonTask;
+import tw.dp103g4.task.CoverImageTask;
 import tw.dp103g4.task.ImageTask;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -56,6 +58,7 @@ public class FriendMsgFragment extends Fragment {
     private MainActivity activity;
     private CommonTask msgGetAllTask;
     private ImageTask talkImageTask;
+    private CoverImageTask coverImageTask;
     private List<Talk> talks;
     private List<Talk> noReadTalks = new ArrayList<Talk>();
     private List<Talk> readTalks = new ArrayList<Talk>();
@@ -65,9 +68,9 @@ public class FriendMsgFragment extends Fragment {
     private String account;
     private SharedPreferences pref;
     private int userId;
-
     //socket
     private LocalBroadcastManager broadcastManager;
+
 
 
 
@@ -204,7 +207,7 @@ public class FriendMsgFragment extends Fragment {
 
 
         class TalkViewHolder extends RecyclerView.ViewHolder {
-            ImageView ivFriend;
+            ImageView ivFriend,ivInviteParty,ivInvitePartySend;
             TextView tvMsg, tvMsgSend, tvTimeSend, tvRead, tvTime, tvOldTime;
             ConstraintLayout receiveLayout, sendLayout;
 
@@ -219,7 +222,8 @@ public class FriendMsgFragment extends Fragment {
                 tvRead = itemView.findViewById(R.id.tvRead);
                 receiveLayout = itemView.findViewById(R.id.receiveLayout);
                 sendLayout = itemView.findViewById(R.id.sendLayout);
-
+                ivInviteParty = itemView.findViewById(R.id.ivInviteParty);
+                ivInvitePartySend = itemView.findViewById(R.id.ivInvitePartySend);
             }
         }
 
@@ -271,26 +275,23 @@ public class FriendMsgFragment extends Fragment {
             } else {
                 holder.tvOldTime.setText("");
             }
-            if (talk.getPartyId()!= 0){
-                holder.tvMsg.setBackgroundColor(Color.parseColor("#FFFF00"));
-                TextPaint tp = holder.tvMsg.getPaint();
-                tp.setFakeBoldText(true);
-                holder.tvMsgSend.setBackgroundColor(Color.parseColor("#FFFF00"));
-                TextPaint tpS = holder.tvMsgSend.getPaint();
-                tpS.setFakeBoldText(true);
-            }else{
-                holder.tvMsg.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                TextPaint tp = holder.tvMsg.getPaint();
-                tp.setFakeBoldText(false);
-                holder.tvMsgSend.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                TextPaint tpS = holder.tvMsgSend.getPaint();
-                tpS.setFakeBoldText(false);
-            }
+
             if (senderId == userId) {
+                if (talk.getPartyId()!= 0){
+                    String partyUrl = Common.URL_SERVER + "PartyServlet";
+                    coverImageTask = new CoverImageTask(partyUrl, talk.getPartyId(), 300, holder.ivInvitePartySend);
+                    coverImageTask.execute();
+                    holder.ivInvitePartySend.setVisibility(View.VISIBLE);
+                    TextPaint tpS = holder.tvMsgSend.getPaint();
+                    tpS.setFakeBoldText(true);
+                }else{
+                    holder.ivInvitePartySend.setVisibility(View.GONE);
+                    TextPaint tpS = holder.tvMsgSend.getPaint();
+                    tpS.setFakeBoldText(false);
+                }
                 holder.receiveLayout.setVisibility(View.GONE);
                 holder.sendLayout.setVisibility(View.VISIBLE);
                 holder.tvMsgSend.setText(talk.getContent());
-
                 holder.tvTimeSend.setText(time);
                 if (talk.getIsRead()) {
                     holder.tvRead.setText(R.string.textIsRead);
@@ -298,6 +299,18 @@ public class FriendMsgFragment extends Fragment {
                     holder.tvRead.setText("");
                 }
             } else {
+                if (talk.getPartyId()!= 0){
+                    String partyUrl = Common.URL_SERVER + "PartyServlet";
+                    coverImageTask = new CoverImageTask(partyUrl, talk.getPartyId(), 300, holder.ivInviteParty);
+                    coverImageTask.execute();
+                    holder.ivInviteParty.setVisibility(View.VISIBLE);
+                    TextPaint tp = holder.tvMsg.getPaint();
+                    tp.setFakeBoldText(true);
+                }else{
+                    holder.ivInviteParty.setVisibility(View.GONE);
+                    TextPaint tp = holder.tvMsg.getPaint();
+                    tp.setFakeBoldText(false);
+                }
                 holder.sendLayout.setVisibility(View.GONE);
                 holder.receiveLayout.setVisibility(View.VISIBLE);
                 holder.tvMsg.setText(talk.getContent());

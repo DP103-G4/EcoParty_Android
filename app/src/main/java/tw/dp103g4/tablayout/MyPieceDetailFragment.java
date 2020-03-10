@@ -78,9 +78,9 @@ public class MyPieceDetailFragment extends Fragment {
     }
 
     private void showMyParties(List<Party> myPieces) {
-        if (myPieces == null || myPieces.isEmpty()) {
-            Common.showToast(activity, R.string.textNoPartiesFound);
-        }
+//        if (myPieces == null || myPieces.isEmpty()) {
+//            Common.showToast(activity, R.string.textNoPartiesFound);
+//        }
         MyPieceAdapter myPieceAdapter = (MyPieceAdapter) rvMyParty.getAdapter();
         if (myPieceAdapter == null) {
             rvMyParty.setAdapter(new MyPieceAdapter(activity, myPieces));

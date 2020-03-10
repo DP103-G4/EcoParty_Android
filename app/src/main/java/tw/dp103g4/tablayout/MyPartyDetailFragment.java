@@ -83,9 +83,9 @@ public class MyPartyDetailFragment extends Fragment {
     }
 
     private void showMyParties(List<Party> myParties) {
-        if (myParties == null || myParties.isEmpty()) {
-            Common.showToast(activity, R.string.textNoPartiesFound);
-        }
+//        if (myParties == null || myParties.isEmpty()) {
+//            Common.showToast(activity, R.string.textNoPartiesFound);
+//        }
         MyPartyAdapter myPartyAdapter = (MyPartyAdapter) rvMyParty.getAdapter();
         if (myPartyAdapter == null) {
             rvMyParty.setAdapter(new MyPartyAdapter(activity, myParties));

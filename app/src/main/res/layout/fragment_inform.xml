@@ -23,6 +23,7 @@
             app:contentInsetStartWithNavigation="0dp">
 
         </androidx.appcompat.widget.Toolbar>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
