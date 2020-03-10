@@ -108,9 +108,9 @@ public class InformFragment extends Fragment {
     }
 
     private void showInform(List<Inform> informs) {
-        if (informs == null || informs.isEmpty()) {
-            Common.showToast(activity, R.string.textNoInform);
-        }
+//        if (informs == null || informs.isEmpty()) {
+//            Common.showToast(activity, R.string.textNoInform);
+//        }
         InfromAdapter informAdapter = (InfromAdapter) rvInform.getAdapter();
         if (informAdapter == null) {
             rvInform.setAdapter(new InfromAdapter(activity, informs));
