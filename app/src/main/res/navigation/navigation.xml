@@ -124,6 +124,9 @@
     <action
         android:id="@+id/action_partyInsertFragment_to_reviewImgInsertFragment"
         app:destination="@id/reviewImgInsertFragment" />
+        <action
+            android:id="@+id/action_partyInsertFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
     </fragment>
     <fragment
         android:id="@+id/friendFragment"
@@ -200,7 +203,11 @@
         android:id="@+id/partyUpdateFragment"
         android:name="tw.dp103g4.partydetail.PartyUpdateFragment"
         android:label="fragment_party_update"
-        tools:layout="@layout/fragment_party_update" />
+        tools:layout="@layout/fragment_party_update" >
+        <action
+            android:id="@+id/action_partyUpdateFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+    </fragment>
     <fragment
         android:id="@+id/pieceDetailFragment"
         android:name="tw.dp103g4.partydetail.PieceDetailFragment"
@@ -241,6 +248,9 @@
         <action
             android:id="@+id/action_iccListFragment_to_iccDetailFragment"
             app:destination="@id/iccDetailFragment" />
+        <action
+            android:id="@+id/action_iccListFragment_to_iccTotalFragment"
+            app:destination="@id/iccTotalFragment" />
     </fragment>
     <fragment
         android:id="@+id/iccDetailFragment"
@@ -257,4 +267,14 @@
         android:name="tw.dp103g4.partydetail.ShareFragment"
         android:label="fragment_share"
         tools:layout="@layout/fragment_share" />
+    <fragment
+        android:id="@+id/iccTotalFragment"
+        android:name="tw.dp103g4.partydetail.IccTotalFragment"
+        android:label="fragment_icc_total"
+        tools:layout="@layout/fragment_icc_total" />
+    <fragment
+        android:id="@+id/addressFragment"
+        android:name="tw.dp103g4.AddressFragment"
+        android:label="fragment_address"
+        tools:layout="@layout/fragment_address" />
 </navigation>

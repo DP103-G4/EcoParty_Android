@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.JsonObject;
 
 import java.util.concurrent.ExecutionException;
@@ -32,6 +33,8 @@ public class UserPasswordFragment extends Fragment {
     private Button btCancel, btOK;
     private CommonTask editPasswordTask;
     private int userId;
+
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,6 +62,9 @@ public class UserPasswordFragment extends Fragment {
                 navController.popBackStack();
             }
         });
+
+        bottomNavigationView = activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.GONE);
 
         etOlder = view.findViewById(R.id.etOlder);
         etNew = view.findViewById(R.id.etNew);

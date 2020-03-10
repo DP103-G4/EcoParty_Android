@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.Navigation;
@@ -58,7 +59,6 @@ public class FriendFragment extends Fragment {
     private RecyclerView rvFriends;
     private RecyclerView rvFriendMsg;
     private Activity activity;
-    private BottomNavigationView bottomNavigationView;
     private CommonTask friendShipGetAllTask;
     private CommonTask friendShipDeleteTask;
     private CommonTask talkGetAllTask;
@@ -71,7 +71,8 @@ public class FriendFragment extends Fragment {
     private int userId;
     //socket
     private LocalBroadcastManager broadcastManager;
-
+    //toorbar
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +85,6 @@ public class FriendFragment extends Fragment {
         broadcastManager = LocalBroadcastManager.getInstance(activity);
         registerMsg();
         Common.connectServer(activity, userId);
-//        userId = 2;
 
     }
 
@@ -98,17 +98,29 @@ public class FriendFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //toolbar
+        bottomNavigationView = activity.findViewById(R.id.navigation);
+        bottomNavigationView.setVisibility(View.VISIBLE);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.friend_menu);
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                    Navigation.findNavController(view).navigate(R.id.action_friendFragment_to_friendInsertFragment);
+                return false;
+            }
+        });
 
         SearchView searchView = view.findViewById(R.id.svFriends);
 //        searchView.setSubmitButtonEnabled(true);
         searchView.setIconifiedByDefault(false);
         rvFriends = view.findViewById(R.id.rvFriends);
         rvFriendMsg = view.findViewById(R.id.rvFriendMsg);
-        btInsert = view.findViewById(R.id.btInsert);
         if(userId == 0){
-            btInsert.setVisibility(View.GONE);
+            toolbar.setVisibility(View.GONE);
         }else{
-            btInsert.setVisibility(View.VISIBLE);
+            toolbar.setVisibility(View.VISIBLE);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -119,13 +131,6 @@ public class FriendFragment extends Fragment {
         rvFriendMsg.setLayoutManager(new LinearLayoutManager(activity));
         newestTalks = getNewestTalk();
         showNewestTalk(newestTalks);
-
-        btInsert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_friendFragment_to_friendInsertFragment);
-            }
-        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

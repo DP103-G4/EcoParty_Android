@@ -19,7 +19,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/receiveLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:padding="5dp"
         android:visibility="visible">
 
@@ -51,7 +51,6 @@
             app:cardBackgroundColor="@color/colorEcoGray2"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cv2"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -78,6 +77,17 @@
             app:layout_constraintStart_toEndOf="@+id/cv3"
             tools:text="12:00" />
 
+        <ImageView
+            android:id="@+id/ivInviteParty"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:layout_margin="0dp"
+            android:visibility="visible"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="@+id/cv3"
+            app:layout_constraintTop_toBottomOf="@+id/cv3"
+            tools:srcCompat="@drawable/cover" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -96,7 +106,6 @@
             app:cardBackgroundColor="@color/colorEcoGray2"
             app:cardCornerRadius="10dp"
             app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -132,6 +141,17 @@
             app:layout_constraintBottom_toTopOf="@+id/tvTimeSend"
             app:layout_constraintEnd_toEndOf="@+id/tvTimeSend"
             tools:text="未讀" />
+
+        <ImageView
+            android:id="@+id/ivInvitePartySend"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:layout_margin="0dp"
+            android:scaleType="fitXY"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/cv4"
+            app:layout_constraintTop_toBottomOf="@+id/cv4"
+            app:srcCompat="@drawable/cover" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

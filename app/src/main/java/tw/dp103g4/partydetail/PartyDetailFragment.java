@@ -191,7 +191,7 @@ public class PartyDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 bundle = new Bundle();
-                bundle.putInt("partyId", partyId);
+                bundle.putSerializable("party", partyInfo.getParty());
                 navController.navigate(R.id.action_partyDetailFragment_to_shareFragment, bundle);
             }
         });

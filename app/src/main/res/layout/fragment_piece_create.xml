@@ -31,6 +31,28 @@
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/btPieceOK"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:text="完成"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btPieceRe"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:text="重置"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -39,32 +61,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="淨灘後照片"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/ivAfter"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/pictureHeight"
-            android:alpha="0.5"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             android:src="@drawable/add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/upload_img" />
 
         <Button
-            android:id="@+id/btPieceCreate"
-            android:layout_width="wrap_content"
+            android:id="@+id/btPieceUpload"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="送出"
+            android:text="上傳花絮封面"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivAfter" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,6 +29,7 @@
                 android:id="@+id/ivFriend"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="fitXY"
                 tools:srcCompat="@tools:sample/avatars[0]" />
         </androidx.cardview.widget.CardView>
 
