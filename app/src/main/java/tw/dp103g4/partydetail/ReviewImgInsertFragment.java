@@ -175,7 +175,7 @@ public class ReviewImgInsertFragment extends Fragment {
                         Common.showToast(getActivity(), R.string.textInsertFail);
                     } else {
                         Common.showToast(getActivity(), R.string.textInsertSuccess);
-                        navController.popBackStack(R.id.partyFragment, true);
+                        navController.popBackStack(R.id.partyFragment, false);
                     }
 
                 } else {

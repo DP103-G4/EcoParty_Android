@@ -178,7 +178,7 @@ public class InformFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull final InformViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final InformViewHolder holder, final int position) {
             final Inform inform = informs.get(position);
             final int id = inform.getPartyId();
             holder.tvInformContent.setText(inform.getContent());
@@ -203,13 +203,15 @@ public class InformFragment extends Fragment {
                         if (count == 0) {
                             Common.showToast(activity, R.string.textIsReadFail);
                         } else {
-                            informs.get(id).setRead(true);
+                            informs.get(position).setRead(true);
                         }
                     }
                     if (id != -2) {
                         Bundle bundle = new Bundle();
                         bundle.putInt("partyId", id);
                         Navigation.findNavController(v).navigate(R.id.action_informFragment_to_partyDetailFragment, bundle);
+                    } else {
+                        holder.itemView.setBackgroundColor(0xFFFFFF);
                     }
                 }
             });
