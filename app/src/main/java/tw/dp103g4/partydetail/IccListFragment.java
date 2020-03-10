@@ -19,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -49,6 +50,7 @@ public class IccListFragment extends Fragment {
     private Activity activity;
     private RecyclerView rvIcc;
     private SwipeRefreshLayout rlIcc;
+    private ConstraintLayout iccTotalLaout;
     private SearchView svIcc;
     private int partyId, userId;
     private List<IccTableInfo> iccTableInfos;
@@ -93,13 +95,14 @@ public class IccListFragment extends Fragment {
         rvIcc = view.findViewById(R.id.rvIcc);
         rlIcc = view.findViewById(R.id.rlIcc);
         svIcc = view.findViewById(R.id.svIcc);
-        tvTotalCount = view.findViewById(R.id.tvTotalCount);
-        tvTotalWeight = view.findViewById(R.id.tvTotalWeight);
+        tvTotalCount = view.findViewById(R.id.tvIccCount);
+        tvTotalWeight = view.findViewById(R.id.tvIccWeight);
+        iccTotalLaout = view.findViewById(R.id.iccTotalLaout);
 
         rvIcc.setLayoutManager(new LinearLayoutManager(activity));
 
 
-        Bundle bundle = getArguments();
+        final Bundle bundle = getArguments();
         if (bundle == null || bundle.getInt("partyId") == 0) {
             navController.popBackStack();
             return;
@@ -112,6 +115,17 @@ public class IccListFragment extends Fragment {
 
         iccTableInfos = getIccTableInfos(partyId);
         showIccTableInfos(iccTableInfos);
+
+
+        iccTotalLaout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("partyId", partyId);
+                navController.navigate(R.id.action_iccListFragment_to_iccTotalFragment, bundle);
+            }
+        });
+
 
         rlIcc.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
