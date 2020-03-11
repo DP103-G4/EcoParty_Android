@@ -94,21 +94,6 @@
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="活動標題" />
 
-                        <ImageButton
-                            android:id="@+id/btPartyEdit"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_margin="10dp"
-                            android:alpha="0.5"
-                            android:background="@android:color/transparent"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/gear"
-                            android:visibility="gone"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:visibility="visible" />
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -148,6 +133,15 @@
                             app:layout_constraintStart_toEndOf="@+id/textView12"
                             app:layout_constraintTop_toBottomOf="@+id/tvTime"
                             tools:text="週六, 12月19日 14:00" />
+
+                        <Switch
+                            android:id="@+id/switch1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

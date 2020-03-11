@@ -151,6 +151,8 @@ public class PieceDetailFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                rvPiece.setAdapter(null);
+                rvPiece.setLayoutManager(new LinearLayoutManager(activity));
                 pieceInfoList = getPieceInfoList(party.getId());
                 swipeRefreshLayout.setRefreshing(true);
                 showPieceInfoList(pieceInfoList);
