@@ -194,29 +194,30 @@ public class PartyDetailFragment extends Fragment {
             @Override
             public void onRefresh() {
                 partyInfo = getPartyInfo(partyId, userId);
-                swipeRefreshLayout.setRefreshing(true);
                 showPartyDetail(partyInfo);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        postSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        postSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+            public void onClick(View v) {
+                if (partyInfo.getParty().getState() == close) {
                     if (changePartyState(partyId, post)) {
                         partyInfo.getParty().setState(post);
                         showPartyDetail(partyInfo);
                     }
-                } else {
+                } else if (partyInfo.getParty().getState() == post) {
                     if (changePartyState(partyId, close)) {
                         partyInfo.getParty().setState(close);
                         showPartyDetail(partyInfo);
                     }
+                } else {
+                    postSwitch.setVisibility(View.GONE);
                 }
+
             }
         });
-
 
         btShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -357,7 +358,7 @@ public class PartyDetailFragment extends Fragment {
                         int count = 0;
                         try {
                             String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                            System.out.println(jsonOut);
+//                            System.out.println(jsonOut);
                             count = Integer.valueOf(result.trim());
 
                             if (count == 0) {
@@ -387,7 +388,7 @@ public class PartyDetailFragment extends Fragment {
                         int count = 0;
                         try {
                             String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                            System.out.println(jsonOut);
+//                            System.out.println(jsonOut);
                             count = Integer.valueOf(result.trim());
 
                             if (count == 0) {
@@ -448,7 +449,7 @@ public class PartyDetailFragment extends Fragment {
                                         int count = 0;
                                         try {
                                             String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                                            System.out.println(jsonOut);
+//                                            System.out.println(jsonOut);
                                             count = Integer.valueOf(result.trim());
 
                                             if (count == -1) {
@@ -486,7 +487,7 @@ public class PartyDetailFragment extends Fragment {
                         int count = 0;
                         try {
                             String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                            System.out.println(jsonOut);
+//                            System.out.println(jsonOut);
                             count = Integer.valueOf(result.trim());
 
                             if (count == -1) {
@@ -580,8 +581,8 @@ public class PartyDetailFragment extends Fragment {
 
                     try {
                         String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                        System.out.println(jsonOut);
-                        System.out.println(result);
+//                        System.out.println(jsonOut);
+//                        System.out.println(result);
 
 
                         msgList = getMsgList(partyId);
@@ -625,7 +626,7 @@ public class PartyDetailFragment extends Fragment {
             int count = 0;
             try {
                 String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                System.out.println(jsonOut);
+//                System.out.println(jsonOut);
                 count = Integer.valueOf(result.trim());
 
                 if (count == 0) {
@@ -669,8 +670,8 @@ public class PartyDetailFragment extends Fragment {
                 Type listType = new TypeToken<List<PartyMsgInfo>>() {
                 }.getType();
                 msgList = gson.fromJson(jsonIn, listType);
-                System.out.println(jsonOut);
-                System.out.println(jsonIn);
+//                System.out.println(jsonOut);
+//                System.out.println(jsonIn);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -693,8 +694,8 @@ public class PartyDetailFragment extends Fragment {
             try {
                 String jsonIn = new CommonTask(url, jsonOut).execute().get();
                 partyInfo = gson.fromJson(jsonIn, PartyInfo.class);
-                System.out.println(jsonOut);
-                System.out.println(jsonIn);
+//                System.out.println(jsonOut);
+//                System.out.println(jsonIn);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -798,7 +799,7 @@ public class PartyDetailFragment extends Fragment {
                                                     int count = 0;
                                                     try {
                                                         String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                                                        System.out.println(jsonOut);
+//                                                        System.out.println(jsonOut);
                                                         count = Integer.valueOf(result.trim());
 
                                                         if (count == 0) {
@@ -831,7 +832,7 @@ public class PartyDetailFragment extends Fragment {
                                                     int count = 0;
                                                     try {
                                                         String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                                                        System.out.println(jsonOut);
+//                                                        System.out.println(jsonOut);
                                                         count = Integer.valueOf(result.trim());
 
                                                         if (count == 0) {
@@ -894,6 +895,7 @@ public class PartyDetailFragment extends Fragment {
             }
 
             if (partyInfo.getParty().getState() == post) {
+                postSwitch.setChecked(true);
                 btStart.setText("發布中");
                 btStart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.start, 0, 0, 0);
                 int left = partyInfo.getParty().getCountUpperLimit() - partyInfo.getParty().getCountCurrent();
@@ -901,6 +903,7 @@ public class PartyDetailFragment extends Fragment {
                 leftCount.setVisibility(View.VISIBLE);
 
             } else if (partyInfo.getParty().getState() == close) {
+                postSwitch.setChecked(false);
                 btStart.setText("已截止");
                 btStart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.start, 0, 0, 0);
 

@@ -74,7 +74,6 @@ public class PieceListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 parties = getParties();
-                swipeRefreshLayout.setRefreshing(true);
                 showParties(parties);
                 swipeRefreshLayout.setRefreshing(false);
             }

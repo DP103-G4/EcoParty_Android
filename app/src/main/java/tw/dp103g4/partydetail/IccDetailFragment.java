@@ -214,87 +214,21 @@ public class IccDetailFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull final IccTableInfoAdapter.IccTableInfoViewHolder holder, final int position) {
+            int drawables[] = {R.drawable.plastic01, R.drawable.plastic02, R.drawable.plastic03, R.drawable.plastic04,
+                    R.drawable.plastic_bag01, R.drawable.plastic_bag02, R.drawable.washless01, R.drawable.washless02, R.drawable.washless03,
+                    R.drawable.other01, R.drawable.other02, R.drawable.other03, R.drawable.fish01, R.drawable.fish02, R.drawable.fish03,
+                    R.drawable.person01, R.drawable.person02, R.drawable.smoke01, R.drawable.smoke02,
+                    R.drawable.trash, R.drawable.trash, R.drawable.trash, R.drawable.trash, R.drawable.weight};
+
+            holder.ivPlastic.setImageResource(drawables[position]);
+
             if (position >= 0 && position <= 23) {
                 holder.textPlastic.setText(iccTableInfo.getIccTable().getIccName(position));
                 if (position != 23) {
                     holder.tvPlastic.setText(iccTableInfo.getIccTable().getIcc(position).toString());
-
-                    switch (position) {
-                        case 0:
-                            holder.ivPlastic.setImageResource(R.drawable.plastic01);
-                            break;
-                        case 1:
-                            holder.ivPlastic.setImageResource(R.drawable.plastic02);
-                            break;
-                        case 2:
-                            holder.ivPlastic.setImageResource(R.drawable.plastic04);
-                            break;
-                        case 3:
-                            holder.ivPlastic.setImageResource(R.drawable.plastic04);
-                            break;
-                        case 4:
-                            holder.ivPlastic.setImageResource(R.drawable.plastic_bag01);
-                            break;
-                        case 5:
-                            holder.ivPlastic.setImageResource(R.drawable.plastic_bag02);
-                            break;
-                        case 6:
-                            holder.ivPlastic.setImageResource(R.drawable.washless01);
-                            break;
-                        case 7:
-                            holder.ivPlastic.setImageResource(R.drawable.washless02);
-                            break;
-                        case 8:
-                            holder.ivPlastic.setImageResource(R.drawable.washless03);
-                            break;
-                        case 9:
-                            holder.ivPlastic.setImageResource(R.drawable.other01);
-                            break;
-                        case 10:
-                            holder.ivPlastic.setImageResource(R.drawable.other02);
-                            break;
-                        case 11:
-                            holder.ivPlastic.setImageResource(R.drawable.other03);
-                            break;
-                        case 12:
-                            holder.ivPlastic.setImageResource(R.drawable.fish01);
-                            break;
-                        case 13:
-                            holder.ivPlastic.setImageResource(R.drawable.fish02);
-                            break;
-                        case 14:
-                            holder.ivPlastic.setImageResource(R.drawable.fish03);
-                            break;
-                        case 15:
-                            holder.ivPlastic.setImageResource(R.drawable.person01);
-                            break;
-                        case 16:
-                            holder.ivPlastic.setImageResource(R.drawable.person02);
-                            break;
-                        case 17:
-                            holder.ivPlastic.setImageResource(R.drawable.smoke01);
-                            break;
-                        case 18:
-                            holder.ivPlastic.setImageResource(R.drawable.smoke02);
-                            break;
-                        case 19:
-                            holder.ivPlastic.setImageResource(R.drawable.trash);
-                            break;
-                        case 20:
-                            holder.ivPlastic.setImageResource(R.drawable.trash);
-                            break;
-                        case 21:
-                            holder.ivPlastic.setImageResource(R.drawable.trash);
-                            break;
-                        case 22:
-                            holder.ivPlastic.setImageResource(R.drawable.trash);
-                            break;
-
-                    }
                 } else {
                     double weight = (Double)iccTableInfo.getIccTable().getIcc(position);
                     holder.tvPlastic.setText(String.format("%.2f", weight));
-                    holder.ivPlastic.setImageResource(R.drawable.weight);
                 }
 
                 holder.ibPlus.setOnClickListener(new View.OnClickListener() {
@@ -405,8 +339,8 @@ public class IccDetailFragment extends Fragment {
             try {
                 String jsonIn = new CommonTask(url, jsonOut).execute().get();
                 iccTableInfo = gson.fromJson(jsonIn, IccTableInfo.class);
-                System.out.println(jsonOut);
-                System.out.println(jsonIn);
+//                System.out.println(jsonOut);
+//                System.out.println(jsonIn);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }

@@ -209,8 +209,8 @@ public class IccTotalFragment extends Fragment {
             try {
                 String jsonIn = new CommonTask(url, jsonOut).execute().get();
                 partyInfo = gson.fromJson(jsonIn, PartyInfo.class);
-                System.out.println(jsonOut);
-                System.out.println(jsonIn);
+//                System.out.println(jsonOut);
+//                System.out.println(jsonIn);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
