@@ -148,7 +148,7 @@ public class PartyListFragment extends Fragment {
                 } else {
                     List<Party> searchParties = new ArrayList<>();
                     for (Party party : parties) {
-                        if (party.getName().toUpperCase().contains(newText.toUpperCase())) {
+                        if (party.getLocation().toUpperCase().contains(newText.toUpperCase())) {
                             searchParties.add(party);
                         }
                     }
