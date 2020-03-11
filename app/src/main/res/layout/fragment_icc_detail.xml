@@ -36,12 +36,12 @@
 
             <TextView
                 android:id="@+id/btIccDetailOK"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="10dp"
-                android:textSize="16sp"
-                android:text="送出"/>
+                android:text="完成"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/btIccDetailRe"

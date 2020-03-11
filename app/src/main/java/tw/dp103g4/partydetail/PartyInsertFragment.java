@@ -163,6 +163,8 @@ public class PartyInsertFragment extends Fragment {
         btGeocode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                geoSuccess.setVisibility(View.GONE);
+
                 String locationName = etAddress.getText().toString().trim();
 
                 if (locationName.isEmpty()) {
@@ -178,7 +180,6 @@ public class PartyInsertFragment extends Fragment {
                         } else {
                             longitude = address.getLongitude();
                             latitude = address.getLatitude();
-                            geoSuccess.setVisibility(View.VISIBLE);
 
                             Address addressReverse = reverseGeocode(latitude, longitude);
                             StringBuilder sb = new StringBuilder();
@@ -189,6 +190,7 @@ public class PartyInsertFragment extends Fragment {
                             }
                             etAddress.setText(sb);
 
+                            geoSuccess.setVisibility(View.VISIBLE);
                         }
                     }
                 } else {

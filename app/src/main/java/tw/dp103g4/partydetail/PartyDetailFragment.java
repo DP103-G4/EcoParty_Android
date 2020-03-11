@@ -93,6 +93,7 @@ public class PartyDetailFragment extends Fragment {
     private PartyInfo partyInfo;
     private TextView tvLeftCount;
     private LinearLayout leftCount;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -131,6 +132,8 @@ public class PartyDetailFragment extends Fragment {
                 navController.popBackStack();
             }
         });
+
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         scrollView = view.findViewById(R.id.scrollView);
         tvName = view.findViewById(R.id.tvName);
@@ -180,6 +183,16 @@ public class PartyDetailFragment extends Fragment {
 
         partyInfo = getPartyInfo(partyId, userId);
         showPartyDetail(partyInfo);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                partyInfo = getPartyInfo(partyId, userId);
+                swipeRefreshLayout.setRefreshing(true);
+                showPartyDetail(partyInfo);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         btShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -408,6 +421,10 @@ public class PartyDetailFragment extends Fragment {
 
                         int left = partyInfo.getParty().getCountUpperLimit() - partyInfo.getParty().getCountCurrent();
                         final NumberPicker numberPicker = new NumberPicker(activity);
+
+                        if (left <= 0)
+                            return;
+
                         numberPicker.setMinValue(1);
                         numberPicker.setMaxValue(left);
                         numberPicker.setWrapSelectorWheel(false);

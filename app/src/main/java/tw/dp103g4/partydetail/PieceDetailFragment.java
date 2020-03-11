@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -72,6 +73,7 @@ public class PieceDetailFragment extends Fragment {
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
     private static final String TAG = "TAG_PieceDetail";
+    private SwipeRefreshLayout swipeRefreshLayout;
 
 
     public PieceDetailFragment() {
@@ -108,9 +110,11 @@ public class PieceDetailFragment extends Fragment {
             }
         });
 
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         rvPiece = view.findViewById(R.id.rvPiece);
         btAddPiece = view.findViewById(R.id.btAddPiece);
         tvPiece = view.findViewById(R.id.tvPiece);
+
 
         bundle = getArguments();
         if (bundle == null || bundle.getInt("partyId") == 0) {
@@ -143,6 +147,16 @@ public class PieceDetailFragment extends Fragment {
         pieceInfoList = getPieceInfoList(party.getId());
         showPieceInfoList(pieceInfoList);
 
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pieceInfoList = getPieceInfoList(party.getId());
+                swipeRefreshLayout.setRefreshing(true);
+                showPieceInfoList(pieceInfoList);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         btAddPiece.setOnClickListener(new View.OnClickListener() {
             @Override
