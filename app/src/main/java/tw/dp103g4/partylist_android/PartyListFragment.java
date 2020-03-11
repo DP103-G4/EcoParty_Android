@@ -120,7 +120,6 @@ public class PartyListFragment extends Fragment {
             public void onRefresh() {
                 parties = getParties();
                 partyStart = getPartyStart(userId);
-                swipeRefreshLayout.setRefreshing(true);
                 showParties(parties);
                 showPartyStart(partyStart);
                 swipeRefreshLayout.setRefreshing(false);
@@ -320,7 +319,6 @@ public class PartyListFragment extends Fragment {
             String userUrl = Common.URL_SERVER + "UserServlet";
             final int id = party.getId();
             int userId = party.getOwnerId();
-            System.out.println("userId" + userId);
             getUserImageTask = new ImageTask(userUrl, userId, imageSize, holder.ivUser);
             getUserImageTask.execute();
             partyImageTask = new CoverImageTask(url, id, imageSize, holder.ivParty);

@@ -169,7 +169,7 @@ public class PieceCreateFragment extends Fragment {
             int count = 0;
             try {
                 String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                System.out.println(jsonOut);
+//                System.out.println(jsonOut);
                 count = Integer.valueOf(result.trim());
 
                 if (count == 0) {

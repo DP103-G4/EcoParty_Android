@@ -109,7 +109,7 @@
 
                 <TextView
                     android:id="@+id/textView"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="活動名稱" />
 
@@ -118,7 +118,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:ems="10"
-                    android:hint="活動名稱"
                     android:inputType="textPersonName" />
             </LinearLayout>
 
@@ -139,7 +138,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="活動地點"
                     android:inputType="textPersonName" />
 
             </LinearLayout>
@@ -196,7 +194,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:ems="10"
-                        android:hint="詳細地址"
                         android:inputType="textPersonName"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
