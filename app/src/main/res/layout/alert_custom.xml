@@ -1,33 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tvInfoTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:text="定位標題"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/edTitle"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:gravity="top"
+        android:layout_height="50dp"
+        android:gravity="bottom|left"
         android:hint="@string/editTextTitle"
         android:inputType="textMultiLine"
         android:lines="8"
         android:maxLines="3"
         android:minLines="6"
+        android:paddingLeft="8dp"
         android:scrollbars="vertical" />
+
+    <TextView
+        android:id="@+id/tvInfoContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:text="定位內容"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/edContent"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:gravity="top"
+        android:layout_height="50dp"
+        android:gravity="bottom|left"
         android:hint="@string/editTextContent"
         android:inputType="textMultiLine"
         android:lines="8"
         android:maxLines="3"
         android:minLines="6"
+        android:paddingStart="8dp"
         android:scrollbars="vertical" />
 
 

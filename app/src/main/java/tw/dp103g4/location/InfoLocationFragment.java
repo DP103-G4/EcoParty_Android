@@ -155,8 +155,6 @@ public class InfoLocationFragment extends Fragment {
                 }
             });
 
-        System.out.println("ownerId" + ownerId);
-        System.out.println("memid" + memId);
         infoLocations = getInfoLocation(partyId);
         mapLocation.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -176,8 +174,16 @@ public class InfoLocationFragment extends Fragment {
                             LayoutInflater layoutInflater = LayoutInflater.from(activity);
 //                        text_entry is an Layout XML file containing two text field to display in alert dialog
                             final View textEntryView = layoutInflater.inflate(R.layout.alert_custom, null);
+                            TextView tvInfoTitle = textEntryView.findViewById(R.id.tvInfoTitle);
                             final EditText edTitle = textEntryView.findViewById(R.id.edTitle);
                             final EditText edContent = textEntryView.findViewById(R.id.edContent);
+                            tvInfoTitle.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    edTitle.setText("選舉最大的秘密是？ ");
+                                    edContent.setText("票多的贏、票少的輸");
+                                }
+                            });
                             final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
                             int userId = memId;
                             int id = getId();
@@ -187,10 +193,8 @@ public class InfoLocationFragment extends Fragment {
                             String content = "";
                             final InfoLocation infoLocation = new InfoLocation(
                                     id, partyId, userId, latitude, longitude, name, content);
-                            System.out.println("abc" + name + content);
 
-                            alert.setTitle("定位訊息")
-                                    .setView(textEntryView)
+                            alert.setView(textEntryView)
                                     .setPositiveButton("確定",
                                             new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int whichButton) {
