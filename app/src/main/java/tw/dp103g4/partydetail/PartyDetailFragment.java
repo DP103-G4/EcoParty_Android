@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,7 +28,6 @@ import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +38,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -61,15 +58,12 @@ import java.util.Locale;
 import qrcode.Contents;
 import qrcode.QRCodeEncoder;
 import tw.dp103g4.R;
-import tw.dp103g4.friend.FriendMsgFragment;
 import tw.dp103g4.main_android.Common;
-import tw.dp103g4.partylist_android.Party;
 import tw.dp103g4.task.CommonTask;
 import tw.dp103g4.task.CoverImageTask;
 import tw.dp103g4.task.ImageTask;
 
 import static android.app.Activity.RESULT_OK;
-import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
 
@@ -870,7 +864,8 @@ public class PartyDetailFragment extends Fragment {
 
 
             if (partyInfo.getParty().getOwnerId() == userId) {
-                btEdit.setVisibility(View.VISIBLE);
+                if (partyInfo.getParty().getState() < start)
+                    btEdit.setVisibility(View.VISIBLE);
                 btLike.setVisibility(View.VISIBLE);
                 btStart.setVisibility(View.VISIBLE);
                 btShare.setVisibility(View.VISIBLE);
