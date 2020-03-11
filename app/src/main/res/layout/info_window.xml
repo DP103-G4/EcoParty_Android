@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Title"
-        android:textColor="#FF0000"
-        android:textSize="18sp"
+        android:textColor="@color/colorIsCheck"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <TextView
@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Content"
-        android:textColor="#0000FF" />
+        android:textSize="16sp"
+        android:textColor="#000000" />
 
 </LinearLayout>
