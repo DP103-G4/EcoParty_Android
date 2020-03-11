@@ -21,12 +21,11 @@
             android:id="@+id/ibMinus"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="15dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             android:src="@drawable/minus"
             app:layout_constraintBottom_toBottomOf="@+id/tvPlastic"
-            app:layout_constraintEnd_toStartOf="@+id/tvPlastic"
+            app:layout_constraintStart_toStartOf="@+id/ivPlastic"
             app:layout_constraintTop_toTopOf="@+id/tvPlastic" />
 
         <TextView
@@ -44,12 +43,11 @@
             android:id="@+id/ibPlus"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginStart="15dp"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
             android:src="@drawable/plus"
             app:layout_constraintBottom_toBottomOf="@+id/tvPlastic"
-            app:layout_constraintStart_toEndOf="@+id/tvPlastic"
+            app:layout_constraintEnd_toEndOf="@+id/ivPlastic"
             app:layout_constraintTop_toTopOf="@+id/tvPlastic" />
 
         <ImageView
@@ -67,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="14sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/textPlastic"

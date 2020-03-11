@@ -66,17 +66,17 @@ public class AfterImageTask extends AsyncTask<Object, Integer, Bitmap> {
             connection.setRequestMethod("POST");
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
             bw.write(jsonOut);
-            Log.d(TAG, "output: " + jsonOut);
+//            Log.d(TAG, "output: " + jsonOut);
             bw.close();
 //            200為網路請求成功HTTP狀態碼
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {
                 bitmap = BitmapFactory.decodeStream(new BufferedInputStream(connection.getInputStream()));
             } else {
-                Log.d(TAG, "responseCode" + responseCode);
+//                Log.d(TAG, "responseCode" + responseCode);
             }
         } catch (Exception e) {
-            Log.e(TAG, e.toString());
+//            Log.e(TAG, e.toString());
         } finally {
             if (connection != null) {
                 connection.disconnect();

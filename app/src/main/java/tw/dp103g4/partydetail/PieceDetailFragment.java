@@ -154,7 +154,6 @@ public class PieceDetailFragment extends Fragment {
                 rvPiece.setAdapter(null);
                 rvPiece.setLayoutManager(new LinearLayoutManager(activity));
                 pieceInfoList = getPieceInfoList(party.getId());
-                swipeRefreshLayout.setRefreshing(true);
                 showPieceInfoList(pieceInfoList);
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -183,8 +182,8 @@ public class PieceDetailFragment extends Fragment {
             try {
                 String jsonIn = new CommonTask(url, jsonOut).execute().get();
                 partyInfo = gson.fromJson(jsonIn, PartyInfo.class);
-                System.out.println(jsonOut);
-                System.out.println(jsonIn);
+//                System.out.println(jsonOut);
+//                System.out.println(jsonIn);
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
@@ -423,7 +422,7 @@ public class PieceDetailFragment extends Fragment {
                                                     int count = 0;
                                                     try {
                                                         String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                                                        System.out.println(jsonOut);
+//                                                        System.out.println(jsonOut);
                                                         count = Integer.valueOf(result.trim());
 
                                                         if (count == 0) {
@@ -461,7 +460,7 @@ public class PieceDetailFragment extends Fragment {
                                                     int count = 0;
                                                     try {
                                                         String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                                                        System.out.println(jsonOut);
+//                                                        System.out.println(jsonOut);
                                                         count = Integer.valueOf(result.trim());
 
                                                         if (count == 0) {
@@ -530,7 +529,7 @@ public class PieceDetailFragment extends Fragment {
             int count = 0;
             try {
                 String result = new CommonTask(url, jsonObject.toString()).execute().get();
-                System.out.println(jsonOut);
+//                System.out.println(jsonOut);
                 count = Integer.valueOf(result.trim());
 
                 if (count == 0) {

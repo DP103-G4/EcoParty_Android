@@ -73,7 +73,7 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
             connection.setRequestMethod("POST");
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
             bw.write(jsonOut);
-            Log.d(TAG, "output: " + jsonOut);
+//            Log.d(TAG, "output: " + jsonOut);
             bw.close();
 
             int responseCode = connection.getResponseCode();
@@ -82,10 +82,10 @@ public class ImageTask extends AsyncTask<Object, Integer, Bitmap> {
                 bitmap = BitmapFactory.decodeStream(
                         new BufferedInputStream(connection.getInputStream()));
             } else {
-                Log.d(TAG, "response code: " + responseCode);
+//                Log.d(TAG, "response code: " + responseCode);
             }
         } catch (IOException e) {
-            Log.e(TAG, e.toString());
+//            Log.e(TAG, e.toString());
         } finally {
             if (connection != null) {
                 connection.disconnect();
