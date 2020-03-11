@@ -163,8 +163,13 @@ public class UserInsertFragment extends Fragment {
                         Log.e(TAG, e.toString());
                     }
                     if (count == 0) { //新增失敗
+
                         Common.showToast(getActivity(), "註冊失敗");
-                    } else {          //新增成功
+                    } else if (count == -1){
+
+                        Common.showToast(getActivity(),"帳號重複註冊");
+
+                    } else {         //新增成功
                         Common.showToast(getActivity(), "註冊成功");
                     }
                 } else {
@@ -185,14 +190,6 @@ public class UserInsertFragment extends Fragment {
             }
         });
 
-//        Button btDetail = view.findViewById(R.id.btDetail);
-//        btDetail.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Navigation.findNavController(v).navigate(R.id.action_insertFragment_to_detailFragment);
-//
-//            }
-//        });
 
     }
 

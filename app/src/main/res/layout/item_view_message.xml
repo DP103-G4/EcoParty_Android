@@ -21,7 +21,7 @@
             android:id="@+id/userImg"
             android:layout_width="@dimen/userSize"
             android:layout_height="@dimen/userSize"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="5dp"
             android:paddingLeft="@dimen/paddingSize"
             app:cardCornerRadius="@dimen/userSizeRadius"
             app:layout_constraintStart_toStartOf="parent"

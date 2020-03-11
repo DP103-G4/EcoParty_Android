@@ -109,18 +109,18 @@ public class LoginFragment extends Fragment {
                 jsonObject.addProperty("action", "isLogin");
                 jsonObject.addProperty("account", account);
                 jsonObject.addProperty("password", password);
-                boolean isValid = false;
+                int isValid = 0;
 
                 //Client輸入後用CommonTask去Server
                 userLoginTask = new CommonTask(url, jsonObject.toString());
                 try {
                     String result = userLoginTask.execute().get();
                     //result轉型成boolean回傳到isValid
-                    isValid = Boolean.parseBoolean(result.trim());
+                    isValid = Integer.parseInt(result.trim());
                 } catch (Exception e) {
                     Log.e(TAG, e.toString());
                 }
-                if (isValid) {      //登入成功
+                if (isValid == 1) {      //登入成功
                     Common.showToast(getActivity(), "登入成功");
                     //  偏好設定檔
                     SharedPreferences pref = activity
@@ -132,10 +132,13 @@ public class LoginFragment extends Fragment {
                     Navigation.findNavController(v).popBackStack(R.id.partyFragment, false);
 
 
-                } else {            //登入失敗
-                    tvMsg.setText("登入失敗");
+                } else  if (isValid == 2) {            //登入失敗
+                    tvMsg.setText("該帳號已被停權");
                     return;
-//                    Common.showToast(getActivity(), "登入失敗");
+
+                } else {
+                    tvMsg.setText("帳號或密碼有誤");
+                    return;
                 }
 
                 //帳密空白

@@ -2,6 +2,7 @@ package tw.dp103g4.user;
 
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -194,8 +195,12 @@ public class UserDetailFragment extends Fragment {
                     }
 
                     if (count == 0) {
+
                         Common.showToast(activity, "儲存失敗");
                     } else {
+                        SharedPreferences pref = activity
+                                .getSharedPreferences(Common.PREFERENCE_MEMBER, Context.MODE_PRIVATE);
+                        pref.edit().putString("name", name).apply();
                         Common.showToast(activity, "儲存成功");
                     }
                 } else {
