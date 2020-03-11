@@ -35,19 +35,19 @@
             tools:srcCompat="@tools:sample/avatars[7]" />
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/tvFriend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:ellipsize="end"
-        android:maxWidth="60dp"
-        android:singleLine="true"
-        android:text="123"
-        android:textSize="@dimen/textM"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cvUser"
-        app:layout_constraintTop_toTopOf="@+id/cvUser" />
+        <TextView
+            android:id="@+id/tvFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:maxWidth="60dp"
+            android:singleLine="false"
+            android:text="123"
+            android:textSize="@dimen/textM"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cvUser"
+            app:layout_constraintTop_toTopOf="@+id/cvUser" />
 
         <CheckBox
             android:id="@+id/checkBox"

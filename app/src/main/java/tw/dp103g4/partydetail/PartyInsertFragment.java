@@ -59,7 +59,7 @@ public class PartyInsertFragment extends Fragment {
     private ImageView ivCover;
     private EditText etName, etLoction, etAddress,etContent;
     private TextView tvStartDate, tvStartTime, tvEndDate, tvEndTime, tvPostEndDate, tvPostEndTime,
-            tvUpper, tvLower, tvDistance;
+            tvUpper, tvLower, tvDistance, tvName, tvLocation, tvContent;
     private ImageView geoSuccess;
     private ImageButton btGeocode;
     private Button btPartyOk, btPartyRe, btUploadCover;
@@ -109,6 +109,62 @@ public class PartyInsertFragment extends Fragment {
                 navController.popBackStack();
             }
         });
+
+        // for demo
+        tvName = view.findViewById(R.id.textView);
+        tvLocation = view.findViewById(R.id.textView6);
+        tvContent = view.findViewById(R.id.textView8);
+
+        tvName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etName.setText("全國揪團認養淨灘");
+            }
+        });
+
+        tvLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etLoction.setText("中央大學");
+            }
+        });
+
+        tvContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etContent.setText("妳有空嗎？\n" +
+                        "有空我們來淨灘ing\uD83D\uDCAA~\n" +
+                        "2/23（日）14：00 （約200人次，大成功\uD83C\uDF89）\n" +
+                        "3/22（日）14：00\n" +
+                        "4/26（日）09：30\n" +
+                        "\n" +
+                        "淨灘地點：新北市石門區老梅綠石槽\n" +
+                        "集合地點：海灣綠洲景觀餐廳\n" +
+                        "電話：02-2638-3250\n" +
+                        "\n" +
+                        "請在下方留言處報名\n" +
+                        "例如：【我要參加2/23淨灘 五大兩小】\n" +
+                        "\n" +
+                        "淨灘活動屬自願性參加，請注意隨身安全\n" +
+                        "\n" +
+                        "建議：\n" +
+                        "有包覆性的鞋子，避免受傷\n" +
+                        "做好當日防曬或是保暖措施\n" +
+                        "補充水份\n" +
+                        "\n" +
+                        "淨灘現場提供\n" +
+                        "紅茶/飲用水\n" +
+                        "淨灘手套/夾子/垃圾袋\n" +
+                        "\n" +
+                        "不需要任何費用，只要有一顆愛\uD83C\uDF0D的心\n" +
+                        "#海灣綠洲\n" +
+                        "#淨灘愛地球\n" +
+                        "#別再說妳沒空了");
+            }
+        });
+
+
+
         ivCover = view.findViewById(R.id.PartyImg);
         btUploadCover = view.findViewById(R.id.btUploadCover);
         etName = view.findViewById(R.id.etName);
@@ -224,7 +280,7 @@ public class PartyInsertFragment extends Fragment {
         final DatePickerDialog.OnDateSetListener startDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String text = String.format("%d/%02d/%02d", year, month+1, dayOfMonth);
+                String text = String.format("%d/%d/%d", year, month+1, dayOfMonth);
                 tvStartDate.setText(text);
             }
         };

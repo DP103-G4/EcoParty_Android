@@ -119,6 +119,7 @@
                             android:layout_margin="@dimen/marginSize"
                             android:paddingLeft="@dimen/paddingSize"
                             android:text="報名截止"
+                            android:textColor="@color/colorPrimaryDark"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvTime" />
@@ -128,6 +129,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/marginSize"
+                            android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/textSize4"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/textView12"
@@ -160,7 +162,8 @@
                             android:drawablePadding="-10dp"
                             android:paddingLeft="20dp"
                             android:text="收藏"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            tools:visibility="visible" />
 
                         <Button
                             android:id="@+id/btIn"
@@ -168,7 +171,7 @@
                             android:layout_height="@dimen/buttonHeight"
                             android:layout_margin="@dimen/marginSize"
                             android:layout_weight="1"
-                            android:drawableStart="@drawable/in"
+                            android:drawableLeft="@drawable/in"
                             android:drawablePadding="-10dp"
                             android:paddingLeft="20dp"
                             android:text="參加"
@@ -183,7 +186,6 @@
                             android:layout_weight="1"
                             android:drawableLeft="@drawable/start"
                             android:drawablePadding="-10dp"
-                            android:includeFontPadding="false"
                             android:paddingLeft="20dp"
                             android:text="進行中"
                             android:visibility="gone"
@@ -217,7 +219,8 @@
                             android:layout_margin="@dimen/marginSize"
                             android:layout_weight="1"
                             android:text="點名系統"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            tools:visibility="visible" />
 
                         <Button
                             android:id="@+id/btQR"
@@ -226,7 +229,8 @@
                             android:layout_margin="@dimen/marginSize"
                             android:layout_weight="1"
                             android:text="QRcode 報到"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            tools:visibility="visible" />
 
                         <Button
                             android:id="@+id/btMap"
@@ -235,7 +239,8 @@
                             android:layout_margin="@dimen/marginSize"
                             android:layout_weight="1"
                             android:text="活動地圖"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            tools:visibility="visible" />
 
                         <Button
                             android:id="@+id/btICC"
@@ -244,7 +249,8 @@
                             android:layout_margin="@dimen/marginSize"
                             android:layout_weight="1"
                             android:text="ICC表格"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            tools:visibility="visible" />
                     </LinearLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
