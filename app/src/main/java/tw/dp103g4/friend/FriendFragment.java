@@ -342,7 +342,7 @@ public class FriendFragment extends Fragment {
                                 case R.id.delete:
                                     new AlertDialog.Builder(getActivity())
                                             .setTitle("確定要刪除好友 "+friendShip.getAccount()+" 嗎？")
-                                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     if (Common.networkConnected(activity)) {
@@ -372,7 +372,7 @@ public class FriendFragment extends Fragment {
                                                         Common.showToast(activity, R.string.textNoNetwork);
                                                     }
                                                 }
-                                            }).setNegativeButton("cancel",null).create()
+                                            }).setNegativeButton("取消",null).create()
                                             .show();
                                     break;
 
