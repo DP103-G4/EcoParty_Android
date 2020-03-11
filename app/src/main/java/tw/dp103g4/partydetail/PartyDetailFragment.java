@@ -21,13 +21,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupMenu;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,7 +83,7 @@ public class PartyDetailFragment extends Fragment {
     private TextView tvName, tvTime, tvPostEndTime, tvOwner, tvParticipant, tvLocation, tvAddress, tvContent;
     private RecyclerView rvMessage;
     private ImageView ivCover, ivOwner, ivParticipant, ivLocation;
-    private ImageButton ibSend, btEdit;
+    private ImageButton ibSend;
     private EditText etInput;
     private Button btLike, btIn, btShare, btStart, btQR, btRollCall, btMap, btICC;
     private List<PartyMsgInfo> msgList;
@@ -100,6 +103,7 @@ public class PartyDetailFragment extends Fragment {
     private TextView tvLeftCount;
     private LinearLayout leftCount;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private Switch postSwitch;
 
     Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -169,9 +173,10 @@ public class PartyDetailFragment extends Fragment {
         participantLayout = view.findViewById(R.id.participantLayout);
         directLayout = view.findViewById(R.id.directLayout);
         msgLayout = view.findViewById(R.id.msgLaout);
-        btEdit = view.findViewById(R.id.btPartyEdit);
         leftCount = view.findViewById(R.id.leftCount);
         tvLeftCount = view.findViewById(R.id.tvLeftCount);
+        postSwitch = view.findViewById(R.id.switch1);
+
 
 
         rvMessage.setLayoutManager(new LinearLayoutManager(activity));
@@ -199,6 +204,24 @@ public class PartyDetailFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        postSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if (changePartyState(partyId, post)) {
+                        partyInfo.getParty().setState(post);
+                        showPartyDetail(partyInfo);
+                    }
+                } else {
+                    if (changePartyState(partyId, close)) {
+                        partyInfo.getParty().setState(close);
+                        showPartyDetail(partyInfo);
+                    }
+                }
+            }
+        });
+
 
         btShare.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -270,57 +293,28 @@ public class PartyDetailFragment extends Fragment {
             }
         });
 
-        btEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                PopupMenu popupMenu = new PopupMenu(activity, view, Gravity.END);
-                popupMenu.inflate(R.menu.party_edit_menu);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        switch (item.getItemId()) {
-                            case R.id.delete:
-                                if (changePartyState(partyId, delete)) {
-                                    partyInfo.getParty().setState(delete);
-                                    navController.popBackStack();
-                                }
-                                break;
-                            case R.id.update:
-                                bundle.putSerializable("party", partyInfo.getParty());
-                                navController.navigate(R.id.action_partyDetailFragment_to_partyUpdateFragment, bundle);
-                                break;
-                        }
-
-                        return true;
-                    }
-                });
-                popupMenu.show();
-            }
-        });
 
         btStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 PopupMenu popupMenu = new PopupMenu(activity, view, Gravity.END);
                 popupMenu.inflate(R.menu.party_start_menu);
+                if (partyInfo.getParty().getState() < start) {
+                    popupMenu.getMenu().findItem(R.id.start).setVisible(true);
+                    popupMenu.getMenu().findItem(R.id.end).setVisible(false);
+                    popupMenu.getMenu().findItem(R.id.delete).setVisible(true);
+                }
+                else {
+                    popupMenu.getMenu().findItem(R.id.start).setVisible(false);
+                    popupMenu.getMenu().findItem(R.id.end).setVisible(true);
+                    popupMenu.getMenu().findItem(R.id.delete).setVisible(false);
+                }
+
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
 
                         switch (item.getItemId()) {
-                            case R.id.post:
-                                if (changePartyState(partyId, post)) {
-                                    partyInfo.getParty().setState(post);
-                                    showPartyDetail(partyInfo);
-                                }
-                                break;
-                            case R.id.close:
-                                if (changePartyState(partyId, close)) {
-                                    partyInfo.getParty().setState(close);
-                                    showPartyDetail(partyInfo);
-                                }
-                                break;
                             case R.id.start:
                                 if (changePartyState(partyId, start)) {
                                     partyInfo.getParty().setState(start);
@@ -330,6 +324,12 @@ public class PartyDetailFragment extends Fragment {
                             case R.id.end:
                                 bundle.putSerializable("party", partyInfo.getParty());
                                 navController.navigate(R.id.action_partyDetailFragment_to_pieceCreateFragment, bundle);
+                                break;
+                            case R.id.delete:
+                                if (changePartyState(partyId, delete)) {
+                                    partyInfo.getParty().setState(delete);
+                                    navController.popBackStack();
+                                }
                                 break;
                         }
 
@@ -874,7 +874,7 @@ public class PartyDetailFragment extends Fragment {
     public void showPartyDetail(PartyInfo partyInfo)
     {
         if (partyInfo.getParty() != null) {
-            btEdit.setVisibility(View.GONE);
+            postSwitch.setVisibility(View.GONE);
             btLike.setVisibility(View.GONE);
             btStart.setVisibility(View.GONE);
             btShare.setVisibility(View.GONE);
@@ -888,7 +888,7 @@ public class PartyDetailFragment extends Fragment {
 
             if (partyInfo.getParty().getOwnerId() == userId) {
                 if (partyInfo.getParty().getState() < start)
-                    btEdit.setVisibility(View.VISIBLE);
+                    postSwitch.setVisibility(View.VISIBLE);
                 btLike.setVisibility(View.VISIBLE);
                 btStart.setVisibility(View.VISIBLE);
                 btShare.setVisibility(View.VISIBLE);

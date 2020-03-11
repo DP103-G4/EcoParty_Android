@@ -94,20 +94,13 @@
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="活動標題" />
 
-                        <ImageButton
-                            android:id="@+id/btPartyEdit"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_margin="10dp"
-                            android:alpha="0.5"
-                            android:background="@android:color/transparent"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/gear"
-                            android:visibility="gone"
+                        <Switch
+                            android:id="@+id/switch1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:visibility="visible" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
