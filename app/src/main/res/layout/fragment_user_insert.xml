@@ -110,10 +110,9 @@
 
                 <TextView
                     android:id="@+id/tvAccount"
-                    android:layout_width="100sp"
+                    android:layout_width="45dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
-                    android:gravity="right"
                     android:text="帳號"
                     android:textColor="@color/colorNoCheck"
                     android:textSize="18sp" />
@@ -138,10 +137,9 @@
 
                 <TextView
                     android:id="@+id/tvPassword"
-                    android:layout_width="100sp"
+                    android:layout_width="45dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
-                    android:gravity="right"
                     android:text="密碼"
                     android:textColor="@color/colorNoCheck"
                     android:textSize="18sp" />
@@ -167,7 +165,7 @@
 
                 <TextView
                     android:id="@+id/tvEmail"
-                    android:layout_width="100sp"
+                    android:layout_width="45dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
                     android:gravity="right"
@@ -195,10 +193,9 @@
 
                 <TextView
                     android:id="@+id/tvName"
-                    android:layout_width="100sp"
+                    android:layout_width="45dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="16dp"
-                    android:gravity="right"
                     android:text="暱稱"
                     android:textColor="@color/colorNoCheck"
                     android:textSize="18sp" />
@@ -219,6 +216,7 @@
                 android:id="@+id/linearLH6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:gravity="right"
                 android:orientation="horizontal">
 

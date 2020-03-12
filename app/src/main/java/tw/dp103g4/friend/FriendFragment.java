@@ -341,8 +341,8 @@ public class FriendFragment extends Fragment {
 
                                 case R.id.delete:
                                     new AlertDialog.Builder(getActivity())
-                                            .setTitle("確定要刪除好友 "+friendShip.getAccount()+" 嗎？")
-                                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                            .setTitle("確定要刪除好友『"+friendShip.getAccount()+"』嗎？")
+                                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     if (Common.networkConnected(activity)) {
@@ -366,13 +366,13 @@ public class FriendFragment extends Fragment {
                                                             FriendShipAdapter.this.notifyDataSetChanged();
                                                             // 外面spots也必須移除選取的spot
                                                             FriendFragment.this.friendShips.remove(friendShip);
-                                                            Common.showToast(activity, R.string.textDeleteSuccess);
+                                                            Common.showToast(activity, "已解除與『"+ friendShip.getAccount() + "』的好友關係！");
                                                         }
                                                     } else {
                                                         Common.showToast(activity, R.string.textNoNetwork);
                                                     }
                                                 }
-                                            }).setNegativeButton("cancel",null).create()
+                                            }).setNegativeButton("取消",null).create()
                                             .show();
                                     break;
 

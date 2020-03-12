@@ -198,7 +198,7 @@ public class FriendInsertFragment extends Fragment {
                                 String titleStr = "是否要邀請『" + user.getAccount() + "』成為好友？";
                                 FriendAlertDialog(titleStr,user.getId(),false);
                             }
-                            Common.showToast(getActivity(), R.string.textSearchUserSuccess);
+//                            Common.showToast(getActivity(), R.string.textSearchUserSuccess);
                         }
                     } else {
                         Common.showToast(getActivity(), R.string.textNoNetwork);
@@ -374,7 +374,7 @@ public class FriendInsertFragment extends Fragment {
             if (count == 0) {
                 Common.showToast(activity, R.string.txtUpdateIsInviteFail);
             } else {
-                Common.showToast(activity, R.string.txtUpdateIsInviteSuccess);
+//                Common.showToast(activity, R.string.txtUpdateIsInviteSuccess);
             }
         } else {
             Common.showToast(activity, R.string.textNoNetwork);
@@ -401,7 +401,7 @@ public class FriendInsertFragment extends Fragment {
             if (count == 0) {
                 Common.showToast(activity, R.string.txtDeleteFriendShipFail);
             } else {
-                Common.showToast(activity, R.string.txtDeleteFriendShipSuccess);
+//                Common.showToast(activity, R.string.txtDeleteFriendShipSuccess);
             }
         } else {
             Common.showToast(activity, R.string.textNoNetwork);
@@ -604,7 +604,7 @@ public class FriendInsertFragment extends Fragment {
                     if (count == 0) {
                         Common.showToast(activity, R.string.textFriendShipInsertFail);
                     } else {
-                        Common.showToast(activity, R.string.textFriendShipInsertSuccess);
+                        Common.showToast(activity, "已經送出好友邀請！");
                         //socket
                         ChatMsg chatMsg = new ChatMsg("newFriend", userId, user.getId(), user.getAccount());
                         String newFriendJson = new Gson().toJson(chatMsg);
