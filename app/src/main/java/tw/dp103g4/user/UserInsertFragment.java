@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -54,6 +55,7 @@ public class UserInsertFragment extends Fragment {
     private static final int REQ_PICK_PICTURE = 1;
     private static final int REQ_CROP_PICTURE = 2;
     private Uri contentUri;
+    private TextView tvAccount;
 //    private Date createTime;
 
 
@@ -85,6 +87,8 @@ public class UserInsertFragment extends Fragment {
         });
 
 
+        tvAccount = view.findViewById(R.id.tvAccount);
+
         ivUser = view.findViewById(R.id.ivUser);
         etAccount = view.findViewById(R.id.etAccount);
         etPassword = view.findViewById(R.id.etPassword);
@@ -95,6 +99,18 @@ public class UserInsertFragment extends Fragment {
         btCancel = view.findViewById(R.id.btCancel);
         btTakePic = view.findViewById(R.id.btTakePic);
         btLoadPic = view.findViewById(R.id.btLoadPic);
+
+        tvAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etAccount.setText("tintin");
+                etPassword.setText("111");
+                etName.setText("丁丁");
+                etEmail.setText("tintin111@gmail.com");
+            }
+        });
+
+
 
         //拍照
         btTakePic.setOnClickListener(new View.OnClickListener() {

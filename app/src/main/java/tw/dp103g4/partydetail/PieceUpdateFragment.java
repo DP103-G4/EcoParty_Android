@@ -1,5 +1,6 @@
 package tw.dp103g4.partydetail;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
@@ -44,6 +45,7 @@ import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import tw.dp103g4.R;
 import tw.dp103g4.main_android.Common;
@@ -56,22 +58,28 @@ import static android.content.Context.MODE_PRIVATE;
 public class PieceUpdateFragment extends Fragment {
     private Activity activity;
     private static final String TAG = "TAG_PieceInsert";
-    private CommonTask getAllPieceImgTask;
+
+    private static final int REQ_PICK_PICTURE = 1;
+    private CommonTask getAllPieceImgTask, pieceTask;
+    private ImageTask pieceImgTask;
     private RecyclerView rvInsertImg;
-    private TextView tvPartyName;
+    private TextView tvPartyName, tvTitle;
     private Button btPieceInsertOK, btPieceInsertRe, btUploadImg;
     private EditText etContent;
     private CardView countImg;
     private TextView tvCountImg;
-    private LinearLayoutManager linearLayoutManager;
-    private ImageTask pieceImgTask;
     private final int REQ_PICK_IMAGES = 101;
     private Bundle bundle;
     private int partyId, pieceId;
     private PartyInfo partyInfo;
-    private List<PieceImg> pieceImgs;
     private List<String> imagesBase64;
     private PagerSnapHelper pagerSnapHelper;
+    private LinearLayoutManager linearLayoutManager;
+    private TextView tvPieceContent;
+    private PartyPiece partyPiece;
+    private List<PieceImg> pieceImgs;
+
+
     Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
@@ -92,6 +100,7 @@ public class PieceUpdateFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_piece_insert, container, false);
     }
 
+    @SuppressLint("WrongThread")
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -105,12 +114,10 @@ public class PieceUpdateFragment extends Fragment {
             }
         });
 
-        TextView tvTitle = view.findViewById(R.id.title);
-        tvTitle.setText("修改活動");
+        tvTitle = view.findViewById(R.id.title);
 
         countImg = view.findViewById(R.id.countImg);
         tvCountImg = view.findViewById(R.id.tvCountImg);
-
 
         tvPartyName = view.findViewById(R.id.tvPartyName);
         rvInsertImg = view.findViewById(R.id.rvInsertImg);
@@ -118,6 +125,25 @@ public class PieceUpdateFragment extends Fragment {
         btPieceInsertRe = view.findViewById(R.id.btPieceInsertRe);
         etContent = view.findViewById(R.id.etPieceContent);
         btUploadImg = view.findViewById(R.id.btUploadImg);
+
+        tvPieceContent = view.findViewById(R.id.textView17);
+
+        tvTitle.setText("修改花絮");
+
+        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
+        final int userId = pref.getInt("id", 0);
+
+        bundle = getArguments();
+        if (bundle == null || bundle.getInt("partyId") == 0 || bundle.getInt("pieceId") == 0) {
+            navController.popBackStack();
+            return;
+        }
+
+        partyId = bundle.getInt("partyId");
+        pieceId = bundle.getInt("pieceId");
+
+        partyInfo = getPartyInfo(partyId, userId);
+        tvPartyName.setText(partyInfo.getParty().getName());
 
         linearLayoutManager  = new LinearLayoutManager(activity, RecyclerView.HORIZONTAL, false);
         rvInsertImg.setLayoutManager(linearLayoutManager);
@@ -127,25 +153,42 @@ public class PieceUpdateFragment extends Fragment {
         if (rvInsertImg.getOnFlingListener() == null)
             pagerSnapHelper.attachToRecyclerView(rvInsertImg);
 
-        SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
-        final int userId = pref.getInt("id", 0);
-
-
-        bundle = getArguments();
-        if (bundle == null || bundle.getInt("partyId") == 0) {
-            navController.popBackStack();
-            return;
-        }
-        partyId = bundle.getInt("partyId");
-        pieceId = bundle.getInt("pieceId");
-
-        partyInfo = getPartyInfo(partyId, userId);
-        tvTitle.setText("修改花絮");
-        tvPartyName.setText(partyInfo.getParty().getName());
 
         pieceImgs = getPieceImgs(pieceId);
 
+        for (PieceImg pieceImg: pieceImgs) {
+            String url = Common.URL_SERVER + "PieceImgServlet";
+            final int id = pieceImg.getId();
+            int imageSize = getResources().getDisplayMetrics().widthPixels;
+            pieceImgTask = new ImageTask(url, id, imageSize);
+            try {
+                Bitmap bitmap = pieceImgTask.execute().get();
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                byte[] image = out.toByteArray();
+                String imageBase64 = Base64.encodeToString(image, Base64.DEFAULT);
+                imagesBase64.add(imageBase64);
+
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+        }
+
         showImgs(imagesBase64);
+
+        partyPiece = getPartyPiece(pieceId);
+        etContent.setText(partyPiece.getContent());
+
+
+
+
+        // for demo
+        tvPieceContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etContent.setText("我剛剛傳錯了啦, 淨灘成功ya");
+            }
+        });
 
         btUploadImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,15 +226,19 @@ public class PieceUpdateFragment extends Fragment {
                     String url = Common.URL_SERVER + "PartyPieceServlet";
 
                     JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("action", "pieceInsert");
-                    PartyPiece partyPiece = new PartyPiece(userId, partyId, etContent.getText().toString());
+                    jsonObject.addProperty("action", "pieceUpdate");
+                    PartyPiece partyPiece = new PartyPiece(pieceId, userId, partyId, etContent.getText().toString());
                     jsonObject.addProperty("piece", gson.toJson(partyPiece));
                     jsonObject.addProperty("imagesBase64", gson.toJson(imagesBase64));
 
                     int count = 0;
                     try {
                         String result = new CommonTask(url, jsonObject.toString()).execute().get();
+
+//                        System.out.println(jsonObject.toString());
+
                         count = Integer.valueOf(result.trim());
+
                     } catch (Exception e) {
                         Log.e(TAG, e.toString());
                     }
@@ -213,12 +260,55 @@ public class PieceUpdateFragment extends Fragment {
         btPieceInsertRe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                etContent.setText("");
                 imagesBase64.clear();
+                pieceImgs = getPieceImgs(pieceId);
+
+                for (PieceImg pieceImg: pieceImgs) {
+                    String url = Common.URL_SERVER + "PieceImgServlet";
+                    final int id = pieceImg.getId();
+                    int imageSize = getResources().getDisplayMetrics().widthPixels;
+                    pieceImgTask = new ImageTask(url, id, imageSize);
+                    try {
+                        Bitmap bitmap = pieceImgTask.execute().get();
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                        byte[] image = out.toByteArray();
+                        String imageBase64 = Base64.encodeToString(image, Base64.DEFAULT);
+                        imagesBase64.add(imageBase64);
+
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                    }
+                }
+
                 showImgs(imagesBase64);
+
+                partyPiece = getPartyPiece(pieceId);
+                etContent.setText(partyPiece.getContent());
             }
         });
 
+    }
+
+    private PartyPiece getPartyPiece(int pieceId) {
+        PartyPiece partyPiece = null;
+        if (Common.networkConnected(activity)) {
+            String url = Common.URL_SERVER + "PartyPieceServlet";
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action", "getOneById");
+            jsonObject.addProperty("id", pieceId);
+            String jsonOut = jsonObject.toString();
+            pieceTask = new CommonTask(url, jsonOut);
+            try {
+                String jsonIn = pieceTask.execute().get();
+                partyPiece = gson.fromJson(jsonIn, PartyPiece.class);
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+        } else {
+            Common.showToast(activity, R.string.textNoNetwork);
+        }
+        return partyPiece;
     }
 
     private List<PieceImg> getPieceImgs(int pieceId) {
@@ -281,7 +371,7 @@ public class PieceUpdateFragment extends Fragment {
             if (imgs.size() == 0) {
                 holder.ivImg.setImageResource(R.drawable.upload_img);
             } else {
-                final String img = imgs.get(position);
+                String img = imgs.get(position);
                 //decode base64 string to image
                 byte[] imageBytes = Base64.decode(img, Base64.DEFAULT);
                 Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
@@ -355,6 +445,7 @@ public class PieceUpdateFragment extends Fragment {
             imgAdapter.setImgs(imgs);
             imgAdapter.notifyDataSetChanged();
         }
+
     }
 
     private PartyInfo getPartyInfo(int id, int userId) {
@@ -423,7 +514,6 @@ public class PieceUpdateFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-
         if (getAllPieceImgTask != null) {
             getAllPieceImgTask.cancel(true);
             getAllPieceImgTask = null;

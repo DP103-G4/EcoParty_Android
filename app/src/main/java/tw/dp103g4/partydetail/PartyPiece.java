@@ -15,6 +15,14 @@ public class PartyPiece {
 		this.partyId = partyId;
 		this.content = content;
 	}
+
+	public PartyPiece(int id, int userId, int partyId, String content) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.partyId = partyId;
+		this.content = content;
+	}
 	
 	public PartyPiece(int id, int userId, int partyId, String content, Date time) {
 		super();
