@@ -16,7 +16,7 @@ import tw.dp103g4.friend.ChatWebSocketClient;
 public class Common {
     private final static String TAG = "CommonSocket";
     public static String URL_SERVER = "http://10.0.2.2:8080/EcoParty/";
-//    public static String URL_SERVER = "http://192.168.1.206:8080/EcoParty/";
+//    public static String URL_SERVER = "http://192.168.196.109:8080/EcoParty/";
     //偏好設定檔叫做member
     public static final String PREFERENCE_MEMBER = "member";
 
@@ -29,7 +29,7 @@ public class Common {
         return pref.getString("name", "");
     }
     public static String URI_SERVER = "ws://10.0.2.2:8080/EcoParty/SocketServer/";
-//    public static String URI_SERVER = "ws://192.168.1.206:8080/EcoParty/SocketServer/";
+//    public static String URI_SERVER = "ws://192.168.196.109:8080/EcoParty/SocketServer/";
     public static ChatWebSocketClient chatWebSocketClient;
 
     //建立webSocket連線
