@@ -35,7 +35,7 @@
                 android:minHeight="?actionBarSize"
                 android:padding="@dimen/appbar_padding"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                android:textColor="@color/design_default_color_background"
+                android:textColor="@color/colorTitle"
                 tools:layout_editor_absoluteX="48dp"
                 tools:text="name" />
 

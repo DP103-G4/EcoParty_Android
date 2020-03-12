@@ -29,7 +29,7 @@
                 android:padding="@dimen/appbar_padding"
                 android:text="審核文件"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                android:textStyle="bold" />
+                android:textColor="@color/colorTitle" />
 
             <Button
                 android:id="@+id/btPieceInsertOK"
@@ -39,7 +39,7 @@
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
                 android:text="完成"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorTitle"
                 android:textSize="16sp" />
 
             <Button
@@ -50,7 +50,7 @@
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
                 android:text="重置"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorTitle"
                 android:textSize="16sp" />
 
 
@@ -119,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_upload_img"
                 android:text="上傳審核圖片"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorTitle"
                 android:textSize="@dimen/textSize3" />
 
         </LinearLayout>

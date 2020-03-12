@@ -32,8 +32,7 @@
                 android:padding="@dimen/appbar_padding"
                 android:text="編輯會員資料"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold" />
+                android:textColor="@color/colorTitle" />
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
