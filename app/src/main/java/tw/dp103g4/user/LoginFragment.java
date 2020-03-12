@@ -42,6 +42,8 @@ public class LoginFragment extends Fragment {
     private List<User> users;
     private String account, password;
 
+    private TextView tvTest1, tvTest3, tvTest5;
+
     private BottomNavigationView bottomNavigationView;
 
 
@@ -84,6 +86,9 @@ public class LoginFragment extends Fragment {
         btRegister = view.findViewById(R.id.btRegister);
         btLogin = view.findViewById(R.id.btLogin);
         tvWelcome = view.findViewById(R.id.tvWelcome);
+        tvTest1 = view.findViewById(R.id.tvTest1);
+        tvTest3 = view.findViewById(R.id.tvTest3);
+        tvTest5 = view.findViewById(R.id.tvTest5);
         //去註冊頁面
         btRegister.setOnClickListener(new View.OnClickListener() {
 
@@ -100,6 +105,33 @@ public class LoginFragment extends Fragment {
                 etPassword.setText("111");
             }
         });
+
+        tvTest1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etAccount.setText("kyoko01");
+                etPassword.setText("111");
+            }
+        });
+
+        tvTest3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etAccount.setText("hawk03");
+                etPassword.setText("111");
+            }
+        });
+
+        tvTest5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etAccount.setText("zhan05");
+                etPassword.setText("111");
+            }
+        });
+
+
+
         //登入判斷
         //成功後導到 會員
         btLogin.setOnClickListener(new View.OnClickListener() {

@@ -786,7 +786,7 @@ public class PartyDetailFragment extends Fragment {
                                     tvWarn.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            etWarn.setText("他罵我");
+                                            etWarn.setText("他說髒話");
                                         }
                                     });
 

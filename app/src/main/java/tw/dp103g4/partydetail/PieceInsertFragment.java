@@ -146,7 +146,7 @@ public class PieceInsertFragment extends Fragment {
         tvPieceContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                etContent.setText("淨灘成功ya");
+                etContent.setText("這邊好多垃圾");
             }
         });
 

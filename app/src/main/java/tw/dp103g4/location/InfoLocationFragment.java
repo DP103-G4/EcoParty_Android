@@ -180,8 +180,8 @@ public class InfoLocationFragment extends Fragment {
                             tvInfoTitle.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    edTitle.setText("選舉最大的秘密是？ ");
-                                    edContent.setText("票多的贏、票少的輸");
+                                    edTitle.setText("這邊垃圾超多！！");
+                                    edContent.setText("快來幫幫忙");
                                 }
                             });
                             final AlertDialog.Builder alert = new AlertDialog.Builder(activity);

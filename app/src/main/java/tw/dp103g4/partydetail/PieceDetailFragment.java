@@ -410,7 +410,7 @@ public class PieceDetailFragment extends Fragment {
                                     tvWarn.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            etWarn.setText("他說髒話");
+                                            etWarn.setText("他罵我垃圾");
                                         }
                                     });
 
