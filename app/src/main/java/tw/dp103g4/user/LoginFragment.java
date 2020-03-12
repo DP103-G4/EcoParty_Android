@@ -36,7 +36,7 @@ public class LoginFragment extends Fragment {
 
     private Activity activity;
     private Button btRegister, btLogin;
-    private TextView tvMsg, tvForgot;
+    private TextView tvMsg, tvForgot, tvWelcome;
     private EditText etAccount, etPassword;
     private CommonTask userLoginTask, userGetIdTask;
     private List<User> users;
@@ -83,7 +83,7 @@ public class LoginFragment extends Fragment {
 
         btRegister = view.findViewById(R.id.btRegister);
         btLogin = view.findViewById(R.id.btLogin);
-
+        tvWelcome = view.findViewById(R.id.tvWelcome);
         //去註冊頁面
         btRegister.setOnClickListener(new View.OnClickListener() {
 
@@ -93,7 +93,13 @@ public class LoginFragment extends Fragment {
             }
         });
 
-
+        tvWelcome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etAccount.setText("tintin");
+                etPassword.setText("111");
+            }
+        });
         //登入判斷
         //成功後導到 會員
         btLogin.setOnClickListener(new View.OnClickListener() {

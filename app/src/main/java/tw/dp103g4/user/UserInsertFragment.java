@@ -49,13 +49,14 @@ public class UserInsertFragment extends Fragment {
     private FragmentActivity activity;
     private ImageView ivUser;
     private EditText etAccount, etPassword, etEmail, etName;
+    private TextView tvAccount;
     private Button btOK, btCancel, btTakePic, btLoadPic;
     private byte[] image;
     private static final int REQ_TAKE_PICTURE = 0;
     private static final int REQ_PICK_PICTURE = 1;
     private static final int REQ_CROP_PICTURE = 2;
     private Uri contentUri;
-    private TextView tvAccount;
+
 //    private Date createTime;
 
 
@@ -87,8 +88,6 @@ public class UserInsertFragment extends Fragment {
         });
 
 
-        tvAccount = view.findViewById(R.id.tvAccount);
-
         ivUser = view.findViewById(R.id.ivUser);
         etAccount = view.findViewById(R.id.etAccount);
         etPassword = view.findViewById(R.id.etPassword);
@@ -100,6 +99,7 @@ public class UserInsertFragment extends Fragment {
         btTakePic = view.findViewById(R.id.btTakePic);
         btLoadPic = view.findViewById(R.id.btLoadPic);
 
+        tvAccount = view.findViewById(R.id.tvAccount);
         tvAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,8 +109,6 @@ public class UserInsertFragment extends Fragment {
                 etEmail.setText("tintin111@gmail.com");
             }
         });
-
-
 
         //拍照
         btTakePic.setOnClickListener(new View.OnClickListener() {
