@@ -28,7 +28,7 @@
                 android:padding="@dimen/appbar_padding"
                 android:text="@string/tabTitle"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                android:textStyle="bold" />
+                android:textColor="@color/colorTitle" />
 
         </androidx.appcompat.widget.Toolbar>
 

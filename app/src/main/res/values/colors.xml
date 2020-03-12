@@ -17,4 +17,7 @@
     <color name="colorEcoGray">#707070</color>
     <color name="colorEcoGray2">#B7B7B7</color>
     <color name="colorEcoGray3">#F4F4F4</color>
+
+    <color name="colorTitle">#FFFFFF</color>
+
 </resources>

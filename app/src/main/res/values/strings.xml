@@ -8,12 +8,12 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="textNoNetwork">no network connection available</string>
-    <string name="textNoPartiesFound">no parties found</string>
+    <string name="textNoPartiesFound">找不到活動</string>
     <string name="textPartyName">請輸入活動名稱</string>
     <string name="textNewsTitle">NewsTitle</string>
     <string name="textNewsContent">NewsContent</string>
-    <string name="textNoNewsFound">News is not found</string>
-    <string name="noNewsDetail">NewsDetail not found</string>
+    <string name="textNoNewsFound">找不到最新消息</string>
+    <string name="noNewsDetail">找不到消息內容</string>
     <string name="textChat">聊天</string>
     <string name="tabTitle">我的活動</string>
     <string name="partyTitle">活動詳情</string>
@@ -21,10 +21,10 @@
     <string name="tab_text_1">我的活動</string>
     <string name="tab_text_2">我的花絮</string>
     <string name="toolNews">最新消息</string>
-    <string name="textNoInform">no informs found</string>
+    <string name="textNoInform">沒有通知</string>
 
-    <string name="textInsertFail">Insert Fail</string>
-    <string name="textInsertSuccess">Insert Success</string>
+    <string name="textInsertFail">新增失敗</string>
+    <string name="textInsertSuccess">新增成功</string>
     <string name="textNoImageCropAppFound">no image crop app found</string>
 
     <string name="textAgree">同意</string>
@@ -35,8 +35,8 @@
     <string name="textFriendMsg">聊天</string>
     <string name="textFriendInsert">好友＋</string>
     <string name="textNoFriendShipFound">no friendship found</string>
-    <string name="textDeleteFail">delete fail</string>
-    <string name="textDeleteSuccess">delete success</string>
+    <string name="textDeleteFail">刪除失敗</string>
+    <string name="textDeleteSuccess">刪除成功</string>
     <string name="textNoTalkFound">no talk found</string>
     <string name="textQRcord">QRcord</string>
     <string name="textNoTalksFound">no talks found</string>
@@ -59,7 +59,7 @@
     <string name="txtDeleteFriendShipFail">delete friendship fail</string>
     <string name="txtDeleteFriendShipSuccess">delete friendship success</string>
 
-    <string name="textNoParticipantFound">No Participant Found</string>
+    <string name="textNoParticipantFound">找不到參加者</string>
     <string name="textNoCameraApp">找不到相機</string>
     <string name="textNameIsInvalid">無效的操作</string>
     <string name="textNoUserFound">找不到資料</string>

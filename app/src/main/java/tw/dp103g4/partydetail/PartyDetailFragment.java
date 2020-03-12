@@ -906,6 +906,9 @@ public class PartyDetailFragment extends Fragment {
                 postSwitch.setChecked(false);
                 btStart.setText("已截止");
                 btStart.setCompoundDrawablesWithIntrinsicBounds(R.drawable.start, 0, 0, 0);
+                int left = partyInfo.getParty().getCountUpperLimit() - partyInfo.getParty().getCountCurrent();
+                tvLeftCount.setText(String.valueOf(left));
+                leftCount.setVisibility(View.VISIBLE);
 
                 btIn.setClickable(false);
             } else if (partyInfo.getParty().getState() == start) {

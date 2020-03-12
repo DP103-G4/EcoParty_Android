@@ -29,7 +29,7 @@
                 android:padding="@dimen/appbar_padding"
                 android:text="製作花絮"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                android:textStyle="bold" />
+                android:textColor="@color/colorTitle" />
 
             <Button
                 android:id="@+id/btPieceOK"
@@ -39,7 +39,7 @@
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
                 android:text="完成"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorTitle"
                 android:textSize="16sp" />
 
             <Button
@@ -50,7 +50,7 @@
                 android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
                 android:text="重置"
-                android:textColor="@android:color/white"
+                android:textColor="@color/colorTitle"
                 android:textSize="16sp" />
 
         </androidx.appcompat.widget.Toolbar>
@@ -63,7 +63,7 @@
 
         <ImageView
             android:id="@+id/ivAfter"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/pictureHeight"
             android:scaleType="centerCrop"
             android:src="@drawable/upload_img"
@@ -77,6 +77,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_upload_img"
             android:text="上傳花絮封面"
+            android:textColor="@color/colorTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivAfter" />
