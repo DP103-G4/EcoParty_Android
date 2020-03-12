@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvInfoTitle2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:text="檢舉原因"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/edTitle2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="bottom|left"
+        android:hint="請輸入檢舉原因"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:maxLines="3"
+        android:minLines="6"
+        android:paddingLeft="8dp"
+        android:scrollbars="vertical" />
+</LinearLayout>

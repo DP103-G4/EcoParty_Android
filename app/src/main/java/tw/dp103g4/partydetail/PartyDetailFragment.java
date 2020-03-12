@@ -780,15 +780,22 @@ public class PartyDetailFragment extends Fragment {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.msgWarn:
-                                    final EditText input = new EditText(activity);
+                                    final View input = layoutInflater.inflate(R.layout.alert_warn, null);
+                                    TextView tvWarn = input.findViewById(R.id.tvInfoTitle2);
+                                    final EditText etWarn = input.findViewById(R.id.edTitle2);
+                                    tvWarn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            etWarn.setText("他罵我");
+                                        }
+                                    });
+
                                     new AlertDialog.Builder(activity)
-                                            .setTitle("檢舉留言")
-                                            .setMessage("請輸入檢舉原因")
                                             .setView(input)
                                             .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    MsgWarn msgWarn = new MsgWarn(msgInfo.getPartyMessage().getId(), userId, input.getText().toString());
+                                                    MsgWarn msgWarn = new MsgWarn(msgInfo.getPartyMessage().getId(), userId, etWarn.getText().toString());
 
                                                     String url = Common.URL_SERVER + "MsgWarnServlet";
                                                     JsonObject jsonObject = new JsonObject();
