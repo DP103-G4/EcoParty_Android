@@ -118,8 +118,10 @@ public class PartyListFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                news = getNews();
                 parties = getParties();
                 partyStart = getPartyStart(userId);
+                showNews(news);
                 showParties(parties);
                 showPartyStart(partyStart);
                 swipeRefreshLayout.setRefreshing(false);
