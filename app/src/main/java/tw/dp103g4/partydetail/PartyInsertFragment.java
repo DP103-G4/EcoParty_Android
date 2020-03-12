@@ -118,14 +118,14 @@ public class PartyInsertFragment extends Fragment {
         tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                etName.setText("全國揪團認養淨灘");
+                etName.setText("大家一起來淨灘");
             }
         });
 
         tvLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                etLoction.setText("中央大學");
+                etLoction.setText("後壁湖海邊");
             }
         });
 
