@@ -403,15 +403,23 @@ public class PieceDetailFragment extends Fragment {
                         public boolean onMenuItemClick(MenuItem item) {
                             switch (item.getItemId()) {
                                 case R.id.pieceWarn:
-                                    final EditText input = new EditText(activity);
+
+                                    final View input = layoutInflater.inflate(R.layout.alert_warn, null);
+                                    TextView tvWarn = input.findViewById(R.id.tvInfoTitle2);
+                                    final EditText etWarn = input.findViewById(R.id.edTitle2);
+                                    tvWarn.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            etWarn.setText("他說髒話");
+                                        }
+                                    });
+
                                     new AlertDialog.Builder(activity)
-                                            .setTitle("檢舉花絮")
-                                            .setMessage("請輸入檢舉原因")
                                             .setView(input)
                                             .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    PieceWarn pieceWarn = new PieceWarn(pieceInfo.getPartyPiece().getId(), userId, input.getText().toString());
+                                                    PieceWarn pieceWarn = new PieceWarn(pieceInfo.getPartyPiece().getId(), userId, etWarn.getText().toString());
 
                                                     String url = Common.URL_SERVER + "PieceWarnServlet";
                                                     JsonObject jsonObject = new JsonObject();
