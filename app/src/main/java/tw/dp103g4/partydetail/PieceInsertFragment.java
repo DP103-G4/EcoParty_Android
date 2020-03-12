@@ -71,6 +71,7 @@ public class PieceInsertFragment extends Fragment {
     private List<String> imagesBase64;
     private PagerSnapHelper pagerSnapHelper;
     private LinearLayoutManager linearLayoutManager;
+    private TextView tvPieceContent;
     Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .create();
@@ -114,6 +115,8 @@ public class PieceInsertFragment extends Fragment {
         etContent = view.findViewById(R.id.etPieceContent);
         btUploadImg = view.findViewById(R.id.btUploadImg);
 
+        tvPieceContent = view.findViewById(R.id.textView17);
+
         SharedPreferences pref = activity.getSharedPreferences(Common.PREFERENCE_MEMBER, MODE_PRIVATE);
         final int userId = pref.getInt("id", 0);
 
@@ -137,6 +140,15 @@ public class PieceInsertFragment extends Fragment {
             pagerSnapHelper.attachToRecyclerView(rvInsertImg);
 
         showImgs(imagesBase64);
+
+
+        // for demo
+        tvPieceContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etContent.setText("淨灘成功ya");
+            }
+        });
 
         btUploadImg.setOnClickListener(new View.OnClickListener() {
             @Override
